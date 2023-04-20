@@ -9,7 +9,7 @@ Proyecto de Ingeniería de Software, semestre 1-2023.
 - Integrantes:
     - Gonzalo Cuevas (Scrum Master, Frontend)
     - Mathew Pardo (Arquitecto de software, Backend)
-    - Giancarlo Piccinini (QA, Backend)
+    - Gianfranco Piccinini (QA, Backend)
     - Eduardo Abarca (Arquitecto de software, Fullstack)
 
 ## Manual de instalación
