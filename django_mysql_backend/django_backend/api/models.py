@@ -16,9 +16,9 @@ class Profesional(models.Model):
 
 
 class Pago(models.Model):
-    monto = models.IntegerField(max_length=10)
+    monto = models.IntegerField()
     fechaPago = models.DateField()
-    idProfesional = models.ForeignKey(Profesional,on_delete=models.CASCADE)
+    idProfesional = models.ForeignKey(Profesional, on_delete=models.CASCADE)
 
 
 class Region(models.Model):
@@ -59,7 +59,7 @@ class Asistencia(models.Model):
     fechaSalida = models.DateField()
     horaSalida = models.TimeField()
     asisteProfesional = models.BooleanField()
-    costosExtra = models.IntegerField(max_length=10)
+    costosExtra = models.IntegerField()
     idProfesional = models.ForeignKey(Profesional, on_delete=models.CASCADE)
     idTurno = models.ForeignKey(Turno, on_delete=models.CASCADE)
     idPago = models.ForeignKey(Pago, on_delete=models.CASCADE)
