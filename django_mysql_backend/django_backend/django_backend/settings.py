@@ -79,8 +79,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': 'localhost', #Cambiar cuando se despliegue en el servidor
         'PORT': '3306',
-        'USER': 'root', #A definir
-        'PASSWORD': 'admin', #A definir (password de prueba)
+        'USER': 'root',
+        'PASSWORD': 'mysql', #Le puse esa contra a mi entorno, mala mia
+        #'PASSWORD': 'admin',
         'NAME': 'rotativa_myra',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
