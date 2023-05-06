@@ -13,7 +13,7 @@ class Cargo(models.Model):
 class Profesional(models.Model):
     nombre = models.CharField(max_length=50)
     rut = models.CharField(max_length=15)
-    #idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
+    idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
 
 
 class Pago(models.Model):
