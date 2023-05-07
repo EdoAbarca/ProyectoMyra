@@ -1,102 +1,41 @@
-<script>
-import BarraNav from '../components/BarraNav.vue'
-import ContenidoLista from '../components/ContenidoLista.vue'
-import BuscadorProfesionales from '../components/BuscadorProfesionales.vue'
-import DatosProfesional from '../components/DatosProfesional.vue'
-
-
-
-export default {
-  data() {
-        return {
-          
-          fechaReporte: "24-06-2021",
-        }
-    },
-  components: {
-    BarraNav
-    }
-  }
-</script>
-
 <template>
-  
-  <div class="ContenedorPrincipal">
-    <div class="Navegacion">
-      <BarraNav/>
-    </div>
-    <div class="Contenedores">
-      <div class="ContenedorGris">
-        <BuscadorProfesionales/>
-        <ContenidoLista/>
-        
-      </div>
-      <div class="Separador"></div>
-      <div class="ContenedorGris">
-        <DatosProfesional/>
-        
-        
-    </div>
-      
-      
 
-    </div>
-    
+  <div class="container">
+    <title> Rotativa Myra - Home</title>
+    <v-row justify="center" alling="center">
+      <h1 class="text-center">Pingeso</h1>
+      <hr />
 
+      <form action="/profesionales">
+        <button type="submit" value="VentanaProfesionales">
+          Profesionales
+        </button>
+      </form>
+
+      <form action="/test_reporte">
+        <button type="submit" value="VentanaReporte">
+          Prueba subida reporte
+        </button>
+      </form>
+    </v-row>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
   </div>
-  
-
 </template>
 
+<script>
+export default {
+  name: 'IndexPage',
+}
+</script>
 
 <style>
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: content-box;
+* {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 40px;
 }
-.ContenedorPrincipal{
-  position: absolute;
-  width: 100%;
-  height: 100%;
- 
-  display: flex;
-  flex-direction: column;
-}
-.Navegacion{
-  position: relative;
-  width: 100%;
-  height: 60px;
-
-  z-index: 10;
-}
-.Contenedores{
-  overflow: hidden;
-  box-sizing: border-box;
-  position: relative;
-  width: 100%;
-  height: 100%;
-
-  margin-top: 1%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-
-}
-.Separador{
-  position: relative;
-  width: 3%;
-  height: 100%;
-
-
-}
-.ContenedorGris{
-  position: relative;
-  width: 46%;
-  height: 100%;
-  background-color: #FCFCFC;;
-  justify-content: center;
-
-}
-
 </style>

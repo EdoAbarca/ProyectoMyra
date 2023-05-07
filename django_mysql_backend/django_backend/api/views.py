@@ -9,6 +9,7 @@ from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import json
+import pandas as pd
 
 # Create your views here.
 class CargoView(View):
@@ -328,3 +329,16 @@ class ClienteView(View):
             datos = {'message': "Cliente no encontrado"}
         return JsonResponse(datos)
 
+#Adaptar con pandas
+class ExcelView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        return super().dispatch(request, *args, **kwargs)
+    
+    def cargar_excel(self, request):
+        if request.method == 'POST':
+            file = request.FILES['excel_file']
+            df = pd.read_excel(file)
+            for index, row in df.iterrows():
+                #Mandar a base de datos
+                fila_actual = []

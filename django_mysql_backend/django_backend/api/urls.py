@@ -13,6 +13,6 @@ urlpatterns=[
     path('zona/', ZonaView.as_view()),
     path('zona/<int:id>', ZonaView.as_view()),
     path('cliente/', ClienteView.as_view()),
-    path('cliente/<int:id>', ClienteView.as_view())
-    
+    path('cliente/<int:id>', ClienteView.as_view()),
+    path('cargar_excel/', ExcelView.as_view())
 ]

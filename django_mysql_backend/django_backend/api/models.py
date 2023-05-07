@@ -71,3 +71,6 @@ class Alerta(models.Model):
     descripcion = models.CharField(max_length=200)
     idPaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     idAsistencia = models.ForeignKey(Asistencia, on_delete=models.CASCADE)
+
+class Excel(models.Model):
+    data = models.CharField(max_length=255)
