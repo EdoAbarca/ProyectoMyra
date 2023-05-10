@@ -4,6 +4,8 @@ from .views import *
 urlpatterns=[
     path('profesional/', ProfesionalView.as_view()),
     path('profesional/<int:id>', ProfesionalView.as_view()),
+    path('coordinador/', CoordinadorView.as_view()),
+    path('coordinador/<int:id>', CoordinadorView.as_view()),
     path('cargo/', CargoView.as_view()),
     path('cargo/<int:id>', CargoView.as_view()),
     path('pago/', PagoView.as_view()),

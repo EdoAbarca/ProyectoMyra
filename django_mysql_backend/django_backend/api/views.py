@@ -65,6 +65,57 @@ class CargoView(View):
             datos = {'message':"Cargo no encontrado"}
         return JsonResponse(datos)
 
+
+class CoordinadorView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, id=0):
+        if (id > 0):
+            coordinadores = list(Coordinador.objects.filter(id=id).values())
+            if len(coordinadores) > 0:
+                coordinador = coordinadores[0]
+                datos = {'message': "Success", 'coordinador': coordinador}
+            else:
+                datos = {'message': "Coordinador no encontrado."}
+            return JsonResponse(datos)
+        else:
+            coordinadores = list(Coordinador.objects.values())
+            if len(coordinadores) > 0:
+                datos = {'message': "Success", 'coordinadores': coordinadores}
+            else:
+                datos = {'message': "Sin coordinadores."}
+            return JsonResponse(datos)
+
+    def post(self, request):
+        json_data = json.loads(request.body)
+        Coordinador.objects.create(nombre=json_data['nombre'], idCargo=json_data['idCargo'])
+        datos = {'message': "Success"}
+        return JsonResponse(datos)
+
+    def put(self, request, id):
+        json_data = json.loads(request.body)
+        coordinadores = list(Coordinador.objects.filter(id=id).values())
+        if len(coordinadores) > 0:
+            coordinador = Coordinador.objects.get(id=id)
+            coordinador.nombre = json_data['nombre']
+            coordinador.idCargo = json_data['idCargo']
+            coordinador.save()
+            datos = {'message': "Success"}
+        else:
+            datos = {'message': "Coordinador no encontrado"}
+        return JsonResponse(datos)
+
+    def delete(self, request, id):
+        coordinadores = list(Coordinador.objects.filter(id=id).values())
+        if len(coordinadores) > 0:
+            Coordinador.objects.filter(id=id).delete()
+            datos = {'message': "Success"}
+        else:
+            datos = {'message': "Coordinador no encontrado"}
+        return JsonResponse(datos)
+
 class ProfesionalView(View):
 
     @method_decorator(csrf_exempt)
@@ -91,7 +142,8 @@ class ProfesionalView(View):
     
     def post(self, request):
         json_data = json.loads(request.body)
-        Profesional.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], idCargo=json_data['idCargo'])
+        Profesional.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], idCargo=json_data['idCargo'],
+                                   idCoordinador=json_data['idCoordinador'])
         datos = {'message':"Success"}
         return JsonResponse(datos)
     
@@ -103,6 +155,7 @@ class ProfesionalView(View):
             profesional.nombre=json_data['nombre']
             profesional.rut=json_data['rut']
             profesional.idCargo=json_data['idCargo']
+            profesional.idCoordinador=json_data['idCoordinador']
             profesional.save()
             datos={'message':"Success"}
         else:

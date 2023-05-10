@@ -9,14 +9,19 @@ class Cargo(models.Model):
     fechaInicio = models.DateField()
     fechaTermino = models.DateField()
 
+class Coordinador(models.Model):
+    nombre = models.CharField(max_length=50)
+    idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
 
 class Profesional(models.Model):
     nombre = models.CharField(max_length=50)
     rut = models.CharField(max_length=15)
     idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
+    idCoordinador = models.ForeignKey(Coordinador, on_delete=models.CASCADE)
 
 
 class Pago(models.Model):
+    # añadir mas atributos de remuneraciones
     monto = models.IntegerField()
     fechaPago = models.DateField()
     idProfesional = models.ForeignKey(Profesional, on_delete=models.CASCADE)

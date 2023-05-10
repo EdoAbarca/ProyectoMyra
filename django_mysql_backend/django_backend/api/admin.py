@@ -3,6 +3,7 @@ from .models import *
 # Register your models here.
 
 admin.site.register(Profesional)
+admin.site.register(Coordinador)
 admin.site.register(Cargo)
 admin.site.register(Pago)
 admin.site.register(Region)
