@@ -1,16 +1,29 @@
 <script>
 import DatosBasicosProf from './DatosBasicosProf.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     DatosBasicosProf
+    },
+    computed:{
+        ...mapGetters('profesional',[
+            'getNombre',
+            'getRut',
+            'getArea'
+        ])
+
     }
-  }
+}
 </script>
 <template>
     <div class="ContenedorDatosP">
         <div class="DatosBasicos">
-            <DatosBasicosProf/>
+            <DatosBasicosProf 
+            :nombre="getNombre"
+            :rut="getRut"
+            :area="getArea"
+            />
         </div>
         <div class="EstadisticasProfesional">
 

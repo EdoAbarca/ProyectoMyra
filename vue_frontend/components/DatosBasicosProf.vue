@@ -1,16 +1,34 @@
 <script>
+import EtiquetaProfesional from './EtiquetaProfesional.vue';
+import { mapState, mapMutations } from 'vuex'
+import ProfesionalLista from './ProfesionalLista.vue';
+export default {
+
+props: ['nombre','rut','area'],
+computed:{
+    ...mapState(['profesional'])
+},
+methods:{
+    ...mapMutations({
+      elegir: 'profesional/elegir',
+    }),
+
+}
+    
+,
+}
 </script>
 <template>
-    <div class="ContenedorBaseDatos">
+    <div class="ContenedorBaseDatos"  >
         <div id="tituloDatosP">Datos Profesional</div>
         <div class="Cont-Info-Basica">
             <div id="datosIzquierdaBasico">
-                <h1 class="TextoContenido">Nombre: Adriana Del Carmen  Hernandez</h1>
-                <h1 class="TextoContenido">Rut: 9961862-0</h1>
+                <h1 class="TextoContenido">Nombre: {{ nombre }}</h1>
+                <h1 class="TextoContenido">Rut: {{ rut }}</h1>
                 <h1 class="TextoContenido">Cargo: Cuidadora-40</h1>
             </div>
             <div id="datosDerechaBasico">
-                <div class="EtiquetaProfesional" id="etiquetaEnDatos">CUIDADOS</div> 
+                <EtiquetaProfesional id="etiquetaEnDatos" :area="area"/>
             </div>
         </div>
         <div class="Cont-Coord">
@@ -35,6 +53,7 @@
     flex-direction: column;
     font-family: Arial, Helvetica, sans-serif;
 
+    transition: all 200ms linear;
 
 }
 .TextoContenido{
@@ -120,5 +139,8 @@
 
     
 }
+
+
+
 
 </style>

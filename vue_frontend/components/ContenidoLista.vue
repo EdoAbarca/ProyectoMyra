@@ -4,32 +4,59 @@ import ProfesionalLista from './ProfesionalLista.vue'
 export default {
   data() {
         return {
-          profesionalElegido:{
-            NombreProfesional: "",
-            RutProfesional: "",
-            AreaProfesional:""
-          },
-
           profesionales:[
-            { Nombre: "Natalia Damaris Perello Contreras",
-              Rut:"19456957-5",
-              Area:"ADMINISTRACION",
+            { nombre: "Natalia Damaris Perello Contreras",
+              rut:"19456957-5",
+              area:"ADMINISTRACION",
             },
-            { Nombre: "Mariela Leonardo Tantarico",
-              Rut:"20345687-7",
-              Area:"CUIDADOS",
+            { nombre: "Natalia Damaris Perello Contreras",
+              rut:"19456957-5",
+              area:"ADMINISTRACION",
             },
-            { Nombre: "Will Hermes Torrealba Alvarez",
-              Rut:"9234876-0",
-              Area:"FONOAUDIOLOGIA",
+            { nombre: "Natalia Damaris Perello Contreras",
+              rut:"19456957-5",
+              area:"ADMINISTRACION",
             },
-            { Nombre: "Angelina Elizabeth Cespedes  Cortes",
-              Rut:"14987436-7",
-              Area:"KINESIOLOGIA",
+            { nombre: "Natalia Damaris Perello Contreras",
+              rut:"19456957-5",
+              area:"ADMINISTRACION",
             },
-            { Nombre: "Yelitza Coromoto Ortegano Santiago",
-              Rut:"16789657-2",
-              Area:"AUXILIARES",
+            { nombre: "Natalia Damaris Perello Contreras",
+              rut:"19456957-5",
+              area:"ADMINISTRACION",
+            },
+            { nombre: "Natalia Damaris Perello Contreras",
+              rut:"19456957-5",
+              area:"ADMINISTRACION",
+            },
+            { nombre: "Natalia Damaris Perello Contreras",
+              rut:"19456957-5",
+              area:"ADMINISTRACION",
+            },
+            { nombre: "Natalia Damaris Perello Contreras",
+              rut:"19456957-5",
+              area:"ADMINISTRACION",
+            },
+            { nombre: "Natalia Damaris Perello Contreras",
+              rut:"19456957-5",
+              area:"ADMINISTRACION",
+            },
+            
+            { nombre: "Mariela Leonardo Tantarico",
+              rut:"20345687-7",
+              area:"CUIDADOS",
+            },
+            { nombre: "Will Hermes Torrealba Alvarez",
+              rut:"9234876-0",
+              area:"FONOAUDIOLOGIA",
+            },
+            { nombre: "Angelina Elizabeth Cespedes  Cortes",
+              rut:"14987436-7",
+              area:"KINESIOLOGIA",
+            },
+            { nombre: "Yelitza Coromoto Ortegano Santiago",
+              rut:"16789657-2",
+              area:"AUXILIARES",
             }
 
           ]
@@ -39,19 +66,8 @@ export default {
     ProfesionalLista
     },
   computed:{
-    eleccionProfesional(nombre,rut,area){
-      this.NombreProfesional= nombre;
-      this.RutProfesional= rut;
-      this.AreaProfesional = area;
-    }
-
   },
-  methods:{
 
-  },
-  emits:{
-    
-  }
   }
 </script>
 
@@ -61,11 +77,10 @@ export default {
         <div class ="ContenidoLista">
             <ul>
                 <ProfesionalLista v-for="(profesional,index) in profesionales"
-                    :key="profesional.Rut"
-                    :nombre="profesional.Nombre"
-                    :rut="profesional.Rut"
-                    :area="profesional.Area"
-
+                    :key="profesional.rut"
+                    :nombre="profesional.nombre"
+                    :rut="profesional.rut"
+                    :area="profesional.area"
                 />
             </ul>   
         </div>
@@ -81,8 +96,6 @@ export default {
     width: 100%;
     height: 82%;
     top: 0;
-    
-    
 }
 .ContenedorTitulo{
     overflow: hidden;

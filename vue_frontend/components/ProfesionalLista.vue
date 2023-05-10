@@ -1,18 +1,30 @@
 <script>
+import { mapState } from 'vuex'
+import { mapMutations } from 'vuex'
+import EtiquetaProfesional from './EtiquetaProfesional.vue';
+
 export default {
 
 props: ['nombre','rut','area'],
-data (){
-    return{   
-    }
+
+computed:{
+    ...mapState(['profesional'])
+    
+},
+methods:{
+ 
+    ...mapMutations({
+      elegir: 'profesional/elegir',
+      cambiarEstado:'profesional/cambiarEstado'
+    })
 }
 }
 </script>
 <template>
-    <li class="ProfesionalLista">
+    <li tabindex="0" class="ProfesionalLista" @click="elegir([nombre,rut,area])">
         <div class="ContenedorEtiquetaProfesional">
-            <div class="EtiquetaProfesional">{{ area }}</div> 
-            </div>
+            <EtiquetaProfesional :area="area"/>
+        </div>
         <div class="ContenedorNombreProfesional">{{ nombre }}</div>
         <div class="ContenedorRutProfesional">Rut: {{ rut }}</div>
     </li>
@@ -84,6 +96,10 @@ data (){
     line-height: 25px;
 }
 .ProfesionalLista:hover{
+    background-color: #969696;
+    color: #F3F3F3;
+}
+.ProfesionalLista:focus{
     background-color: #969696;
     color: #F3F3F3;
 }
