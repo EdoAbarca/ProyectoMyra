@@ -35,13 +35,48 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    '@nuxtjs/vuetify'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next'
   ],
+ /*
+  auth: {
+    strategies: {
+      local: {
+        scheme: 'refresh',
+        localStorage: {
+          prefix: 'auth.'
+        },
+        token: {
+          prefix: 'access_token.',
+          property: 'access_token',
+          maxAge: 86400,
+          type: 'Bearer'
+        },
+        refreshToken: {
+          prefix: 'refresh_token.',
+          property: 'refresh_token',
+          data: 'refresh_token',
+          maxAge: 60 * 60 * 24 * 15
+        },
+        user: {
+          property: 'user',
+          autoFetch: true
+        },
+        endpoints: {
+          login: { url: '/login', method: 'post'},
+          refresh: { url: '/token/refresh/', method: 'post' },
+          user: { url: '/user', method: 'get' },
+          logout: { url: '/logout', method: 'post'}
+        },
+      }
+    }
+  },*/
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {

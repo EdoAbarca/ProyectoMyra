@@ -17,6 +17,12 @@
           Prueba subida reporte
         </button>
       </form>
+
+      <form action="/login">
+        <button type="submit" value="VentanaInicioSesion">
+          Iniciar sesión
+        </button>
+      </form>
     </v-row>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
