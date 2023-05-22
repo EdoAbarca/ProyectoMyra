@@ -1,5 +1,4 @@
 from typing import Any
-from django import http
 from django.http import JsonResponse
 from django.http import HttpResponse
 from django.http import HttpRequest
@@ -10,6 +9,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import json
 import pandas as pd
+from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt 
 
 # Create your views here.
 class CargoView(View):
@@ -388,10 +391,43 @@ class ExcelView(View):
     def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         return super().dispatch(request, *args, **kwargs)
     
+    @login_required
     def cargar_excel(self, request):
         if request.method == 'POST':
             file = request.FILES['excel_file']
             df = pd.read_excel(file)
             for index, row in df.iterrows():
-                #Mandar a base de datos
-                fila_actual = []
+                #Crear elementos y mandar a BD
+                print(index+row)
+    
+@csrf_exempt 
+def signup(self, request):
+    if request.method == 'POST':
+        if request.POST['password'] == request.POST['repeatPassword']:
+            try:
+                user = User.objects.create_user(username=request.POST['username'], password=request.POST['password'], email= request.POST['email'])
+                user.save()
+                datos = {'message': "Success"}
+            except:
+                datos = {'message': "Usuario ya está en uso"}
+        datos = {'message': "Contraseñas no coinciden"}
+    datos = {'message': "GET request: "+request}
+    return JsonResponse(datos)
+
+@csrf_exempt 
+def signin(self, request):
+    if request.method == 'POST':
+        user = authenticate(request, email=request.POST['email'], password = request.POST['password'])
+        if user is None:
+            datos = {'message': "Error con credenciales"}
+        else:
+            login(request, user)
+            datos = {'message': "Success"}
+        return JsonResponse(datos)
+
+@csrf_exempt 
+@login_required
+def signout(self, request):
+    logout(request)
+    datos = {'message': "Success"}
+    return JsonResponse(datos)

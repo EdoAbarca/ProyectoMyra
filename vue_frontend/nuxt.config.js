@@ -5,6 +5,12 @@ export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
+  // Puerto para nuxt app
+  /* 
+  server: {
+    port:8080,
+  },*/
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'vue_frontend',
@@ -42,46 +48,36 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
+    '@nuxtjs/auth'
   ],
- /*
-  auth: {
-    strategies: {
-      local: {
-        scheme: 'refresh',
-        localStorage: {
-          prefix: 'auth.'
-        },
-        token: {
-          prefix: 'access_token.',
-          property: 'access_token',
-          maxAge: 86400,
-          type: 'Bearer'
-        },
-        refreshToken: {
-          prefix: 'refresh_token.',
-          property: 'refresh_token',
-          data: 'refresh_token',
-          maxAge: 60 * 60 * 24 * 15
-        },
-        user: {
-          property: 'user',
-          autoFetch: true
-        },
-        endpoints: {
-          login: { url: '/login', method: 'post'},
-          refresh: { url: '/token/refresh/', method: 'post' },
-          user: { url: '/user', method: 'get' },
-          logout: { url: '/logout', method: 'post'}
-        },
-      }
-    }
-  },*/
+
+
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/',
+    BaseURL : '/',
+    //proxy: true,
+  },
+/* 
+  proxy: {
+    "/signup": 'http://localhost:8000/api',
+    "/signin": 'http://localhost:8000/api',
+    "/signout": 'http://localhost:8000/api',
+    "/cargar_excel": 'http://localhost:8000/api'
+  },
+*/
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: 'http://localhost:8000/api/signin', method: 'post', propertyName: 'data.token' },
+          //user: { url: 'me', method: 'get', propertyName: 'data' },
+          logout: {url: 'http://localhost:8000/api/signout', method: 'post'}
+        }
+      }
+    }
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

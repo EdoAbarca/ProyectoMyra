@@ -1,39 +1,60 @@
-<template>
+<script>
+import { mapGetters } from 'vuex'
+export default {
+  name: "IndexPage",
+  computed: {
+    ...mapGetters(['isAuthenticated'])
+  },
+  methods: {
 
+    async signoutHandler() {
+      try {
+
+        //await this.$axios.post('/signout/');
+        await this.$auth.logout();
+
+        this.$router.push('/');
+      } catch (e) {
+        console.log(e.message);
+      }
+    },
+  },
+};
+</script>
+
+<template>
   <div class="container">
-    <title> Rotativa Myra - Home</title>
+    <title>Rotativa Myra - Home</title>
     <v-row justify="center" alling="center">
       <h1 class="text-center">Pingeso</h1>
       <hr />
 
-      <form action="/profesionales">
-        <button type="submit" value="VentanaProfesionales">
-          Profesionales
-        </button>
-      </form>
+      <template v-if="isAuthenticated">
+        <NuxtLink to="/profesionales">Profesionales</NuxtLink>
 
-      <form action="/test_reporte">
-        <button type="submit" value="VentanaReporte">
-          Prueba subida reporte
-        </button>
-      </form>
+        <NuxtLink to="/reporte">Cargar reporte</NuxtLink>
 
-      <form action="/login">
-        <button type="submit" value="VentanaInicioSesion">
-          Iniciar sesión
-        </button>
-      </form>
+        <v-form action="/signout" method="POST">
+          <v-btn id="boton" type="submit" @click="signoutHandler"
+            >Cerrar sesión</v-btn
+          ></v-form
+        >
+      </template>
+      <template v-else>
+        <NuxtLink to="/signup">Registrarse</NuxtLink>
+
+        <NuxtLink to="/login">Iniciar sesión</NuxtLink></template
+      >
     </v-row>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+      crossorigin="anonymous"
+    />
   </div>
 </template>
-
-<script>
-export default {
-  name: 'IndexPage',
-}
-</script>
 
 <style>
 * {

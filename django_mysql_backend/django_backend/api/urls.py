@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import *
+from api import views
 
 urlpatterns=[
     path('profesional/', ProfesionalView.as_view()),
@@ -16,5 +17,9 @@ urlpatterns=[
     path('zona/<int:id>', ZonaView.as_view()),
     path('cliente/', ClienteView.as_view()),
     path('cliente/<int:id>', ClienteView.as_view()),
-    path('cargar_excel/', ExcelView.as_view())
+
+    path('cargar_excel', ExcelView.as_view()),
+    path('signup', views.signup),
+    path('signin', views.signin),
+    path('signout', views.signout)
 ]
