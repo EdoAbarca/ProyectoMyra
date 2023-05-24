@@ -21,43 +21,38 @@ export default {
 </script>
 
 <template>
-  <div class="container">
+
+  <div class="ContenedorIndex">
     <title>Rotativa Myra - Home</title>
-    <v-row justify="center" alling="center">
+    
       <h1 class="text-center">Pingeso</h1>
       <hr />
 
-      <template v-if="isAuthenticated">
-        <form action="/profesionales">
-          <v-btn  id="boton" type="submit" value="VentanaProfesionales">
-            Profesionales
-          </v-btn >
+
+      <form action="/home">
+          <v-btn id="boton" type="submit" value="VentanaHome">Home</v-btn>
         </form>
 
-        <form action="/reporte">
-          <v-btn  id="boton" type="submit" value="VentanaReporte">
-            Subir reporte
-          </v-btn >
-        </form>
-
-        <v-form action="/signout" method="POST">
-          <v-btn  id="boton" type="submit" @click="signoutHandler"
-            >Cerrar sesión</v-btn 
-          ></v-form
-        >
-      </template>
-      <template v-else>
         <form action="/register">
-          <v-btn id="boton" type="submit" value="VentanaRegistro">Registrarse</v-btn >
+          <v-btn id="boton" type="submit" value="VentanaRegistro">Registrarse</v-btn>
         </form>
 
         <form action="/login">
-          <v-btn id="boton" type="submit" value="VentanaInicioSesion">
-            Iniciar sesión
-          </v-btn >
+          <v-btn id="boton" type="submit" value="VentanaInicioSesion">Iniciar sesión</v-btn>
         </form>
-      </template>
-    </v-row>
+
+        <form action="/profesionales">
+          <v-btn id="boton" type="submit" value="VentanaProfesionales">Profesionales</v-btn>
+        </form>
+
+        <form action="/reporte">
+          <v-btn id="boton" type="submit" value="VentanaReporte">Subir reporte</v-btn>
+        </form>
+
+        <v-form action="/signout" method="POST">
+          <v-btn id="boton" type="submit" @click="signoutHandler">Cerrar sesión</v-btn>
+        </v-form>
+      
 
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
@@ -69,16 +64,21 @@ export default {
 </template>
 
 <style>
-* {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+.ContenedorIndex{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #boton {
   background-color: #48abbf;
   color: #ffffff;
   border-radius: 9px;
+  margin-top: 3%;
+
 }
 </style>

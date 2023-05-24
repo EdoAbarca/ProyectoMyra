@@ -21,7 +21,6 @@ class Profesional(models.Model):
 
 
 class Pago(models.Model):
-    # añadir mas atributos de remuneraciones
     sueldoBase = models.IntegerField()
     gratificacion = models.IntegerField()
     horaExtra = models.IntegerField()
@@ -100,6 +99,7 @@ class Alerta(models.Model):
     idPaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     idAsistencia = models.ForeignKey(Asistencia, on_delete=models.CASCADE)
 
+#Posible descarte, guardar el archivo en la BD es muy costoso
 class Excel(models.Model):
     #probar con un filefield quizas
     data = models.CharField(max_length=255)

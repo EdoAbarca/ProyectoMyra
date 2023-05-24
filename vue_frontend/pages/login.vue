@@ -31,8 +31,8 @@ export default {
   <v-app id="inspire">
     <v-main>
       <v-container fluid fill-height>
-        <v-layout align-center justify-center>
-          <v-flex xs12 sm8 md4>
+        <v-layout id="layoutLogin" align-center justify-center>
+          <v-flex >
             <v-card class="elevation-12" id="cuerpoForm">
               <v-toolbar id="bordeInicioSesion">
                 <v-toolbar-title id="textoInicioSesion"
@@ -90,5 +90,8 @@ export default {
 
 #cuerpoForm {
   border-radius: 12px;
+}
+#layoutLogin{
+  width: 30%;
 }
 </style>

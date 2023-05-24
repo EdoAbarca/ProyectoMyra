@@ -26,7 +26,7 @@ export const state = () => ({
     profesionales:[
         { nombre: "Natalia Damaris Perello Contreras",
           rut:"19456957-5",
-          area:"ADMINISTRACION",
+          area:"ADMINISTRACION", //Centro de trabajo
         },
         { nombre: "Mariela Leonardo Tantarico",
           rut:"20345687-7",
@@ -36,7 +36,7 @@ export const state = () => ({
           rut:"9234876-0",
           area:"CUIDADOS",
         },
-        { nombre: "Angelina Elizabeth Cespedes  Cortes",
+        { nombre: "Angelina Elizabeth Cespedes Cortes",
           rut:"14987436-7",
           area:"KINESIOLOGIA",
         }

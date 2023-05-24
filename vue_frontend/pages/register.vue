@@ -34,16 +34,16 @@ export default {
 </script>
 
 <template>
-  <v-app id="inspire">
+  <v-app id="registro">
     <v-main>
       <v-container fluid fill-height>
-        <v-layout align-center justify-center>
-          <v-flex xs12 sm8 md4>
+        <v-layout id="layout" align-center justify-center>
+          <v-flex id="cflex">
             <v-card class="elevation-12" id="cuerpoForm">
               <v-toolbar id="bordeRegistro">
                 <v-toolbar-title id="textoRegistro"
-                  >Registro de usuario</v-toolbar-title
-                >
+                  >Registro de usuario
+                </v-toolbar-title>
               </v-toolbar>
               <v-card-text>
                 <v-form method="POST" @submit="registerHandler">
@@ -107,5 +107,9 @@ export default {
 
 #cuerpoForm {
   border-radius: 12px;
+  width: 100%;
+}
+#layout{
+  width: 45%;
 }
 </style>

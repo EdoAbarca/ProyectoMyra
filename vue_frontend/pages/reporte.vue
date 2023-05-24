@@ -1,25 +1,4 @@
 <script>
-/* 
-export default {
-  name: 'Test_reportePage',
-  data: () => ({
-    exceel:{},
-  }),
-  methods:{
-    async reportHandler(){
-        const input = document.getElementById("reporte_excel");
-        var formData = new FormData();
-        formData.append("excel", input);
-        console.log(formData);
-
-        // Mandar a backend
-        await axios.post('http://localhost:8000/api/cargar_excel/', formData, {headers:{'Content-Type': 'multipart/form-data'}}).then(Response => console.log(Response)).catch(err => {console.log(err)});
-
-        
-      }
-  }
-}*/
-
 export default {
   name: "Reporte",
   data() {
@@ -50,16 +29,14 @@ export default {
 
 
 <template>
-  <v-app id="inspire">
+  <v-app id="ventanaReporte">
     <v-main>
       <v-container fluid fill-height>
-        <v-layout align-center justify-center>
-          <v-flex xs12 sm8 md4>
+        <v-layout id="layoutReporte" align-center justify-center>
+          <v-flex >
             <v-card class="elevation-12" id="cuerpoForm">
-              <v-toolbar id="bordeReporte">
-                <v-toolbar-title id="textoReporte"
-                  >Cargar reporte</v-toolbar-title
-                >
+              <v-toolbar id="bordeReporte" :elevation="0" >
+                <v-toolbar-title id="textoReporte">Cargar reporte</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
                 <v-form>
@@ -96,23 +73,13 @@ export default {
     </v-main>
   </v-app>
 </template>
-<!--
-  <div class="container">
-    <title> Rotativa Myra - Home</title>
-    <h1 justify="center" alling="center">EXCEL</h1>
-    <form method="post" enctype="multipart/form-data">
-        <input id="reporte_excel" name="excel_file" type="file"/>
-        <button type="submit" @change="uploadExcel()">Upload</button>
-    </form>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-  </div> -->
-
-
-
 <style>
+
+#ventanaReporte{
+  opacity:1;
+}
 #textoReporte {
-  color: #ffffff;
+  color: #005d71;
 }
 
 #boton {
@@ -121,11 +88,13 @@ export default {
   border-radius: 9px;
 }
 #bordeReporte {
-  background: #005d71;
-  border-radius: 12px;
+  border-radius: 12px 12px 0 0;
 }
 
 #cuerpoForm {
   border-radius: 12px;
+}
+#layoutReporte{
+  width: 30%;
 }
 </style>

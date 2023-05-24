@@ -1,4 +1,5 @@
 <script>
+
 import BarraNav from '../components/BarraNav.vue'
 
 export default {
@@ -11,7 +12,9 @@ export default {
     },
   components: {
     BarraNav
-    }
+    },
+  methods:{
+  }
   }
 </script>
 
@@ -36,7 +39,7 @@ export default {
                 <h1 class="tituloBtnImg">Pacientes</h1>
               </div>
             </NuxtLink>
-            <NuxtLink class="BtnImg" id="btImgAlerta" to="/test_reporte">
+            <NuxtLink class="BtnImg" id="btImgAlerta" to="/alertas">
               <img async class="imgB" id="imgAle" src="../static/alertasImg.svg">
               <div class="EtiquetaBotonImg">
                 <h1 class="tituloBtnImg">Alertas</h1>
@@ -45,7 +48,7 @@ export default {
 
         </div>
         <div class="ContenedorBtnSubir">
-          <div class="BtnSubir">
+          <div class="BtnSubir" >
             Subir Reporte
           </div>
         </div>

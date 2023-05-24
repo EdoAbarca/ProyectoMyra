@@ -80,8 +80,8 @@ DATABASES = {
         'HOST': 'localhost', #Cambiar cuando se despliegue en el servidor
         'PORT': '3306',
         'USER': 'root',
-        'PASSWORD': 'admin', #Le puse esa contra a mi entorno, mala mia
-        #'PASSWORD': 'admin' , 'mysql',
+        'PASSWORD': 'mysql',
+        #'PASSWORD': 'admin',
         'NAME': 'rotativa_myra',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
