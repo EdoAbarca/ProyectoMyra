@@ -1,37 +1,24 @@
 <script>
+import{mapMutations} from 'vuex'
 export default{
     data() {
     return {
-      opcion: 'CATEGORIAS',
-      idAnterior:"idbase"
+      opcion: 'Categorias',
+      idAnterior:"idbase",
     }
   },
+
   methods:{
-    eleccion(id){
-        this.idAnterior=id;
-       /* if(id==this.idAnterior){
-            this.idAnterior = id;
-            document.getElementById(id).style.backgroundColor = "#48ABBF";
-            document.getElementById(id).style.color = "white";
-        }
-        else{
-            if(this.idAnterior == "idbase"){
-                this.idAnterior= id;
-                document.getElementById(id).style.backgroundColor = "#48ABBF";
-                document.getElementById(id).style.color = "white";
-            }
-            else{
-                document.getElementById(this.idAnterior).style.backgroundColor = "white";
-                document.getElementById(this.idAnterior).style.color = "#48ABBF";
-                this.idAnterior=id;
-                document.getElementById(id).style.backgroundColor = "#48ABBF";
-                document.getElementById(id).style.color = "white";
+    ...mapMutations({
+        elegirCategoria: 'profesional/elegirCategoria'
+    }),
+    filtro(valor){
 
-            }
-            
-            
-
-        }    */
+      this.opcion = valor;
+      if(valor === 'TODAS'){
+        valor = null;
+      }
+      this.elegirCategoria(valor)
     }
   }
 }
@@ -44,30 +31,30 @@ export default{
   	<form class="sec-center">
 
             <input class="dropdown" type="checkbox" id="dropdown" name="dropdown"/>
-	  	   <label class="for-dropdown" for="dropdown" >{{opcion}}<div class="uil"></div></label>
+	  	   <label class="for-dropdown" for="dropdown">{{opcion}}<div class="uil"></div></label>
 
 	  
   		<div class="section-dropdown"> 
             <div class="columna">
                 <div class="contenedorEleccion" id="item1">
-                    <input  class="Radio-eleccion" id="Todas" type="radio" value="TODAS" v-model="opcion" @click="eleccion('item1')"/>
+                    <input  class="Radio-eleccion" id="Todas" type="radio" @click="filtro('TODAS')"/>
                     <label  class="elementoSelect" for="Todas">TODAS</label>
                 </div>
 
                 <div class="contenedorEleccion" id="item2">
-                    <input  class="Radio-eleccion" id="Admin" type="radio" value="ADMINISTRACIÓN" v-model="opcion" @click="eleccion('item2')"/>
+                    <input  class="Radio-eleccion" id="Admin" type="radio"  @click="filtro('ADMINISTRACION')"/>
                     <label  class="elementoSelect" for="Admin">ADMINISTRACIÓN</label>
                 </div>
 
                 <div class="contenedorEleccion" id="item3">
-                    <input  class="Radio-eleccion" id="Cuidados" type="radio" value="CUIDADOS" v-model="opcion" @click="eleccion('item3')"/>
+                    <input  class="Radio-eleccion" id="Cuidados" type="radio" @click="filtro('CUIDADOS')"/>
                     <label  class="elementoSelect" for="Cuidados">CUIDADOS</label>
                 </div>
     
             </div>
             <div class="columna">
               <div class="contenedorEleccion">
-                    <input  class="Radio-eleccion" id="Otros" type="radio" value="OTROS" v-model="opcion"/>
+                    <input  class="Radio-eleccion" id="Otros" type="radio" @click="filtro('OTROS')" />
                     <label  class="elementoSelect" for="Otros">OTROS</label>
                 </div>
               

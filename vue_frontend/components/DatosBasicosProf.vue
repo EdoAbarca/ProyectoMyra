@@ -1,31 +1,22 @@
 <script>
 import EtiquetaProfesional from './EtiquetaProfesional.vue';
-import { mapState, mapMutations } from 'vuex'
-import ProfesionalLista from './ProfesionalLista.vue';
+import { mapState, mapMutations, mapGetters } from 'vuex'
 export default {
 
-props: ['nombre','rut','area'],
+props: ['nombre','rut','area','cargo','coordinador','contrato'],
 computed:{
-    ...mapState(['profesional'])
 },
-methods:{
-    ...mapMutations({
-      elegir: 'profesional/elegir',
-    }),
 
-}
-    
-,
 }
 </script>
 <template>
     <div class="ContenedorBaseDatos"  >
-        <div id="tituloDatosP">Datos Profesional</div>
+        <div id="tituloDatosProfesional">Datos Profesional</div>
         <div class="Cont-Info-Basica">
             <div id="datosIzquierdaBasico">
-                <h1 class="TextoContenido">Nombre: {{ nombre }}</h1>
+                <h1 id="nombreProf" class="TextoContenido">Nombre: {{ nombre }}</h1>
                 <h1 class="TextoContenido">Rut: {{ rut }}</h1>
-                <h1 class="TextoContenido">Cargo: Cuidadora-40</h1>
+                <h1 class="TextoContenido">Cargo: {{ cargo }}</h1>
             </div>
             <div id="datosDerechaBasico">
                 <EtiquetaProfesional id="etiquetaEnDatos" :area="area"/>
@@ -33,26 +24,28 @@ methods:{
         </div>
         <div class="Cont-Coord">
             <div id="datosIzquierdaCoord">
-                <h1 class="TextoContenido">Coordinador: Adriana Del Carmen  Hernandez</h1>
+                <h1 class="TextoContenido">Coordinador: {{ coordinador }}</h1>
                 
             </div>
             <div id="datosDerechaCoord">
-                <h1 class="TextoContenido">Contrato: Tipo</h1>
+                <h1 class="TextoContenido">Contrato: {{ contrato }}</h1>
             </div>
         </div>
 
     </div>
 </template>
 <style>
+#nombreProf{
+    font-weight: 600;
+    color: #005D71;
+}
 .ContenedorBaseDatos{
     position: relative;
+    display: flex;
     width: 100%;
     height: 100%;
-    background-color: violet;
-    display: flex;
     flex-direction: column;
     font-family: Arial, Helvetica, sans-serif;
-
     transition: all 200ms linear;
 
 }
@@ -61,22 +54,24 @@ methods:{
     margin-left: 20px;
     position: relative;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 500;
     width: 100%;
 }
-#tituloDatosP{
+#tituloDatosProfesional{
     position: relative;
+    display: flex;
     text-align: center;
     width: 100%;
-    height: 25px;
+    height: 20%;
     border-radius: 12.5px 12.5px 0px 0px;
 
     background-color: #669098;
     color: white;
-    padding-top: 5px;
+    align-items: center;
+    justify-content: center;
 
-    overflow: hidden;
+    
     
 }
 .Cont-Info-Basica{
@@ -96,6 +91,7 @@ methods:{
     height: 20%;
     flex-direction: row;
     background-color: #DEEFF2;
+    border-radius: 0px 0px 12.5px 12.5px;
     
 }
 #datosIzquierdaBasico{
@@ -104,6 +100,7 @@ methods:{
     flex-direction: column;
     width: 70%;
     height: 100%;
+
 
     
 }

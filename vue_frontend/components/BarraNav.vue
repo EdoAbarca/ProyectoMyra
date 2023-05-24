@@ -23,9 +23,9 @@ export default {
                 <BotonBarraCircular id="bHome"/>
             </div>
             <div id="botonesGenerales">
-                <BotonBarra id="bProfesionales" tipo="Profesionales"/>
-                <BotonBarra id="bPacientes" tipo="Pacientes"/>
-                <BotonBarra id="bCoordinadores" tipo="Coordinadores"/>
+                <BotonBarra id="bProfesionales" tipo="Profesionales" link="/profesionales"/>
+                <BotonBarra id="bPacientes" tipo="Pacientes" link="/pacientes"/>
+                <BotonBarra id="bCoordinadores" tipo="Coordinadores" link="/coordinadores"/>
                 <BotonBarra id="bAlertas" tipo="Alertas"/>
             </div>
             <div id= "ultimoReporte">Último Reporte: {{ fechaReporte }}</div>

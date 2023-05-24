@@ -1,20 +1,30 @@
 <script>
 export default {
 
-  props: ['tipo']
+  props: ['tipo', 'link'],
+  methods:{
+    getLink(){
+        let s = ''
+
+        return s+this.link
+    }
+  }
 }
 </script>
 <template>
     
         <div class="fondo">
-            <div class="btn from-center">{{ tipo }}</div>   
-        </div>
+            
+            <NuxtLink :to="getLink()" class="btn from-center">
+                    {{ tipo }}
+            </NuxtLink>
+        </div>   
+        
 
 </template>
 
 <style>
 /* ~~~~~~~ INIT. BTN ~~~~~~~ */
-
 
 .fondo{
     position: absolute;
@@ -46,6 +56,9 @@ export default {
 	cursor: pointer;
 	user-select: none;
     border-radius: 0px 0px 30px 30px;
+
+    color: #C3E8EF;
+    text-decoration: none;   
 }
 
 .btn:before, .btn:after {
@@ -108,6 +121,9 @@ export default {
 }
 
 
+.btn:focus{
+    background-color: #005D71;
+}
 
 
 

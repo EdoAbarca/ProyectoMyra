@@ -1,9 +1,9 @@
 <template>
     <div id ="fondoBotonCircular">
         
-        <button class="btnCircular">
+        <NuxtLink class="btnCircular" to="/">
             <img class="home casa"  src="../static/home1.svg" alt="">
-        </button>
+        </NuxtLink>
     </div>
 
 </template>
@@ -22,6 +22,7 @@
 .btnCircular {
   overflow: hidden;
   position: relative;
+  display: flex;
   width: 100%;
   height: 100%;
   border-radius: 40px;
