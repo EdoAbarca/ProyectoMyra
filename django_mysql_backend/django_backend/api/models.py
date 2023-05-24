@@ -22,7 +22,30 @@ class Profesional(models.Model):
 
 class Pago(models.Model):
     # añadir mas atributos de remuneraciones
-    monto = models.IntegerField()
+    sueldoBase = models.IntegerField()
+    gratificacion = models.IntegerField()
+    horaExtra = models.IntegerField()
+    bonos = models.IntegerField()
+    aguinaldo = models.IntegerField()
+    vacaciones = models.IntegerField()
+    viatico = models.IntegerField()
+    asignacionFamiliar = models.IntegerField()
+    colacion = models.IntegerField()
+    movilizacion = models.IntegerField()
+    salaCuna = models.IntegerField()
+    totalHaberes = models.IntegerField()
+    totalImponible = models.IntegerField()
+    afp = models.IntegerField()
+    isapre = models.IntegerField()
+    fonasa = models.IntegerField()
+    segCes = models.IntegerField()
+    imptoUnico = models.IntegerField()
+    ctaAfp = models.IntegerField()
+    anticipos = models.IntegerField()
+    descuento = models.IntegerField()
+    ley3 = models.IntegerField()
+    totalDescuento = models.IntegerField()
+    liquido = models.IntegerField()
     fechaPago = models.DateField()
     idProfesional = models.ForeignKey(Profesional, on_delete=models.CASCADE)
 
@@ -78,4 +101,5 @@ class Alerta(models.Model):
     idAsistencia = models.ForeignKey(Asistencia, on_delete=models.CASCADE)
 
 class Excel(models.Model):
+    #probar con un filefield quizas
     data = models.CharField(max_length=255)

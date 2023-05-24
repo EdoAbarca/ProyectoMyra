@@ -209,7 +209,18 @@ class PagoView(View):
 
     def post(self, request):
         json_data = json.loads(request.body)
-        Pago.objects.create(monto=json_data['monto'], fechaPago=json_data['fechaPago'],
+        Pago.objects.create(sueldoBase=json_data['sueldoBase'], gratificacion=json_data['gratificacion'],
+                            horaExtra=json_data['horaExtra'], bonos=json_data['bonos'],
+                            aguinaldo=json_data['aguinaldo'], vacaciones=json_data['vacaciones'],
+                            viatico=json_data['viatico'], asignacionFamiliar=json_data['asignacionFamiliar'],
+                            colacion=json_data['colacion'], movilizacion=json_data['movilizacion'],
+                            salaCuna=json_data['salaCuna'], totalHaberes=json_data['totalHaberes'],
+                            totalImponible=json_data['totalImponible'], afp=json_data['afp'],
+                            isapre=json_data['isapre'], fonasa=json_data['fonasa'], segCes=json_data['segCes'],
+                            imptoUnico=json_data['imptoUnico'], ctaAfp=json_data['ctaAfp'],
+                            anticipos=json_data['anticipos'], descuento=json_data['descuento'], ley3=json_data['ley3'],
+                            totalDescuento=json_data['totalDescuento'], liquido=json_data['liquido'],
+                            fechaPago=json_data['fechaPago'],
                             idProfesional=json_data['idProfesional'])
         datos = {'message':"Success"}
         return JsonResponse(datos)
@@ -219,7 +230,30 @@ class PagoView(View):
         pagos = list(Pago.objects.filter(id=id).values())
         if len(pagos)>0:
             pagos = Pago.objects.get(id=id)
-            pagos.monto=json_data['monto']
+            pagos.sueldoBase=json_data['sueldoBase']
+            pagos.gratificacion=json_data['gratificacion']
+            pagos.horaExtra=json_data['horaExtra']
+            pagos.bonos=json_data['bonos']
+            pagos.aguinaldo=json_data['aguinaldo']
+            pagos.vacaciones=json_data['vacaciones']
+            pagos.viatico=json_data['viatico']
+            pagos.asignacionFamiliar=json_data['asignacionFamiliar']
+            pagos.colacion=json_data['colacion']
+            pagos.movilizacion=json_data['movilizacion']
+            pagos.salaCuna=json_data['salaCuna']
+            pagos.totalHaberes=json_data['totalHaberes']
+            pagos.totalImponible=json_data['totalImponible']
+            pagos.afp=json_data['afp']
+            pagos.isapre=json_data['isapre']
+            pagos.fonasa=json_data['fonasa']
+            pagos.segCes=json_data['segCes']
+            pagos.imptoUnico=json_data['imptoUnico']
+            pagos.ctaAfp=json_data['ctaAfp']
+            pagos.anticipos=json_data['anticipos']
+            pagos.descuento=json_data['descuento']
+            pagos.ley3=json_data['ley3']
+            pagos.totalDescuento=json_data['totalDescuento']
+            pagos.liquido=json_data['liquido']
             pagos.fechaPago=json_data['fechaPago']
             pagos.idProfesional=json_data['idProfesional']
             pagos.save()

@@ -80,8 +80,8 @@ DATABASES = {
         'HOST': 'localhost', #Cambiar cuando se despliegue en el servidor
         'PORT': '3306',
         'USER': 'root',
-        'PASSWORD': 'mysql', #Le puse esa contra a mi entorno, mala mia
-        #'PASSWORD': 'admin',
+        'PASSWORD': 'admin', #Le puse esa contra a mi entorno, mala mia
+        #'PASSWORD': 'admin' , 'mysql',
         'NAME': 'rotativa_myra',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
@@ -133,14 +133,14 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = (
+CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000"
-)
+]
 
 ALLOWED_HOSTS = (
-    'localhost'
+    ['localhost', '127.0.0.1']
 )
 
-CORS_ORIGIN_WHITELIST = (
+CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000'
-)
+]
