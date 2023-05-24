@@ -1,23 +1,29 @@
 <script>
 export default {
-  name: "Login",
+  name: "Signup",
   data() {
     return {
+      username: null,
       email: null,
       password: null,
+      repeatPassword: null,
     };
   },
   methods: {
-    async loginHandler() {
-      const data = { email: this.email, password: this.password };
+    async registerHandler() {
+      const data = {
+        username: this.username,
+        email: this.email,
+        password: this.password,
+        repeatPassword: this.repeatPassword,
+      };
       console.log(data);
-
       try {
-        const response = await this.$auth.loginWith("local", data);
-        //const responseBackend = await this.$axios.post('http://localhost:8000/api/signin', data);
-        console.log(response);
-        //console.log(responseBackend);
-
+        const res = await this.$axios.post(
+          "http://localhost:8000/api/signup",
+          data
+        );
+        console.log(res);
         this.$router.push("/");
       } catch (e) {
         console.log(e.message);
@@ -34,13 +40,19 @@ export default {
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12" id="cuerpoForm">
-              <v-toolbar id="bordeInicioSesion">
-                <v-toolbar-title id="textoInicioSesion"
-                  >Inicio de sesión</v-toolbar-title
+              <v-toolbar id="bordeRegistro">
+                <v-toolbar-title id="textoRegistro"
+                  >Registro de usuario</v-toolbar-title
                 >
               </v-toolbar>
               <v-card-text>
-                <v-form method="POST" @submit="loginHandler">
+                <v-form method="POST" @submit="registerHandler">
+                  <v-text-field
+                    name="username"
+                    label="Usuario"
+                    type="text"
+                    v-model="username"
+                  ></v-text-field>
                   <v-text-field
                     name="email"
                     label="Correo electrónico"
@@ -54,13 +66,18 @@ export default {
                     type="password"
                     v-model="password"
                   ></v-text-field>
+                  <v-text-field
+                    id="repeatPassword"
+                    name="repeatPassword"
+                    label="Repetir contraseña"
+                    type="password"
+                    v-model="repeatPassword"
+                  ></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn id="boton" type="submit"
-                  >Iniciar sesión</v-btn
-                >
+                <v-btn id="boton">Registrarse</v-btn>
                 <v-btn id="boton" href="/">Volver</v-btn>
               </v-card-actions>
             </v-card>
@@ -72,13 +89,9 @@ export default {
 </template>
 
 
-<style>
-#bordeInicioSesion {
-  background: #005d71;
-  border-radius: 12px;
-}
 
-#textoInicioSesion {
+<style>
+#textoRegistro {
   color: #ffffff;
 }
 
@@ -86,6 +99,10 @@ export default {
   background-color: #48abbf;
   color: #ffffff;
   border-radius: 9px;
+}
+#bordeRegistro {
+  background: #005d71;
+  border-radius: 12px;
 }
 
 #cuerpoForm {

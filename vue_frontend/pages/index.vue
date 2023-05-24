@@ -1,19 +1,17 @@
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 export default {
   name: "IndexPage",
   computed: {
-    ...mapGetters(['isAuthenticated'])
+    ...mapGetters(["isAuthenticated"]),
   },
   methods: {
-
     async signoutHandler() {
       try {
-
         //await this.$axios.post('/signout/');
         await this.$auth.logout();
 
-        this.$router.push('/');
+        this.$router.push("/");
       } catch (e) {
         console.log(e.message);
       }
@@ -30,21 +28,35 @@ export default {
       <hr />
 
       <template v-if="isAuthenticated">
-        <NuxtLink to="/profesionales">Profesionales</NuxtLink>
+        <form action="/profesionales">
+          <v-btn  id="boton" type="submit" value="VentanaProfesionales">
+            Profesionales
+          </v-btn >
+        </form>
 
-        <NuxtLink to="/reporte">Cargar reporte</NuxtLink>
+        <form action="/reporte">
+          <v-btn  id="boton" type="submit" value="VentanaReporte">
+            Subir reporte
+          </v-btn >
+        </form>
 
         <v-form action="/signout" method="POST">
-          <v-btn id="boton" type="submit" @click="signoutHandler"
-            >Cerrar sesión</v-btn
+          <v-btn  id="boton" type="submit" @click="signoutHandler"
+            >Cerrar sesión</v-btn 
           ></v-form
         >
       </template>
       <template v-else>
-        <NuxtLink to="/signup">Registrarse</NuxtLink>
+        <form action="/register">
+          <v-btn id="boton" type="submit" value="VentanaRegistro">Registrarse</v-btn >
+        </form>
 
-        <NuxtLink to="/login">Iniciar sesión</NuxtLink></template
-      >
+        <form action="/login">
+          <v-btn id="boton" type="submit" value="VentanaInicioSesion">
+            Iniciar sesión
+          </v-btn >
+        </form>
+      </template>
     </v-row>
 
     <link
@@ -62,7 +74,11 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 40px;
+}
+
+#boton {
+  background-color: #48abbf;
+  color: #ffffff;
+  border-radius: 9px;
 }
 </style>

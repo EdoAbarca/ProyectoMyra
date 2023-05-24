@@ -1,5 +1,4 @@
 <script>
-
 /* 
 export default {
   name: 'Test_reportePage',
@@ -20,81 +19,82 @@ export default {
       }
   }
 }*/
-import axios from "axios"
+
 export default {
-   name: 'Reporte',
-   data() {
-      return {
-         title: null,
-         date: null,
-         excel: null,
+  name: "Reporte",
+  data() {
+    return {
+      title: null,
+      date: null,
+      excel: null,
+    };
+  },
+  methods: {
+    async reportHandler() {
+      const data = {
+        title: this.title,
+        date: this.date,
+        excel: this.excel,
+      };
+      console.log(data);
+      try {
+        const res = await this.$axios.post("/carga_excel", data);
+        console.log(res);
+      } catch (e) {
+        console.log(e.message);
       }
-   },
-   methods: {
-      async reportHandler() {
-         const data = {
-            'title': this.title,
-            'date': this.date,
-            'excel': this.excel
-         };
-         console.log(data);
-         try {
-             const res = await this.$axios.post('/carga_excel', data);
-             console.log(res);
-         }
-         catch(e) {
-             console.log(e.message);
-         }
-      }
-   }
+    },
+  },
 };
 </script>
 
 
 <template>
-   <v-app id="inspire">
-      <v-main>
-         <v-container fluid fill-height>
-            <v-layout align-center justify-center>
-               <v-flex xs12 sm8 md4>
-                  <v-card class="elevation-12" id="cuerpoForm">
-                     <v-toolbar id="bordeReporte">
-                        <v-toolbar-title id="textoReporte">Cargar reporte</v-toolbar-title>
-                     </v-toolbar>
-                     <v-card-text>
-                        <v-form>
-                            <v-text-field
-                              name="title"
-                              label="Título"
-                              type="text"
-                              v-model="title"
-                           ></v-text-field>
-                           <v-text-field
-                              name="date"
-                              label="Fecha de reporte"
-                              type="date"
-                              v-model="date"
-                           ></v-text-field>
-                           <v-text-field
-                              id="excel"
-                              name="Archivo"
-                              label="Excel"
-                              type="file"
-                              v-model="excel"
-                           ></v-text-field>
-                        </v-form>
-                     </v-card-text>
-                     <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn id="boton" @click="reportHandler">Subir</v-btn>
-                        <v-btn id="boton"  href="/">Volver</v-btn>
-                     </v-card-actions>
-                  </v-card>
-               </v-flex>
-            </v-layout>
-         </v-container>
-      </v-main>
-   </v-app>
+  <v-app id="inspire">
+    <v-main>
+      <v-container fluid fill-height>
+        <v-layout align-center justify-center>
+          <v-flex xs12 sm8 md4>
+            <v-card class="elevation-12" id="cuerpoForm">
+              <v-toolbar id="bordeReporte">
+                <v-toolbar-title id="textoReporte"
+                  >Cargar reporte</v-toolbar-title
+                >
+              </v-toolbar>
+              <v-card-text>
+                <v-form>
+                  <v-text-field
+                    name="title"
+                    label="Título"
+                    type="text"
+                    v-model="title"
+                  ></v-text-field>
+                  <v-text-field
+                    name="date"
+                    label="Fecha de reporte"
+                    type="date"
+                    v-model="date"
+                  ></v-text-field>
+                  <v-text-field
+                    id="excel"
+                    name="Archivo"
+                    label="Excel"
+                    type="file"
+                    v-model="excel"
+                  ></v-text-field>
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn id="boton" @click="reportHandler">Subir</v-btn>
+                <v-btn id="boton" href="/">Volver</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 <!--
   <div class="container">
@@ -111,21 +111,21 @@ export default {
 
 
 <style>
-#textoReporte{
-   color: #ffffff;
+#textoReporte {
+  color: #ffffff;
 }
 
-#boton{
-   background-color: #48ABBF;
-   color: #ffffff;
-   border-radius: 9px;
+#boton {
+  background-color: #48abbf;
+  color: #ffffff;
+  border-radius: 9px;
 }
-#bordeReporte{
-   background: #005D71;
-   border-radius: 12px;
+#bordeReporte {
+  background: #005d71;
+  border-radius: 12px;
 }
 
-#cuerpoForm{
-   border-radius: 12px;
+#cuerpoForm {
+  border-radius: 12px;
 }
 </style>
