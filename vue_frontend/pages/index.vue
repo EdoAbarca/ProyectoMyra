@@ -5,54 +5,54 @@ export default {
   computed: {
     ...mapGetters(["isAuthenticated"]),
   },
+  mounted: function () {
+    this.$router.push("/home");
+  },
   methods: {
-    async signoutHandler() {
-      try {
-        //await this.$axios.post('/signout/');
-        await this.$auth.logout();
-
-        this.$router.push("/");
-      } catch (e) {
-        console.log(e.message);
-      }
-    },
   },
 };
 </script>
 
 <template>
-
   <div class="ContenedorIndex">
     <title>Rotativa Myra - Home</title>
-    
-      <h1 class="text-center">Pingeso</h1>
-      <hr />
 
+    <h1 class="text-center">Pingeso</h1>
+    <hr />
 
-      <form action="/home">
-          <v-btn id="boton" type="submit" value="VentanaHome">Home</v-btn>
-        </form>
+    <form action="/home">
+      <v-btn id="boton" type="submit" value="VentanaHome">Home</v-btn>
+    </form>
 
-        <form action="/register">
-          <v-btn id="boton" type="submit" value="VentanaRegistro">Registrarse</v-btn>
-        </form>
+    <form action="/register">
+      <v-btn id="boton" type="submit" value="VentanaRegistro"
+        >Registrarse</v-btn
+      >
+    </form>
 
-        <form action="/login">
-          <v-btn id="boton" type="submit" value="VentanaInicioSesion">Iniciar sesión</v-btn>
-        </form>
+    <form action="/login">
+      <v-btn id="boton" type="submit" value="VentanaInicioSesion"
+        >Iniciar sesión</v-btn
+      >
+    </form>
 
-        <form action="/profesionales">
-          <v-btn id="boton" type="submit" value="VentanaProfesionales">Profesionales</v-btn>
-        </form>
+    <form action="/profesionales">
+      <v-btn id="boton" type="submit" value="VentanaProfesionales"
+        >Profesionales</v-btn
+      >
+    </form>
 
-        <form action="/reporte">
-          <v-btn id="boton" type="submit" value="VentanaReporte">Subir reporte</v-btn>
-        </form>
+    <form action="/reporte">
+      <v-btn id="boton" type="submit" value="VentanaReporte"
+        >Subir reporte</v-btn
+      >
+    </form>
 
-        <v-form action="/signout" method="POST">
-          <v-btn id="boton" type="submit" @click="signoutHandler">Cerrar sesión</v-btn>
-        </v-form>
-      
+    <v-form action="/signout" method="POST">
+      <v-btn id="boton" type="submit" @click="signoutHandler"
+        >Cerrar sesión</v-btn
+      >
+    </v-form>
 
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
@@ -64,7 +64,7 @@ export default {
 </template>
 
 <style>
-.ContenedorIndex{
+.ContenedorIndex {
   position: relative;
   width: 100%;
   height: 100%;
@@ -79,6 +79,5 @@ export default {
   color: #ffffff;
   border-radius: 9px;
   margin-top: 3%;
-
 }
 </style>

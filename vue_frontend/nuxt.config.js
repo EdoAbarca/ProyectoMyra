@@ -48,39 +48,56 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next',
     '@nuxtjs/auth'
   ],
-
-
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    BaseURL : 'http://localhost:8000/api',
-    //proxy: true,
+    baseURL: "http://localhost:8000",
+    browserBaseURL: "http://localhost:8000",
+    proxy: false,
   },
-/* 
-  proxy: {
-    "/signup": 'http://localhost:8000/api',
-    "/signin": 'http://localhost:8000/api',
-    "/signout": 'http://localhost:8000/api',
-    "/cargar_excel": 'http://localhost:8000/api'
-  },
-*/
+  
+    proxy: {
+      '/signup/': 'http://localhost:8000/api',
+      '/signin/': 'http://localhost:8000/api',
+      '/signout': 'http://localhost:8000/api',
+      '/cargar_excel': 'http://localhost:8000/api',
+      '/profesional/': 'http://localhost:8000/api'
+    },
+  
   auth: {
     strategies: {
       local: {
+        token: {
+          property: 'access_token',
+          required: false,
+          type: 'Bearer'
+        },
+        user: {
+          property: false, // <--- Default "user"
+          autoFetch: true
+        },
         endpoints: {
-          login: { url: 'http://localhost:8000/api/signin', method: 'post', propertyName: 'data.token' },
-          //user: { url: 'me', method: 'get', propertyName: 'data' },
-          logout: {url: 'http://localhost:8000/api/signout', method: 'post'}
-        }
+          login: { url: '/api/signin/', method: 'post', propertyName:'data.user'},
+          user: { url: '/user', method: 'get' },
+          logout: { url: '/signout', method: 'post' }
+        },
       }
     }
   },
+  /* 
+  redirect:{
+    login:'/login',
+  },*/
 
-  // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
-  }
+/* 
+  router: {
+    middleware: ['auth']
+  },*/
+
+// Build Configuration: https://go.nuxtjs.dev/config-build
+build: {
+}
 }

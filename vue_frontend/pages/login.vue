@@ -3,24 +3,31 @@ export default {
   name: "Login",
   data() {
     return {
-      email: null,
-      password: null,
+      email: "",
+      password: "",
     };
   },
   methods: {
     async loginHandler() {
-      const data = { email: this.email, password: this.password };
+      const data = {email: this.email, password: this.password}
       console.log(data);
 
       try {
-        const response = await this.$auth.loginWith("local", data);
-        //const responseBackend = await this.$axios.post('http://localhost:8000/api/signin', data);
-        console.log(response);
+        await this.$auth.loginWith('local', {
+          data: data
+        });
+        console.log(this.$auth.user);
+        //this.$auth.$storage.setUniversal('email', response.data.email)
+        //console.log("Pasó log local");
+        //const responseBackend = await this.$axios.post("http://localhost:8000/api/signin", data);
+        //console.log("Pasó log remoto");
+        //console.log(response);
         //console.log(responseBackend);
+        //this.$auth.setUser(response);
 
-        this.$router.push("/");
+        this.$router.push("/home");
       } catch (e) {
-        console.log(e.message);
+        console.log("Error:", e.message);
       }
     },
   },
@@ -32,7 +39,7 @@ export default {
     <v-main>
       <v-container fluid fill-height>
         <v-layout id="layoutLogin" align-center justify-center>
-          <v-flex >
+          <v-flex>
             <v-card class="elevation-12" id="cuerpoForm">
               <v-toolbar id="bordeInicioSesion">
                 <v-toolbar-title id="textoInicioSesion"
@@ -40,7 +47,7 @@ export default {
                 >
               </v-toolbar>
               <v-card-text>
-                <v-form method="POST" @submit="loginHandler">
+                <v-form method="POST">
                   <v-text-field
                     name="email"
                     label="Correo electrónico"
@@ -58,10 +65,10 @@ export default {
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn id="boton" type="submit"
+                <v-btn id="boton" type="submit" @click="loginHandler"
                   >Iniciar sesión</v-btn
                 >
-                <v-btn id="boton" href="/">Volver</v-btn>
+                <v-btn id="boton" href="/home">Volver</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -91,7 +98,7 @@ export default {
 #cuerpoForm {
   border-radius: 12px;
 }
-#layoutLogin{
+#layoutLogin {
   width: 30%;
 }
 </style>

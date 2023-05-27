@@ -1,76 +1,62 @@
 <script>
-import BarraNav from '../components/BarraNav.vue'
-import ContenidoLista from '../components/ContenidoLista.vue'
-import BuscadorProfesionales from '../components/BuscadorProfesionales.vue'
-import DatosProfesional from '../components/DatosProfesional.vue'
-
-
+import BarraNav from "../components/BarraNav.vue";
+import ContenidoLista from "../components/ContenidoLista.vue";
+import BuscadorProfesionales from "../components/BuscadorProfesionales.vue";
+import DatosProfesional from "../components/DatosProfesional.vue";
 
 export default {
   data() {
-        return {
-          
-          fechaReporte: "24-06-2021",
-        }
-    },
+    return {
+      fechaReporte: "24-06-2021",
+    };
+  },
   components: {
-    BarraNav
-    }
-  }
+    BarraNav,
+  },
+};
 </script>
 
 <template>
-  
   <div class="ContenedorPrincipal">
     <div class="Navegacion">
-      <BarraNav/>
+      <BarraNav />
     </div>
     <div class="Contenedores">
       <div class="ContenedorGris">
-        <BuscadorProfesionales/>
-        <ContenidoLista/>
-        
+        <BuscadorProfesionales />
+        <ContenidoLista />
       </div>
       <div class="Separador"></div>
       <div class="ContenedorGris">
-        <DatosProfesional/>
-        
-        
+        <DatosProfesional />
+      </div>
     </div>
-      
-      
-
-    </div>
-    
-
   </div>
-  
-
 </template>
 
 
 <style>
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: content-box;
 }
-.ContenedorPrincipal{
+.ContenedorPrincipal {
   position: absolute;
   width: 100%;
   height: 100%;
- 
+
   display: flex;
   flex-direction: column;
 }
-.Navegacion{
+.Navegacion {
   position: relative;
   width: 100%;
   height: 60px;
 
   z-index: 10;
 }
-.Contenedores{
+.Contenedores {
   overflow: hidden;
   box-sizing: border-box;
   position: relative;
@@ -81,22 +67,17 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: center;
-
 }
-.Separador{
+.Separador {
   position: relative;
   width: 3%;
   height: 100%;
-
-
 }
-.ContenedorGris{
+.ContenedorGris {
   position: relative;
   width: 46%;
   height: 100%;
-  background-color: #FCFCFC;;
+  background-color: #fcfcfc;
   justify-content: center;
-
 }
-
 </style>

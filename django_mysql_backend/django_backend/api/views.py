@@ -145,8 +145,8 @@ class ProfesionalView(View):
     
     def post(self, request):
         json_data = json.loads(request.body)
-        Profesional.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], idCargo=json_data['idCargo'],
-                                   idCoordinador=json_data['idCoordinador'])
+        #Profesional.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], idCargo=json_data['idCargo'],idCoordinador=json_data['idCoordinador'])
+        Profesional.objects.create(nombre=json_data['nombre'], rut=json_data['rut'])
         datos = {'message':"Success"}
         return JsonResponse(datos)
     
@@ -174,17 +174,17 @@ class ProfesionalView(View):
             datos = {'message':"Profesional no encontrado"}
         return JsonResponse(datos)
     
-    #Por hacer:
+    #Custom: Retornar profesionales en base a busqueda
     '''
-    def getSearch(self, request, search):
-        profesionales = list(Profesional.objects.filter(id=id).values()) #aqui se hace el filtro por lo ingresado en la barra de busqueda
+    def get(self, request, search):
+        profesionales = list(Profesional.objects.filter(nombre__icontains=search).values())
         if len(profesionales)>0:
             datos = {'message': "Success", 'profesionales':profesionales}
         else:
             datos = {'message': "No hay coincidencias."}
         return JsonResponse(datos)
-
-    '''
+'''
+    
 class PagoView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
@@ -419,27 +419,32 @@ class ClienteView(View):
             datos = {'message': "Cliente no encontrado"}
         return JsonResponse(datos)
 
+#############################################################################################
+
 #Adaptar con pandas
-class ExcelView(View):
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        return super().dispatch(request, *args, **kwargs)
     
-    @login_required
-    def cargar_excel(self, request):
-        if request.method == 'POST':
-            file = request.FILES['excel_file']
-            df = pd.read_excel(file)
-            for index, row in df.iterrows():
-                #Crear elementos y mandar a BD
-                print(index+row)
+@login_required
+def cargar_excel(self, request):
+    if request.method == 'POST':
+        file = request.FILES['excel_file']
+        df = pd.read_excel(file)
+        for index, row in df.iterrows():
+        #Crear elementos y mandar a BD
+            print(index+row)
     
 @csrf_exempt 
 def signup(self, request):
+    print(request)
+    print(request.method)
     if request.method == 'POST':
+        print(request.POST)
+        request_password = request.POST.get('password')
+        request_repeatPassword = request.POST.get('repeatPassword')
+        print(request_password)
+        print(request_repeatPassword)
         if request.POST['password'] == request.POST['repeatPassword']:
             try:
-                user = User.objects.create_user(username=request.POST['username'], password=request.POST['password'], email= request.POST['email'])
+                user = User.objects.create_user(username=request.POST['username'], email= request.POST['email'], password=request.POST['password'])
                 user.save()
                 datos = {'message': "Success"}
             except:
@@ -449,15 +454,18 @@ def signup(self, request):
     return JsonResponse(datos)
 
 @csrf_exempt 
-def signin(self, request):
+def signin(request):
     if request.method == 'POST':
         user = authenticate(request, email=request.POST['email'], password = request.POST['password'])
         if user is None:
             datos = {'message': "Error con credenciales"}
+            return JsonResponse(datos)
         else:
             login(request, user)
-            datos = {'message': "Success"}
-        return JsonResponse(datos)
+            datos = {'message': "Success", 'data':user}
+            print(JsonResponse(datos))
+            return JsonResponse(datos)
+        
 
 @csrf_exempt 
 @login_required

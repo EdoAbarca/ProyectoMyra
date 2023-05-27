@@ -3,10 +3,10 @@ export default {
   name: "Signup",
   data() {
     return {
-      username: null,
-      email: null,
-      password: null,
-      repeatPassword: null,
+      username: '',
+      email: '',
+      password: '',
+      repeatPassword: ''
     };
   },
   methods: {
@@ -15,18 +15,17 @@ export default {
         username: this.username,
         email: this.email,
         password: this.password,
-        repeatPassword: this.repeatPassword,
+        repeatPassword: this.repeatPassword
       };
       console.log(data);
       try {
-        const res = await this.$axios.post(
-          "http://localhost:8000/api/signup",
-          data
-        );
+        const res = await this.$axios.post('8000/api/signup/', data);
         console.log(res);
-        this.$router.push("/");
+        const data = res.data;
+        console.log(data);
+        localStorage.setItem('user', data);
       } catch (e) {
-        console.log(e.message);
+        console.log("Error",e.message);
       }
     },
   },
@@ -46,7 +45,7 @@ export default {
                 </v-toolbar-title>
               </v-toolbar>
               <v-card-text>
-                <v-form method="POST" @submit="registerHandler">
+                <v-form method="POST">
                   <v-text-field
                     name="username"
                     label="Usuario"
@@ -77,8 +76,8 @@ export default {
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn id="boton">Registrarse</v-btn>
-                <v-btn id="boton" href="/">Volver</v-btn>
+                <v-btn id="boton" @click="registerHandler">Registrarse</v-btn>
+                <v-btn id="boton" href="/home">Volver</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>

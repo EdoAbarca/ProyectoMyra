@@ -1,89 +1,115 @@
 <script>
+import BarraNav from "../components/BarraNav.vue";
+import { mapGetters } from "vuex";
 
-import BarraNav from '../components/BarraNav.vue'
 
 export default {
-  name:'Home',
+  name: "Home",
   data() {
-        return {
-          
-          fechaReporte: "24-06-2021",
-        }
-    },
+    return {
+      fechaReporte: "24-06-2021",
+    };
+  },
   components: {
-    BarraNav
+    BarraNav,
+  },
+  computed: {
+    ...mapGetters(["isAuthenticated"]),
+  },
+/** 
+  mounted: async function () {
+    const res = await this.$axios.get('/profesional/');
+    const data = res.data;
+    console.log(res);
+    console.log(data);
+  },*/
+  methods: {
+    async signoutHandler() {
+      try {
+        await this.$axios.post('/signout/');
+        await this.$auth.logout();
+        this.$router.push("/");
+      } catch (e) {
+        console.log(e.message);
+      }
     },
-  methods:{
-  }
-  }
+  },
+};
 </script>
 
 <template>
-  
   <div class="ContenedorPrincipal">
     <div class="Navegacion">
-      <BarraNav/>
+      <BarraNav />
     </div>
     <div class="Contenedores">
       <div class="ContenedorGris" id="cont-home">
         <div class="ContenedorBtnImagenes">
-            <NuxtLink class="BtnImg" id="btImgProfesionales" to="/profesionales">
-              <img async class="imgB" id="imgProf" src="../static/profesionalImg.svg">
-              <div class="EtiquetaBotonImg">
-                <h1 class="tituloBtnImg">Profesionales</h1>
-              </div>
-            </NuxtLink>
-            <NuxtLink class="BtnImg" id="btImgPacientes" to="/pacientes">
-              <img async class="imgB" id="imgPac" src="../static/pacientesImg2.svg">
-              <div class="EtiquetaBotonImg">
-                <h1 class="tituloBtnImg">Pacientes</h1>
-              </div>
-            </NuxtLink>
-            <NuxtLink class="BtnImg" id="btImgAlerta" to="/alertas">
-              <img async class="imgB" id="imgAle" src="../static/alertasImg.svg">
-              <div class="EtiquetaBotonImg">
-                <h1 class="tituloBtnImg">Alertas</h1>
-              </div>
-            </NuxtLink>
-
+          <NuxtLink class="BtnImg" id="btImgProfesionales" to="/profesionales">
+            <img
+              async
+              class="imgB"
+              id="imgProf"
+              src="../static/profesionalImg.svg"
+            />
+            <div class="EtiquetaBotonImg">
+              <h1 class="tituloBtnImg">Profesionales</h1>
+            </div>
+          </NuxtLink>
+          <NuxtLink class="BtnImg" id="btImgPacientes" to="/pacientes">
+            <img
+              async
+              class="imgB"
+              id="imgPac"
+              src="../static/pacientesImg2.svg"
+            />
+            <div class="EtiquetaBotonImg">
+              <h1 class="tituloBtnImg">Pacientes</h1>
+            </div>
+          </NuxtLink>
+          <NuxtLink class="BtnImg" id="btImgAlerta" to="/alertas">
+            <img
+              async
+              class="imgB"
+              id="imgAle"
+              src="../static/alertasImg.svg"
+            />
+            <div class="EtiquetaBotonImg">
+              <h1 class="tituloBtnImg">Alertas</h1>
+            </div>
+          </NuxtLink>
         </div>
         <div class="ContenedorBtnSubir">
-          <div class="BtnSubir" >
-            Subir Reporte
-          </div>
+          <div class="BtnSubir">Subir Reporte</div>
         </div>
       </div>
     </div>
-    
-
   </div>
-  
-
 </template>
 
 
 <style>
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: content-box;
 }
-.ContenedorPrincipal{
+.ContenedorPrincipal {
   position: absolute;
   width: 100%;
   height: 100%;
- 
+
   display: flex;
   flex-direction: column;
 }
-.Navegacion{
+.Navegacion {
   position: relative;
   width: 100%;
   height: 60px;
 
   z-index: 10;
 }
-.Contenedores{
+.Contenedores {
   overflow: hidden;
   box-sizing: border-box;
   position: relative;
@@ -94,37 +120,33 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: center;
-
 }
 
-.ContenedorGris{
+.ContenedorGris {
   position: relative;
   width: 46%;
   height: 100%;
-  background-color: #FCFCFC;
+  background-color: #fcfcfc;
   justify-content: center;
-
 }
-.ContenedorBtnImagenes{
+.ContenedorBtnImagenes {
   position: relative;
   width: 80%;
   height: 70%;
   display: flex;
   justify-content: center;
   flex-direction: row;
-  
 }
-#cont-home{
+#cont-home {
   position: relative;
   width: 94%;
   display: flex;
 
   flex-direction: column;
   align-items: center;
-
 }
 
-.BtnImg{
+.BtnImg {
   position: relative;
   width: 26%;
   height: 100%;
@@ -139,7 +161,7 @@ export default {
   transition: all 200ms linear;
   cursor: pointer;
 }
-.imgB{
+.imgB {
   position: relative;
   top: -2%;
   left: -20%;
@@ -147,23 +169,22 @@ export default {
   filter: opacity(0.8);
   transition: all 400ms linear;
 }
-.BtnImg:hover > .imgB{
+.BtnImg:hover > .imgB {
   transform: translateX(-25%);
 }
 
-.BtnImg:hover > .EtiquetaBotonImg{
+.BtnImg:hover > .EtiquetaBotonImg {
   background-color: rgba(64, 129, 142, 0.8);
 }
-.ContenedorBtnSubir{
+.ContenedorBtnSubir {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 80%;
   height: 20%;
-
 }
-.EtiquetaBotonImg{
+.EtiquetaBotonImg {
   position: absolute;
   width: 100%;
   height: 20%;
@@ -174,7 +195,7 @@ export default {
   transition: all 400ms linear;
 }
 
-.tituloBtnImg{
+.tituloBtnImg {
   font-size: 25px;
   font-weight: 600;
   font-family: Arial, Helvetica, sans-serif;
@@ -183,11 +204,11 @@ export default {
   text-align: center;
   color: white;
 }
-.BtnSubir{
+.BtnSubir {
   position: relative;
   width: 30%;
   height: 50%;
-  background-color: #2DB7B2;
+  background-color: #2db7b2;
   border-radius: 27px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   display: flex;
@@ -198,9 +219,18 @@ export default {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 600;
 }
-.BtnSubir:hover{
+.BtnSubir:hover {
   transition: all 200ms linear;
-  background-color: #2D9894;
+  background-color: #2d9894;
   cursor: pointer;
 }
+
+#boton {
+  background-color: #48abbf;
+  color: #ffffff;
+  border-radius: 9px;
+  margin-top: 3%;
+}
+
+
 </style>

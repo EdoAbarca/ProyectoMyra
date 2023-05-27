@@ -27,7 +27,7 @@ export default {
         <div class="ContenedorTitulo">Lista de Profesionales</div>
         <div class ="ContenidoLista">
             <ul>
-                <ProfesionalLista v-for="(prof,index) in getDatosProfesionales"
+                <ProfesionalLista v-for="(prof) in getDatosProfesionales"
                     :key="prof.rut"
                     :nombre="prof.nombre"
                     :rut="prof.rut"

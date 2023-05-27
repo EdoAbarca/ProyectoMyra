@@ -19,7 +19,6 @@ class Profesional(models.Model):
     #idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
     #idCoordinador = models.ForeignKey(Coordinador, on_delete=models.CASCADE)
 
-
 class Pago(models.Model):
     sueldoBase = models.IntegerField()
     gratificacion = models.IntegerField()
@@ -48,19 +47,15 @@ class Pago(models.Model):
     fechaPago = models.DateField()
     idProfesional = models.ForeignKey(Profesional, on_delete=models.CASCADE)
 
-
 class Region(models.Model):
     nombreRegion = models.CharField(max_length=70)
-
 
 class Zona(models.Model):
     nombreZona = models.CharField(max_length=70)
     idRegion = models.ForeignKey(Region, on_delete=models.CASCADE)
 
-
 class Cliente(models.Model):
     nombreCliente = models.CharField(max_length=70)
-
 
 class Paciente(models.Model):
     nombre = models.CharField(max_length=70)
@@ -70,7 +65,6 @@ class Paciente(models.Model):
     idRegion = models.ForeignKey(Region, on_delete=models.CASCADE)
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
-
 class Turno(models.Model):
     tipoTurno = models.CharField(max_length=10)
     fechaInicio = models.DateField()
@@ -79,7 +73,6 @@ class Turno(models.Model):
     horaTermino = models.TimeField()
     idPaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     idProfesional = models.ForeignKey(Profesional, on_delete=models.CASCADE)
-
 
 class Asistencia(models.Model):
     fechaEntrada = models.DateField()
@@ -92,14 +85,8 @@ class Asistencia(models.Model):
     idTurno = models.ForeignKey(Turno, on_delete=models.CASCADE)
     idPago = models.ForeignKey(Pago, on_delete=models.CASCADE)
 
-
 class Alerta(models.Model):
     fechaAlerta = models.DateField()
     descripcion = models.CharField(max_length=200)
     idPaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     idAsistencia = models.ForeignKey(Asistencia, on_delete=models.CASCADE)
-
-#Posible descarte, guardar el archivo en la BD es muy costoso
-class Excel(models.Model):
-    #probar con un filefield quizas
-    data = models.CharField(max_length=255)
