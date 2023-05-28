@@ -46,6 +46,9 @@ export default {
                     :nombre="getDatosBasicos.nombre"
                     :rut="getDatosBasicos.rut"
                     :area="getDatosBasicos.area"
+                    :cargo="getDatosBasicos.cargo"
+                    :coordinador="getDatosBasicos.coordinador"
+                    :contrato="getDatosBasicos.contrato"
                     />
                 </div>
                 <div class="EstadisticasProfesional">
@@ -165,6 +168,7 @@ export default {
     display: flex;
     height: 100%;
     width: 100%;
+
     
 }
 .BtnObtenerReporte{

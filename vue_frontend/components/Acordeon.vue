@@ -29,7 +29,7 @@ export default{
 
 </script>
 <template>
-    <div class="container">
+    <div class="contenedorAcordeon">
         <div class="accordion">
 
 			<div class="accordion-item">
@@ -49,73 +49,73 @@ export default{
 			<div class="accordion-item">
                 <button id="accordion-button-1" aria-expanded="false"  >
                     <span class="accordion-title">Horas Extras </span>
-					<span class="valorPago"> $80000</span>  
+					<span class="valorPago"> ${{getPagos.horasExtra}}</span>  
                 </button>
             </div>
 
 			<div class="accordion-item">
                 <button id="accordion-button-2" aria-expanded="false" @click="acordeon('accordion-button-2')" >
                     <span class="accordion-title">Extras Movilización </span>
-					<span class="valorPago"> $80000</span>
+					<span class="valorPago"> ${{getPagos.extraMovilizacion}}</span>
                     <span class="icon" aria-hidden="true"></span>
                 </button>
                 <div class="accordion-content">
-                    <p>Movilización <span class="valorPago"> $80000</span></p>
-					<p>Colación <span class="valorPago"> $80000</span></p>
-					<p>Viatico <span class="valorPago"> $80000</span></p>
+                    <p>Movilización <span class="valorPago"> ${{getPagos.movilizacion}}</span></p>
+					<p>Colación <span class="valorPago"> ${{getPagos.colacion}}</span></p>
+					<p>Viatico <span class="valorPago"> ${{getPagos.viatico}}</span></p>
                 </div>
             </div>
 
 			<div class="accordion-item">
                 <button id="accordion-button-3" aria-expanded="false" @click="acordeon('accordion-button-3')" >
                     <span class="accordion-title">Bonos </span>
-					<span class="valorPago"> $80000</span>
+					<span class="valorPago"> ${{getPagos.bonosTotales}}</span>
                     <span class="icon" aria-hidden="true"></span>
                 </button>
                 <div class="accordion-content">
-                    <p>Bonos <span class="valorPago"> $80000</span></p>
-					<p>Asignación Familiar <span class="valorPago"> $80000</span></p>
-					<p>Aguinaldo <span class="valorPago"> $80000</span></p>
-					<p>Vacaciones <span class="valorPago"> $80000</span></p>
-					<p>B. Sala Cuna <span class="valorPago"> $80000</span></p>
+                    <p>Bonos <span class="valorPago"> ${{getPagos.bonos}}</span></p>
+					<p>Asignación Familiar <span class="valorPago"> ${{getPagos.asignacion}}</span></p>
+					<p>Aguinaldo <span class="valorPago"> ${{getPagos.anticipos}}</span></p>
+					<p>Vacaciones <span class="valorPago"> $</span></p>
+					<p>B. Sala Cuna <span class="valorPago"> ${{getPagos.salaCuna}}</span></p>
                 </div>
             </div>
 
 			<div class="accordion-item">
                 <button id="totalHaberes" aria-expanded="false"  >
                     <span class="accordion-title">Total Haberes </span>
-					<span class="valorPago"> $80000</span>  
+					<span class="valorPago"> ${{getPagos.totalHaberes}}</span>  
                 </button>
             </div>
 
 			<div class="accordion-item">
                 <button id="totalImponible" aria-expanded="false"  >
                     <span class="accordion-title">Total Imponible </span>
-					<span class="valorPago"> $80000</span>  
+					<span class="valorPago"> ${{getPagos.totalImponible}}</span>  
                 </button>
             </div>
 
             <div class="accordion-item">
                 <button id="accordion-button-4" aria-expanded="false" @click="acordeon('accordion-button-4')" >
                     <span class="accordion-title">Descuentos </span>
-					<span class="valorPago"> ${{getPagos.descuentos}}</span>
+					<span class="valorPago"> ${{getPagos.descuentosTotales}}</span>
                     <span class="icon" aria-hidden="true"></span>
                 </button>
                 <div class="accordion-content">
-                    <p>AFP <span class="valorPago"> $80000</span></p>
-					<p>ISAPRE <span class="valorPago"> $80000</span></p>
-					<p>FONASA <span class="valorPago"> $80000</span></p>
-					<p>Seguro de cesantia <span class="valorPago"> $80000</span></p>
-					<p>Impuesto único <span class="valorPago"> $80000</span></p>
-					<p>Cuenta Ahorro AFP <span class="valorPago"> $80000</span></p>
-					<p>Descuentos CCAF <span class="valorPago"> $80000</span></p>
-					<p>Anticipos <span class="valorPago"> $80000</span></p>
-					<p>Descuentos <span class="valorPago"> $80000</span></p>
-					<p>Ley 3% <span class="valorPago"> $80000</span></p>
+                    <p>AFP <span class="valorPago"> ${{getPagos.afp}}</span></p>
+					<p>ISAPRE <span class="valorPago"> ${{getPagos.isapre}}</span></p>
+					<p>FONASA <span class="valorPago"> ${{getPagos.fonasa}}</span></p>
+					<p>Seguro de cesantia <span class="valorPago"> ${{getPagos.seguroCesantia}}</span></p>
+					<p>Impuesto único <span class="valorPago"> ${{getPagos.impuestoUnico}}</span></p>
+					<p>Cuenta Ahorro AFP <span class="valorPago"> ${{getPagos.cuentaAFP}}</span></p>
+					<p>Descuentos CCAF <span class="valorPago"> ${{getPagos.descuentosCCAF}}</span></p>
+					<p>Anticipos <span class="valorPago"> ${{getPagos.anticipos}}</span></p>
+					<p>Descuentos <span class="valorPago"> ${{getPagos.descuentos}}</span></p>
+					<p>Ley 3% <span class="valorPago"> ${{getPagos.ley3}}</span></p>
                 </div>
             </div>
         </div>
-		<div id="totalLiquido"><p>Total Liquido <span class="valorPago"> $80000</span></p></div>
+		<div id="totalLiquido"><p>Total Liquido <span class="valorPago"> ${{getPagos.totalLiquido}}</span></p></div>
 
     </div>
 
@@ -129,13 +129,15 @@ export default{
 	 box-sizing: border-box;
 }
 
- .container {
+ .contenedorAcordeon {
+
     position: absolute;
     display: flex;
 	width: 100%;
     height: 100%;
 	font-family: Arial, Helvetica, sans-serif;
 	flex-direction: column;
+
 
 }
  .accordion .accordion-item {
@@ -258,9 +260,10 @@ export default{
 
 }
 #totalLiquido{
+	position: relative;
 	display: flex;
 	background-color: #DEEFF2;
-	position: absolute;
+	right: 0px;
 	width: 100%;
 	height: 10%;
 	bottom: 0%;
@@ -272,7 +275,7 @@ export default{
 #totalLiquido p{
 	padding-left: 3%;
 }
-#totalLiquido .valorPago{
-	padding-right: 2%;
+#accordion-button-4{
+color: #FF8E85;
 }
 </style>

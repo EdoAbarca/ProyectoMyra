@@ -3,12 +3,31 @@
 export default {
 
 props: ['tipo', 'valor'],
+methods:{
+  setColor(id, color){
+    const box = document.getElementById(id);
+    box.style.color()
+  },
+  determinarColor(id){
+    if(this.tipo ==='Inasistencias'){
+      if(this.valor >= 2){
+        this.setColor(id,color);
+      }
+    }
+  }
+},
 }
 </script>
 <template>
   <div class="ContenedorEstadistica">
     <div id="tituloEstadistica">{{tipo}}</div>
-    <div id="estadisticaNumerica"> {{valor}}</div>
+    <div class="estadisticaNumerica negativa" v-if ="tipo==='Inasistencias' && valor > 2"> {{valor}}</div>
+    <div class="estadisticaNumerica" v-if ="tipo==='Inasistencias' && valor <= 2"> {{valor}}</div>
+    <div class="estadisticaNumerica" v-if ="tipo==='Horas totales' || tipo === 'Horas Extra'"> {{valor}}</div>
+    <div class="estadisticaNumerica licencia" v-if ="tipo==='Licencias' && valor > 0"> {{valor}}</div>
+    <div class="estadisticaNumerica" v-if ="tipo==='Licencias' && valor === '0'"> {{valor}}</div>
+    <div class="estadisticaNumerica vacaciones" v-if ="tipo==='Vacaciones' && valor > 0"> {{valor}}</div>
+    <div class="estadisticaNumerica" v-if ="tipo==='Vacaciones' && valor === '0'"> {{valor}}</div>
   </div>
 
 </template>
@@ -39,7 +58,7 @@ props: ['tipo', 'valor'],
   align-items: center;
   
 }
-#estadisticaNumerica{
+.estadisticaNumerica{
   position: relative;
   display: flex;
   width: 100%;
@@ -51,5 +70,15 @@ props: ['tipo', 'valor'],
   font-family: Arial, Helvetica, sans-serif;
   font-size: 30px;
   font-weight: 600;
+}
+.negativa{
+  color: #FF8E85;
+}
+
+.licencia{
+  color: #FFCA6D;
+}
+.vacaciones{
+  color: #BEE493;
 }
 </style>
