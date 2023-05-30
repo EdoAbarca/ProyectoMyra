@@ -48,41 +48,29 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    //'@nuxtjs/auth-next',
     '@nuxtjs/auth'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: "http://localhost:8000",
-    browserBaseURL: "http://localhost:8000",
-    proxy: false,
+    baseURL: 'http://localhost:8000/api/',
   },
-  
-    proxy: {
-      '/signup/': 'http://localhost:8000/api',
-      '/signin/': 'http://localhost:8000/api',
-      '/signout': 'http://localhost:8000/api',
-      '/cargar_excel': 'http://localhost:8000/api',
-      '/profesional/': 'http://localhost:8000/api'
-    },
   
   auth: {
     strategies: {
       local: {
-        token: {
-          property: 'access_token',
-          required: false,
-          type: 'Bearer'
-        },
+        
         user: {
-          property: false, // <--- Default "user"
+          property: 'user', // <--- Default "user"
           autoFetch: true
+          //property: 'user',
         },
         endpoints: {
-          login: { url: '/api/signin/', method: 'post', propertyName:'data.user'},
+          login: { url: '/login', method: 'post', propertyName:'data'},
           user: { url: '/user', method: 'get' },
-          logout: { url: '/signout', method: 'post' }
+          logout: { url: '/logout', method: 'post' }
         },
       }
     }

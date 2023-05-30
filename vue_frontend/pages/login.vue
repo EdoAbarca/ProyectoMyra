@@ -3,8 +3,8 @@ export default {
   name: "Login",
   data() {
     return {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     };
   },
   methods: {
@@ -13,19 +13,20 @@ export default {
       console.log(data);
 
       try {
-        await this.$auth.loginWith('local', {
-          data: data
+        
+        const res = await this.$axios.post('/login', {
+          email: this.email,
+          password: this.password,
         });
-        console.log(this.$auth.user);
-        //this.$auth.$storage.setUniversal('email', response.data.email)
-        //console.log("Pasó log local");
-        //const responseBackend = await this.$axios.post("http://localhost:8000/api/signin", data);
-        //console.log("Pasó log remoto");
-        //console.log(response);
-        //console.log(responseBackend);
-        //this.$auth.setUser(response);
 
-        this.$router.push("/home");
+        console.log(res);
+        console.log(res.data.email);
+        localStorage.setItem('user', res.data.email);
+        //await this.$auth.loginWith('local', {data: {email: this.email, password: this.password}});
+        //console.log(this.$auth.loggedIn);
+        //console.log(this.$auth.user);
+
+        this.$router.push('/home');
       } catch (e) {
         console.log("Error:", e.message);
       }

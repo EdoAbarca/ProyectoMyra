@@ -6,6 +6,7 @@ export default {
     ...mapGetters(["isAuthenticated"]),
   },
   mounted: function () {
+    localStorage.setItem('user', null);
     this.$router.push("/home");
   },
   methods: {
@@ -49,7 +50,7 @@ export default {
     </form>
 
     <v-form action="/signout" method="POST">
-      <v-btn id="boton" type="submit" @click="signoutHandler"
+      <v-btn id="boton" type="submit"
         >Cerrar sesión</v-btn
       >
     </v-form>

@@ -3,10 +3,10 @@ export default {
   name: "Signup",
   data() {
     return {
-      username: '',
-      email: '',
-      password: '',
-      repeatPassword: ''
+      username: "",
+      email: "",
+      password: "",
+      repeatPassword: "",
     };
   },
   methods: {
@@ -15,17 +15,23 @@ export default {
         username: this.username,
         email: this.email,
         password: this.password,
-        repeatPassword: this.repeatPassword
+        repeatPassword: this.repeatPassword,
       };
       console.log(data);
       try {
-        const res = await this.$axios.post('8000/api/signup/', data);
+        const res = await this.$axios.post("/register", {
+          username: this.username,
+          email: this.email,
+          password: this.password,
+          repeatPassword: this.repeatPassword,
+        });
         console.log(res);
         const data = res.data;
         console.log(data);
-        localStorage.setItem('user', data);
+        //localStorage.setItem('user', data);
+        this.$router.push("/login");
       } catch (e) {
-        console.log("Error",e.message);
+        console.log("Error", e.message);
       }
     },
   },
@@ -108,7 +114,7 @@ export default {
   border-radius: 12px;
   width: 100%;
 }
-#layout{
+#layout {
   width: 45%;
 }
 </style>

@@ -24,14 +24,19 @@ export default {
     console.log(data);
   },*/
   methods: {
-    async signoutHandler() {
+    async logoutHandler() {
       try {
-        await this.$axios.post('/signout/');
-        await this.$auth.logout();
-        this.$router.push("/");
+        await this.$axios.post('/logout');
+        //await this.$auth.logout();
+        localStorage.removeItem('user');
+        console.log(localStorage.getItem('user'));
+        this.$nuxt.refresh();
       } catch (e) {
         console.log(e.message);
       }
+    },
+    async isLoggedin(){
+      return localStorage.getItem('user');
     },
   },
 };
@@ -82,6 +87,7 @@ export default {
         <div class="ContenedorBtnSubir">
           <div class="BtnSubir">Subir Reporte</div>
         </div>
+        <v-btn v-if="isLoggedin" id="boton" @click="logoutHandler">Cerrar sesión</v-btn>
       </div>
     </div>
   </div>
