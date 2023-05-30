@@ -119,6 +119,104 @@ class CoordinadorView(View):
             datos = {'message': "Coordinador no encontrado"}
         return JsonResponse(datos)
 
+class CentroView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, id=0):
+        if (id > 0):
+            centros = list(Centro.objects.filter(id=id).values())
+            if len(centros) > 0:
+                centro = centros[0]
+                datos = {'message': "Success", 'centro': centro}
+            else:
+                datos = {'message': "Centro no encontrado."}
+            return JsonResponse(datos)
+        else:
+            centros = list(Centro.objects.values())
+            if len(centros) > 0:
+                datos = {'message': "Success", 'centros': centros}
+            else:
+                datos = {'message': "Sin centros."}
+            return JsonResponse(datos)
+
+    def post(self, request):
+        json_data = json.loads(request.body)
+        Centro.objects.create(nombreCentro=json_data['nombreCentro'])
+        datos = {'message': "Success"}
+        return JsonResponse(datos)
+
+    def put(self, request, id):
+        json_data = json.loads(request.body)
+        centros = list(Centro.objects.filter(id=id).values())
+        if len(centros) > 0:
+            centros = Centro.objects.get(id=id)
+            centros.nombreCentro = json_data['nombreCentro']
+            centros.save()
+            datos = {'message': "Success"}
+        else:
+            datos = {'message': "Centro no encontrado"}
+        return JsonResponse(datos)
+
+    def delete(self, request, id):
+        centros = list(Centro.objects.filter(id=id).values())
+        if len(centros) > 0:
+            Centro.objects.filter(id=id).delete()
+            datos = {'message': "Success"}
+        else:
+            datos = {'message': "Centro no encontrado"}
+        return JsonResponse(datos)
+
+class AreaView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, id=0):
+        if (id > 0):
+            areas = list(Area.objects.filter(id=id).values())
+            if len(areas) > 0:
+                area = areas[0]
+                datos = {'message': "Success", 'area': area}
+            else:
+                datos = {'message': "Area no encontrada."}
+            return JsonResponse(datos)
+        else:
+            areas = list(Area.objects.values())
+            if len(areas) > 0:
+                datos = {'message': "Success", 'areas': areas}
+            else:
+                datos = {'message': "Sin areas."}
+            return JsonResponse(datos)
+
+    def post(self, request):
+        json_data = json.loads(request.body)
+        Area.objects.create(nombreArea=json_data['nombreArea'])
+        datos = {'message': "Success"}
+        return JsonResponse(datos)
+
+    def put(self, request, id):
+        json_data = json.loads(request.body)
+        areas = list(Area.objects.filter(id=id).values())
+        if len(areas) > 0:
+            areas = Area.objects.get(id=id)
+            areas.nombreArea = json_data['nombreArea']
+            areas.save()
+            datos = {'message': "Success"}
+        else:
+            datos = {'message': "Area no encontrada"}
+        return JsonResponse(datos)
+
+    def delete(self, request, id):
+        areas = list(Area.objects.filter(id=id).values())
+        if len(areas) > 0:
+            Area.objects.filter(id=id).delete()
+            datos = {'message': "Success"}
+        else:
+            datos = {'message': "Area no encontrada"}
+        return JsonResponse(datos)
+
 class ProfesionalView(View):
 
     @method_decorator(csrf_exempt)
@@ -146,7 +244,7 @@ class ProfesionalView(View):
     def post(self, request):
         json_data = json.loads(request.body)
         #Profesional.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], idCargo=json_data['idCargo'],idCoordinador=json_data['idCoordinador'])
-        Profesional.objects.create(nombre=json_data['nombre'], rut=json_data['rut'])
+        Profesional.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], idCentro=json_data['idCentro'], idArea=['idArea'])
         datos = {'message':"Success"}
         return JsonResponse(datos)
     
@@ -157,8 +255,10 @@ class ProfesionalView(View):
             profesional = Profesional.objects.get(id=id)
             profesional.nombre=json_data['nombre']
             profesional.rut=json_data['rut']
-            profesional.idCargo=json_data['idCargo']
-            profesional.idCoordinador=json_data['idCoordinador']
+            profesional.idCentro=json_data['idCentro']
+            profesional.idArea=json_data['idArea']
+            #profesional.idCargo=json_data['idCargo']
+            #profesional.idCoordinador=json_data['idCoordinador']
             profesional.save()
             datos={'message':"Success"}
         else:
@@ -418,6 +518,8 @@ class ClienteView(View):
         else:
             datos = {'message': "Cliente no encontrado"}
         return JsonResponse(datos)
+
+
 
 #############################################################################################
 

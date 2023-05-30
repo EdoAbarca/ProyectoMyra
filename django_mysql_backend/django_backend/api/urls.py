@@ -6,6 +6,10 @@ urlpatterns=[
     path('profesional/', ProfesionalView.as_view()),
     path('profesional/<int:id>', ProfesionalView.as_view()),
     path('profesional/<str:search>', ProfesionalView.as_view()),
+    path('area/', AreaView.as_view()),
+    path('area/<int:id>', AreaView.as_view()),
+    path('centro/', CentroView.as_view()),
+    path('centro/<int:id>', CentroView.as_view()),
 
     path('cargar_excel/', views.cargar_excel),
     path('signup/', views.signup),

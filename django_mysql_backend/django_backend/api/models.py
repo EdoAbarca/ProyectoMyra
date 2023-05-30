@@ -3,6 +3,9 @@ from django.db import models
 
 # Create your models here.
 
+#cambios que se pueden hacer:
+#cambiar cargo por contrato
+#poner atributo cargo a profesional
 class Cargo(models.Model):
     cargo = models.CharField(max_length=15)
     tipoContrato = models.CharField(max_length=15)
@@ -13,9 +16,17 @@ class Coordinador(models.Model):
     nombre = models.CharField(max_length=50)
     idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
 
+class Centro(models.Model):
+    nombreCentro = models.CharField(max_length=30)
+
+class Area(models.Model):
+    nombreArea = models.CharField(max_length=30)
+
 class Profesional(models.Model):
     nombre = models.CharField(max_length=50)
     rut = models.CharField(max_length=15)
+    idCentro = models.ForeignKey(Centro, on_delete=models.CASCADE)
+    idArea = models.ForeignKey(Area, on_delete=models.CASCADE)
     #idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
     #idCoordinador = models.ForeignKey(Coordinador, on_delete=models.CASCADE)
 
@@ -90,3 +101,4 @@ class Alerta(models.Model):
     descripcion = models.CharField(max_length=200)
     idPaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     idAsistencia = models.ForeignKey(Asistencia, on_delete=models.CASCADE)
+
