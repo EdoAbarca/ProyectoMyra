@@ -2,7 +2,6 @@
 import BarraNav from "../components/BarraNav.vue";
 import { mapGetters } from "vuex";
 
-
 export default {
   name: "Home",
   data() {
@@ -14,9 +13,9 @@ export default {
     BarraNav,
   },
   computed: {
-    ...mapGetters(["isAuthenticated"]),
+    ...mapGetters(["isAuthenticated", "loggedInUser"]),
   },
-/** 
+  /** 
   mounted: async function () {
     const res = await this.$axios.get('/profesional/');
     const data = res.data;
@@ -26,24 +25,19 @@ export default {
   methods: {
     async logoutHandler() {
       try {
-        await this.$axios.post('/logout');
-        //await this.$auth.logout();
-        localStorage.removeItem('user');
-        console.log(localStorage.getItem('user'));
+        console.log("Cerrando sesion");
+        await this.$auth.logout();
         this.$nuxt.refresh();
       } catch (e) {
         console.log(e.message);
       }
-    },
-    async isLoggedin(){
-      return localStorage.getItem('user');
     },
   },
 };
 </script>
 
 <template>
-  <div class="ContenedorPrincipal">
+  <div class="ContenedorPrincipal" v-if="isAuthenticated">
     <div class="Navegacion">
       <BarraNav />
     </div>
@@ -85,11 +79,17 @@ export default {
           </NuxtLink>
         </div>
         <div class="ContenedorBtnSubir">
-          <div class="BtnSubir">Subir Reporte</div>
+          <v-btn class="BtnSubir" href="/reporte">Subir reporte</v-btn>
         </div>
-        <v-btn v-if="isLoggedin" id="boton" @click="logoutHandler">Cerrar sesión</v-btn>
+        <v-btn class="BtnSubir" @click="logoutHandler">Cerrar sesión</v-btn>
       </div>
     </div>
+  </div>
+  <div class="ContenedorPrincipal" v-else>
+    <h1>Rotativa Myra</h1>
+    <hr />
+    <h3>Inicie sesión para utilizar las funcionalidades de la plataforma</h3>
+    <v-btn id="boton" href="/login">Iniciar sesión</v-btn>
   </div>
 </template>
 
@@ -230,13 +230,4 @@ export default {
   background-color: #2d9894;
   cursor: pointer;
 }
-
-#boton {
-  background-color: #48abbf;
-  color: #ffffff;
-  border-radius: 9px;
-  margin-top: 3%;
-}
-
-
 </style>

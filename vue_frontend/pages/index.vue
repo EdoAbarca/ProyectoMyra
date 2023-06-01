@@ -6,7 +6,6 @@ export default {
     ...mapGetters(["isAuthenticated"]),
   },
   mounted: function () {
-    localStorage.setItem('user', null);
     this.$router.push("/home");
   },
   methods: {

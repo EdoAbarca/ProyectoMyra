@@ -1,6 +1,7 @@
 <script>
 export default {
   name: "Reporte",
+  middleware: 'auth',
   data() {
     return {
       title: null,

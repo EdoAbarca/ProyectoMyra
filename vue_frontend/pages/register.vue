@@ -25,11 +25,6 @@ export default {
           password: this.password,
           repeatPassword: this.repeatPassword,
         });
-        console.log(res);
-        const data = res.data;
-        console.log(data);
-        //localStorage.setItem('user', data);
-        this.$router.push("/login");
       } catch (e) {
         console.log("Error", e.message);
       }

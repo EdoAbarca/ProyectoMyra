@@ -34,6 +34,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/middleware/axios-config.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -55,35 +56,31 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: 'http://localhost:8000/api/',
+    baseURL: 'http://localhost:8000/api',
   },
   
   auth: {
     strategies: {
       local: {
-        
+        cookie: {
+          name: "sessionid"
+          //name:'csrftoken'
+        },
+        tokenRequired: false,
+        tokenType: false,
         user: {
-          property: 'user', // <--- Default "user"
-          autoFetch: true
-          //property: 'user',
+          autoFetch: false,
+          property: false,
+          withCredentials: true,
         },
         endpoints: {
-          login: { url: '/login', method: 'post', propertyName:'data'},
-          user: { url: '/user', method: 'get' },
+          login: { url: '/log', method: 'post', propertyName:'data'},
+          user: { url: '/user', method: 'get', propertyName:false },
           logout: { url: '/logout', method: 'post' }
         },
       }
     }
   },
-  /* 
-  redirect:{
-    login:'/login',
-  },*/
-
-/* 
-  router: {
-    middleware: ['auth']
-  },*/
 
 // Build Configuration: https://go.nuxtjs.dev/config-build
 build: {

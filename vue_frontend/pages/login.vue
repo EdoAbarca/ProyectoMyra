@@ -1,32 +1,29 @@
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "Login",
   data() {
     return {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     };
+  },
+  computed: {
+    ...mapGetters({ isAuthenticated: "isAuthenticated" }),
+  },
+  mounted: function () {
+    if (this.isAuthenticated) {
+      this.$router.push("/home");
+    }
   },
   methods: {
     async loginHandler() {
-      const data = {email: this.email, password: this.password}
+      const data = { email: this.email, password: this.password };
       console.log(data);
-
       try {
-        
-        const res = await this.$axios.post('/login', {
-          email: this.email,
-          password: this.password,
-        });
-
-        console.log(res);
-        console.log(res.data.email);
-        localStorage.setItem('user', res.data.email);
-        //await this.$auth.loginWith('local', {data: {email: this.email, password: this.password}});
-        //console.log(this.$auth.loggedIn);
-        //console.log(this.$auth.user);
-
-        this.$router.push('/home');
+        this.$auth
+          .loginWith("local", { data: {email: this.email, password: this.password }});
+        this.$router.push("/home");
       } catch (e) {
         console.log("Error:", e.message);
       }
