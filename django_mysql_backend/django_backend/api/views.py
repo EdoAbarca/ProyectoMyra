@@ -600,29 +600,12 @@ class UserLogin(APIView):
 	##
 	def post(self, request):
 		data = request.data
-		print("LOGIN")
-		print("request: ")
-		print(request)
-		print("request.data: ")
-		print(request.data)
 		assert validate_email(data)
 		assert validate_password(data)
 		serializer = UserLoginSerializer(data=data)
-		print("serializer: ")
-		print(serializer)
-		print("user -> : serializer.check_user(data):")
-		print(serializer.check_user(data))
-		print("user -> : serializer.initial_data:")
-		print(serializer.initial_data)
-		if serializer.is_valid(raise_exception=True): #Pasa -> hubo login
-			print("user -> : serializer.data (despues de .is_valid):")
-			print(serializer.data)
+		if serializer.is_valid(raise_exception=True):
 			user = serializer.check_user(data)
-			print("Antes login")
-			print(request.user.is_authenticated)
 			login(request, user)
-			print("Despues login")
-			print(request.user.is_authenticated)
 			return Response({'data':serializer.data}, status=status.HTTP_200_OK)
 
 
@@ -630,13 +613,12 @@ class UserLogout(APIView):
 	permission_classes = (permissions.AllowAny,)
 	authentication_classes = ()
 	def post(self, request):
-		#Token.objects.filter(user=request.user).delete()
 		logout(request)
 		return Response(status=status.HTTP_200_OK)
 
 
 class UserView(APIView):
-	permission_classes = (permissions.AllowAny,)
+	permission_classes = (permissions.IsAuthenticated,)
 	authentication_classes = (SessionAuthentication,)
 	##
 	def get(self, request):

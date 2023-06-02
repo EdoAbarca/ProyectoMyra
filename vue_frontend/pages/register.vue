@@ -1,6 +1,12 @@
 <script>
 export default {
   name: "Signup",
+  middleware: "guest",
+  head() {
+    return {
+      title: "Registro - Rotativa Myra",
+    };
+  },
   data() {
     return {
       username: "",

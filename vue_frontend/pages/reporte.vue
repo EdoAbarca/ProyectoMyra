@@ -1,7 +1,12 @@
 <script>
 export default {
+  head() {
+    return {
+      title: "Cargar reporte - Rotativa Myra",
+    };
+  },
   name: "Reporte",
-  middleware: 'auth',
+  middleware: "auth",
   data() {
     return {
       title: null,
@@ -34,10 +39,12 @@ export default {
     <v-main>
       <v-container fluid fill-height>
         <v-layout id="layoutReporte" align-center justify-center>
-          <v-flex >
+          <v-flex>
             <v-card class="elevation-12" id="cuerpoForm">
-              <v-toolbar id="bordeReporte" :elevation="0" >
-                <v-toolbar-title id="textoReporte">Cargar reporte</v-toolbar-title>
+              <v-toolbar id="bordeReporte" :elevation="0">
+                <v-toolbar-title id="textoReporte"
+                  >Cargar reporte</v-toolbar-title
+                >
               </v-toolbar>
               <v-card-text>
                 <v-form>
@@ -65,7 +72,7 @@ export default {
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn id="boton" @click="reportHandler">Subir</v-btn>
-                <v-btn id="boton" href="/">Volver</v-btn>
+                <v-btn id="boton" href="/home">Volver</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -75,9 +82,8 @@ export default {
   </v-app>
 </template>
 <style>
-
-#ventanaReporte{
-  opacity:1;
+#ventanaReporte {
+  opacity: 1;
 }
 #textoReporte {
   color: #005d71;
@@ -95,7 +101,7 @@ export default {
 #cuerpoForm {
   border-radius: 12px;
 }
-#layoutReporte{
+#layoutReporte {
   width: 30%;
 }
 </style>

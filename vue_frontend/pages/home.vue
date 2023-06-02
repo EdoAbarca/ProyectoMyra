@@ -4,6 +4,11 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "Home",
+  head() {
+    return {
+      title: "Home - Rotativa Myra",
+    };
+  },
   data() {
     return {
       fechaReporte: "24-06-2021",
@@ -15,17 +20,9 @@ export default {
   computed: {
     ...mapGetters(["isAuthenticated", "loggedInUser"]),
   },
-  /** 
-  mounted: async function () {
-    const res = await this.$axios.get('/profesional/');
-    const data = res.data;
-    console.log(res);
-    console.log(data);
-  },*/
   methods: {
     async logoutHandler() {
       try {
-        console.log("Cerrando sesion");
         await this.$auth.logout();
         this.$nuxt.refresh();
       } catch (e) {

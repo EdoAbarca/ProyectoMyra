@@ -2,6 +2,12 @@
 import { mapGetters } from "vuex";
 export default {
   name: "Login",
+  middleware: "guest",
+  head() {
+    return {
+      title: "Iniciar sesión - Rotativa Myra",
+    };
+  },
   data() {
     return {
       email: "",
@@ -21,9 +27,10 @@ export default {
       const data = { email: this.email, password: this.password };
       console.log(data);
       try {
-        this.$auth
-          .loginWith("local", { data: {email: this.email, password: this.password }});
-        this.$router.push("/home");
+        this.$auth.loginWith("local", {
+          data: { email: this.email, password: this.password },
+        });
+        //this.$router.push("/home");
       } catch (e) {
         console.log("Error:", e.message);
       }

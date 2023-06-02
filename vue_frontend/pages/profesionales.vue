@@ -5,7 +5,12 @@ import BuscadorProfesionales from "../components/BuscadorProfesionales.vue";
 import DatosProfesional from "../components/DatosProfesional.vue";
 
 export default {
-  middleware: 'auth',
+  head() {
+    return {
+      title: "Vista profesionales - Rotativa Myra",
+    };
+  },
+  middleware: "auth",
   data() {
     return {
       fechaReporte: "24-06-2021",
