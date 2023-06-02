@@ -12,7 +12,7 @@ import pandas as pd
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt 
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -253,14 +253,14 @@ class ProfesionalView(View):
 				#datos = {'message': "Sin profesionales.", 'profesionales':[]}
 				datos = {'message': "Sin profesionales."}
 			return JsonResponse(datos)
-	
+
 	def post(self, request):
 		json_data = json.loads(request.body)
 		#Profesional.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], idCargo=json_data['idCargo'],idCoordinador=json_data['idCoordinador'])
 		Profesional.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], idCentro=json_data['idCentro'], idArea=['idArea'])
 		datos = {'message':"Success"}
 		return JsonResponse(datos)
-	
+
 	def put(self, request, id):
 		json_data = json.loads(request.body)
 		profesionales = list(Profesional.objects.filter(id=id).values())
@@ -286,7 +286,7 @@ class ProfesionalView(View):
 		else:
 			datos = {'message':"Profesional no encontrado"}
 		return JsonResponse(datos)
-	
+
 	#Custom: Retornar profesionales en base a busqueda
 	'''
 	def get(self, request, search):
@@ -297,7 +297,7 @@ class ProfesionalView(View):
 			datos = {'message': "No hay coincidencias."}
 		return JsonResponse(datos)
 '''
-	
+
 class PagoView(View):
 	@method_decorator(csrf_exempt)
 	def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
@@ -532,12 +532,68 @@ class ClienteView(View):
 			datos = {'message': "Cliente no encontrado"}
 		return JsonResponse(datos)
 
+#Pendiente: Paciente, Turno
+
+class AsistenciaView(View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+		return super().dispatch(request, *args, **kwargs)
+
+	def get(self, request, id=0):
+		if(id > 0):
+			asistencias = list(Asistencia.objects.filter(id=id).values())
+			if len(asistencias) > 0:
+				asistencia = asistencias[0]
+				datos = {'message': "Success", 'asistencia': asistencia}
+			else:
+				datos = {'message': "Asistencia no encontrada"}
+			return JsonResponse(datos)
+		else:
+			asistencias = list(Asistencia.objects.values())
+			if len(asistencias) > 0:
+				datos = {'message': "Success", 'asistencias': asistencias}
+			else:
+				datos = {'message': "Sin asistencias"}
+			return JsonResponse(datos)
+
+	def post(self, request):
+		json_data = json.loads(request.body)
+		Asistencia.objects.create(fechaAsistencia=json_data['fechaAsistencia'],
+								  asisteProfesional=json_data['asisteProfesional'],estado=json_data['estado'],
+								  idProfesional=json_data['idProfesional'])
+		datos = {'message': "Success"}
+		return JsonResponse(datos)
+
+
+	def put(self, request, id):
+		json_data = json.loads(request.body)
+		asistencias = list(Asistencia.objects.filter(id=id).values())
+		if len(asistencias) > 0:
+			asistencias = Asistencia.objects.get(id=id)
+			asistencias.fechaAsistencia=json_data['fechaAsistencia']
+			asistencias.asisteProfesional=json_data['asisteProfesional']
+			asistencias.estado=json_data['estado']
+			asistencias.idProfesional=json_data['idProfesional']
+			asistencias.save()
+			datos = {'message':"Success"}
+		else:
+			datos = {'message': "Asistencia no encontrada."}
+		return JsonResponse(datos)
+
+	def delete(self, request, id):
+		asistencias = list(Asistencia.objects.filter(id=id).values())
+		if len(asistencias) > 0:
+			Asistencia.objects.filter(id=id).delete()
+			datos = {'message': "Success"}
+		else:
+			datos = {'message': "Asistenciano encontrada"}
+		return JsonResponse(datos)
 
 
 #############################################################################################
 
 #Adaptar con pandas
-	
+
 @login_required
 def cargar_excel(self, request):
 	if request.method == 'POST':
@@ -645,4 +701,4 @@ class UserView(APIView):
 			print(request)
 			print(request.data)
 			return Response({'user': 'No hay sesión iniciada'}, status=status.HTTP_401_UNAUTHORIZED)
-	
+

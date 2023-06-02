@@ -18,3 +18,13 @@ INSERT INTO rotativa_myra.api_profesional (id, nombre, rut, idCentro_id, idArea_
 INSERT INTO rotativa_myra.api_profesional (id, nombre, rut, idCentro_id, idArea_id) VALUES (2, "Mariela Leonardo Tantarico", "20345687-7", 1, 2);
 INSERT INTO rotativa_myra.api_profesional (id, nombre, rut, idCentro_id, idArea_id) VALUES (3, "Will Hermes Torrealba Alvarez", "9234876-0", 1, 2);
 INSERT INTO rotativa_myra.api_profesional (id, nombre, rut, idCentro_id, idArea_id) VALUES (4, "Angelina Elizabeth Cespedes Cortes", "14987436-7", 2, 3);
+
+-- Pago
+-- Cargo
+-- Asistencia
+
+-- Region
+
+-- Paciente
+-- Turno
+-- Cliente
