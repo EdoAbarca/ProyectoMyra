@@ -11,6 +11,11 @@ urlpatterns=[
     path('centro/', CentroView.as_view()),
     path('centro/<int:id>', CentroView.as_view()),
 
+    path('search-profesional/', MyraView.as_view(), name='search-profesional'),
+    path('filter-position/<int:id_cargo>/', MyraView.as_view(), name='filter-position'),
+    path('filter-center/<int:id_centro>/', MyraView.as_view(), name='filter-center'),
+    path('get-profesional/<int:id_profesional>/', MyraView.as_view(), name='get-profesional'),
+
     path('cargar_excel', views.cargar_excel),
     path('register', views.UserRegister.as_view(), name='register'),
 	path('log', views.UserLogin.as_view(), name='login'),

@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -587,6 +588,97 @@ class AsistenciaView(View):
 			datos = {'message': "Success"}
 		else:
 			datos = {'message': "Asistenciano encontrada"}
+		return JsonResponse(datos)
+
+
+class MyraView(View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+		return super().dispatch(request, *args, **kwargs)
+	def search_proffesional(self, request):
+		query = request.GET.get('query', '')
+		profesionales = Profesional.objects.filter(
+			Q(nombre__icontains=query) | Q(rut__icontains=query)
+		)
+
+		if profesionales.exists():
+			datos = {'message': 'Success', 'profesionales': list(profesionales)}
+		else:
+			datos = {'message': 'No se encontraron coincidencias'}
+
+		return JsonResponse(datos)
+
+	def filter_position(self, request, id_cargo):
+		profesionales = Profesional.objects.filter(idCargo_id=id_cargo)
+
+		datos_profesionales = []
+
+		for profesional in profesionales:
+			datos_profesional = {
+				'nombre': profesional.nombre,
+				'rut': profesional.rut,
+				'idCentro': profesional.idCentro.id,
+				'idArea': profesional.idArea.id,
+				'idCargo': profesional.idCargo.id,
+				'idCoordinador': profesional.idCoordinador.id,
+			}
+
+			datos_profesionales.append(datos_profesional)
+
+		datos = {'message': 'Success', 'profesionales': datos_profesionales}
+		return JsonResponse(datos)
+
+	def filter_center(self, request, id_centro):
+		profesionales = Profesional.objects.filter(idCentro_id=id_centro)
+
+		datos_profesionales = []
+
+		for profesional in profesionales:
+			datos_profesional = {
+				'nombre': profesional.nombre,
+				'rut': profesional.rut,
+				'idCentro': profesional.idCentro.id,
+				'idArea': profesional.idArea.id,
+				'idCargo': profesional.idCargo.id,
+				'idCoordinador': profesional.idCoordinador.id,
+			}
+
+			datos_profesionales.append(datos_profesional)
+
+		datos = {'message': 'Success', 'profesionales': datos_profesionales}
+		return JsonResponse(datos)
+
+	def get_proffesional(self, request, id_profesional):
+		try:
+			profesional = Profesional.objects.get(id=id_profesional)
+		except Profesional.DoesNotExist:
+			datos = {'message': 'Profesional no encontrado'}
+			return JsonResponse(datos, status=404)
+
+		turnos = Turno.objects.filter(idProfesional=profesional)
+		pagos = Pago.objects.filter(idProfesional=profesional)
+
+		datos_profesional = {
+			'nombre': profesional.nombre,
+			'rut': profesional.rut,
+			'idCentro': profesional.idCentro.id,
+			'idArea': profesional.idArea.id,
+			'idCargo': profesional.idCargo.id,
+			'idCoordinador': profesional.idCoordinador.id,
+			'turnos': [{'tipoTurno': turno.tipoTurno, 'fechaInicio': turno.fechaInicio, 'horaInicio': turno.horaInicio,
+						'fechaTermino': turno.fechaTermino, 'horaTermino': turno.horaTermino} for turno in turnos],
+			'pagos': [{'sueldoBase': pago.sueldoBase, 'gratificacion': pago.gratificacion, 'horaExtra': pago.horaExtra,
+					   'bonos': pago.bonos, 'aguinaldo': pago.aguinaldo, 'vacaciones': pago.vacaciones,
+					   'viatico': pago.viatico, 'asignacionFamiliar': pago.asignacionFamiliar,
+					   'colacion': pago.colacion, 'movilizacion': pago.movilizacion, 'salaCuna': pago.salaCuna,
+					   'totalHaberes': pago.totalHaberes, 'totalImponible': pago.totalImponible, 'afp': pago.afp,
+					   'isapre': pago.isapre, 'fonasa': pago.fonasa, 'segCes': pago.segCes,
+					   'imptoUnico': pago.imptoUnico, 'ctaAfp': pago.ctaAfp, 'anticipos': pago.anticipos,
+					   'descuento': pago.descuento, 'ley3': pago.ley3, 'totalDescuento': pago.totalDescuento,
+					   'liquido': pago.liquido, 'fechaPago': pago.fechaPago} for pago in pagos],
+		}
+
+		datos = {'message': 'Success', 'profesional': datos_profesional}
 		return JsonResponse(datos)
 
 
