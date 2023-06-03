@@ -257,7 +257,7 @@ class ProfesionalView(View):
 	def post(self, request):
 		json_data = json.loads(request.body)
 		#Profesional.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], idCargo=json_data['idCargo'],idCoordinador=json_data['idCoordinador'])
-		Profesional.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], idCentro=json_data['idCentro'], idArea=['idArea'])
+		Profesional.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], idCentro=json_data['idCentro'], idArea=['idArea'], idCargo=json_data['idCargo'])
 		datos = {'message':"Success"}
 		return JsonResponse(datos)
 
@@ -270,7 +270,7 @@ class ProfesionalView(View):
 			profesional.rut=json_data['rut']
 			profesional.idCentro=json_data['idCentro']
 			profesional.idArea=json_data['idArea']
-			#profesional.idCargo=json_data['idCargo']
+			profesional.idCargo=json_data['idCargo']
 			#profesional.idCoordinador=json_data['idCoordinador']
 			profesional.save()
 			datos={'message':"Success"}

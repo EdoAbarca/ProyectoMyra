@@ -64,7 +64,7 @@ class Profesional(models.Model):
     rut = models.CharField(max_length=15)
     idCentro = models.ForeignKey(Centro, on_delete=models.CASCADE)
     idArea = models.ForeignKey(Area, on_delete=models.CASCADE)
-    #idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
+    idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
     #idCoordinador = models.ForeignKey(Coordinador, on_delete=models.CASCADE)
 
 class Pago(models.Model):
