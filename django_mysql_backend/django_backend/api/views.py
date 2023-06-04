@@ -636,13 +636,13 @@ class SearchView(View):
 		return JsonResponse(datos)
 
 
-class FilterPositionView(View):
+class FilterAreaView(View):
 	@method_decorator(csrf_exempt)
 	def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
 		return super().dispatch(request, *args, **kwargs)
 
-	def get(self, request, id_cargo=0):
-		profesionales = Profesional.objects.filter(idCargo_id=id_cargo)
+	def get(self, request, id_area=0):
+		profesionales = Profesional.objects.filter(idArea_id=id_area)
 
 		datos_profesionales = []
 
