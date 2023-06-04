@@ -239,12 +239,38 @@ class ProfesionalView(View):
 
 	def get(self, request, id=0):
 		if(id > 0):
-			profesionales = list(Profesional.objects.filter(id=id).values())
-			if len(profesionales)>0:
-				profesional = profesionales[0]
-				datos = {'message': "Success", 'profesional':profesional}
-			else:
-				datos = {'message': "Profesional no encontrado."}
+			try:
+				profesional = Profesional.objects.get(id=id)
+			except Profesional.DoesNotExist:
+				datos = {'message': 'Profesional no encontrado'}
+				return JsonResponse(datos, status=404)
+
+			turnos = Turno.objects.filter(idProfesional_id=id)
+			pagos = Pago.objects.filter(idProfesional_id=id)
+
+			datos_profesional = {
+				'nombre': profesional.nombre,
+				'rut': profesional.rut,
+				'idCentro': profesional.idCentro.id,
+				'idArea': profesional.idArea.id,
+				'idCargo': profesional.idCargo.id,
+				#'idCoordinador': profesional.idCoordinador.id,
+				'turnos': [
+					{'tipoTurno': turno.tipoTurno, 'fechaInicio': turno.fechaInicio, 'horaInicio': turno.horaInicio,
+					 'fechaTermino': turno.fechaTermino, 'horaTermino': turno.horaTermino} for turno in turnos],
+				'pagos': [
+					{'sueldoBase': pago.sueldoBase, 'gratificacion': pago.gratificacion, 'horaExtra': pago.horaExtra,
+					 'bonos': pago.bonos, 'aguinaldo': pago.aguinaldo, 'vacaciones': pago.vacaciones,
+					 'viatico': pago.viatico, 'asignacionFamiliar': pago.asignacionFamiliar,
+					 'colacion': pago.colacion, 'movilizacion': pago.movilizacion, 'salaCuna': pago.salaCuna,
+					 'totalHaberes': pago.totalHaberes, 'totalImponible': pago.totalImponible, 'afp': pago.afp,
+					 'isapre': pago.isapre, 'fonasa': pago.fonasa, 'segCes': pago.segCes,
+					 'imptoUnico': pago.imptoUnico, 'ctaAfp': pago.ctaAfp, 'anticipos': pago.anticipos,
+					 'descuento': pago.descuento, 'ley3': pago.ley3, 'totalDescuento': pago.totalDescuento,
+					 'liquido': pago.liquido, 'fechaPago': pago.fechaPago} for pago in pagos],
+			}
+
+			datos = {'message': 'Success', 'profesional': datos_profesional}
 			return JsonResponse(datos)
 		else:
 			profesionales = list(Profesional.objects.values())
@@ -591,6 +617,76 @@ class AsistenciaView(View):
 		return JsonResponse(datos)
 
 
+class SearchView(View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+		return super().dispatch(request, *args, **kwargs)
+
+	def get(self, request):
+		query = request.GET.get('query', '')
+		profesionales = Profesional.objects.filter(
+			Q(nombre__icontains=query) | Q(rut__icontains=query)
+		).values()
+
+		if profesionales.exists:
+			datos = {'message': 'Success', 'profesionales': list(profesionales)}
+		else:
+			datos = {'message': 'No se encontraron coincidencias'}
+
+		return JsonResponse(datos)
+
+
+class FilterPositionView(View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+		return super().dispatch(request, *args, **kwargs)
+
+	def get(self, request, id_cargo=0):
+		profesionales = Profesional.objects.filter(idCargo_id=id_cargo)
+
+		datos_profesionales = []
+
+		for profesional in profesionales:
+			datos_profesional = {
+				'nombre': profesional.nombre,
+				'rut': profesional.rut,
+				'idCentro': profesional.idCentro.id,
+				'idArea': profesional.idArea.id,
+				'idCargo': profesional.idCargo.id,
+				#'idCoordinador': profesional.idCoordinador.id,
+			}
+
+			datos_profesionales.append(datos_profesional)
+
+		datos = {'message': 'Success', 'profesionales': datos_profesionales}
+		return JsonResponse(datos)
+
+class FilterCenterView(View):
+
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+		return super().dispatch(request, *args, **kwargs)
+	def get(self, request, id_centro):
+		profesionales = Profesional.objects.filter(idCentro_id=id_centro)
+
+		datos_profesionales = []
+
+		for profesional in profesionales:
+			datos_profesional = {
+				'nombre': profesional.nombre,
+				'rut': profesional.rut,
+				'idCentro': profesional.idCentro.id,
+				'idArea': profesional.idArea.id,
+				'idCargo': profesional.idCargo.id,
+				#'idCoordinador': profesional.idCoordinador.id,
+			}
+
+			datos_profesionales.append(datos_profesional)
+
+		datos = {'message': 'Success', 'profesionales': datos_profesionales}
+		return JsonResponse(datos)
+
+'''
 class MyraView(View):
 	@method_decorator(csrf_exempt)
 	def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
@@ -680,7 +776,7 @@ class MyraView(View):
 
 		datos = {'message': 'Success', 'profesional': datos_profesional}
 		return JsonResponse(datos)
-
+'''
 
 #############################################################################################
 
