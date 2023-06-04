@@ -12,7 +12,7 @@ urlpatterns=[
     path('centro/<int:id>', CentroView.as_view()),
 
     path('search-profesional/', SearchView.as_view(), name='search-profesional'),
-    path('filter-position/<int:id_cargo>/', FilterAreaView.as_view(), name='filter-position'),
+    path('filter-position/<int:id_area>/', FilterAreaView.as_view(), name='filter-position'),
     path('filter-center/<int:id_centro>/', FilterCenterView.as_view(), name='filter-center'),
     #path('get-profesional/<int:id_profesional>/', MyraView.as_view(), name='get-profesional'),
 
