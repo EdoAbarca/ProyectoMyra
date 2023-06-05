@@ -484,7 +484,7 @@ class ZonaView(View):
 
 	def post(self, request):
 		json_data = json.loads(request.body)
-		Zona.objects.create(nombreZona=json_data['nombreZona'], idRegion=json_data['idRegion'])
+		Zona.objects.create(nombreZona=json_data['nombreZona'])
 		datos = {'message': "Success"}
 		return JsonResponse(datos)
 
@@ -494,7 +494,6 @@ class ZonaView(View):
 		if len(zonas) > 0:
 			zonas = Zona.objects.get(id=id)
 			zonas.nombreZona = json_data['nombreZona']
-			zonas.idRegion = json_data['idRegion']
 			zonas.save()
 			datos = {'message': "Success"}
 		else:
@@ -560,6 +559,118 @@ class ClienteView(View):
 		return JsonResponse(datos)
 
 #Pendiente: Paciente, Turno
+
+class PacienteView(View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+		return super().dispatch(request, *args, **kwargs)
+
+	def get(self, request, id=0):
+		if (id > 0):
+			pacientes = list(Paciente.objects.filter(id=id).values())
+			if len(pacientes) > 0:
+				paciente = pacientes[0]
+				datos = {'message': "Success", 'paciente': paciente}
+			else:
+				datos = {'message': "Paciente no encontrado."}
+			return JsonResponse(datos)
+		else:
+			pacientes = list(Paciente.objects.values())
+			if len(pacientes) > 0:
+				datos = {'message': "Success", 'pacientes': pacientes}
+			else:
+				datos = {'message': "Sin pacientes."}
+			return JsonResponse(datos)
+
+	def post(self, request):
+		json_data = json.loads(request.body)
+		Paciente.objects.create(nombre=json_data['nombre'], fechaInicioAtencion=json_data['fechaInicioAtencion'],
+								vigente=json_data['vigente'], idZona=json_data['idZona'], idRegion=json_data['idRegion'],
+								idCliente=json_data['idCliente'])
+		datos = {'message': "Success"}
+		return JsonResponse(datos)
+
+	def put(self, request, id):
+		json_data = json.loads(request.body)
+		pacientes = list(Paciente.objects.filter(id=id).values())
+		if len(pacientes) > 0:
+			pacientes = Paciente.objects.get(id=id)
+			pacientes.nombre = json_data['nombre']
+			pacientes.fechaInicioAtencion=json_data['fechaInicioAtencion']
+			pacientes.vigente=json_data['vigente']
+			pacientes.idZona=json_data['idZona']
+			pacientes.idRegion=json_data['idRegion']
+			pacientes.idCliente=json_data['idCliente']
+			pacientes.save()
+			datos = {'message': "Success"}
+		else:
+			datos = {'message': "Paciente no encontrado"}
+		return JsonResponse(datos)
+
+	def delete(self, request, id):
+		pacientes = list(Paciente.objects.filter(id=id).values())
+		if len(pacientes) > 0:
+			Paciente.objects.filter(id=id).delete()
+			datos = {'message': "Success"}
+		else:
+			datos = {'message': "Paciente no encontrado"}
+		return JsonResponse(datos)
+
+class TurnoView(View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+		return super().dispatch(request, *args, **kwargs)
+
+	def get(self, request, id=0):
+		if (id > 0):
+			turnos = list(Turno.objects.filter(id=id).values())
+			if len(turnos) > 0:
+				turno = turnos[0]
+				datos = {'message': "Success", 'turno': turno}
+			else:
+				datos = {'message': "Turno no encontrado."}
+			return JsonResponse(datos)
+		else:
+			turnos = list(Turno.objects.values())
+			if len(turnos) > 0:
+				datos = {'message': "Success", 'turnos': turnos}
+			else:
+				datos = {'message': "Sin turnos."}
+			return JsonResponse(datos)
+
+	def post(self, request):
+		json_data = json.loads(request.body)
+		Turno.objects.create(tipoTurno=json_data['tipoTurno'], fechaInicio=json_data['fechaInicio'],
+							 fechaTermino=json_data['fechaTermino'], horas=json_data['horas'],
+							 idPaciente=json_data['idPaciente'], idProfesional=json_data['idProfesional'])
+		datos = {'message': "Success"}
+		return JsonResponse(datos)
+
+	def put(self, request, id):
+		json_data = json.loads(request.body)
+		turnos = list(Turno.objects.filter(id=id).values())
+		if len(turnos) > 0:
+			turnos = Turno.objects.get(id=id)
+			turnos.tipoTurno=json_data['tipoTurno']
+			turnos.fechaInicio=json_data['fechaInicio']
+			turnos.fechaTermino=json_data['fechaTermino']
+			turnos.horas=json_data['horas']
+			turnos.idPaciente=json_data['idPaciente']
+			turnos.idProfesional=json_data['idProfesional']
+			pacientes.save()
+			datos = {'message': "Success"}
+		else:
+			datos = {'message': "Turno no encontrado"}
+		return JsonResponse(datos)
+
+	def delete(self, request, id):
+		turnos = list(Turno.objects.filter(id=id).values())
+		if len(turnos) > 0:
+			Turno.objects.filter(id=id).delete()
+			datos = {'message': "Success"}
+		else:
+			datos = {'message': "Turno no encontrado"}
+		return JsonResponse(datos)
 
 class AsistenciaView(View):
 	@method_decorator(csrf_exempt)

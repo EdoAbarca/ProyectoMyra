@@ -43,6 +43,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 #cambios que se pueden hacer:
 #cambiar cargo por contrato
 #poner atributo cargo a profesional
+#eliminar atributos de fecha de contrato
 class Cargo(models.Model):
     cargo = models.CharField(max_length=15)
     tipoContrato = models.CharField(max_length=15)
@@ -100,25 +101,23 @@ class Region(models.Model):
 
 class Zona(models.Model):
     nombreZona = models.CharField(max_length=70)
-    idRegion = models.ForeignKey(Region, on_delete=models.CASCADE)
 
 class Cliente(models.Model):
     nombreCliente = models.CharField(max_length=70)
 
 class Paciente(models.Model):
     nombre = models.CharField(max_length=70)
-    rut = models.CharField(max_length=15)
     fechaInicioAtencion = models.DateField()
     vigente = models.BooleanField()
+    idZona = models.ForeignKey(Zona, on_delete=models.CASCADE)
     idRegion = models.ForeignKey(Region, on_delete=models.CASCADE)
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
 class Turno(models.Model):
     tipoTurno = models.CharField(max_length=10)
     fechaInicio = models.DateField()
-    horaInicio = models.TimeField()
     fechaTermino = models.DateField()
-    horaTermino = models.TimeField()
+    horas = models.IntegerField()
     idPaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     idProfesional = models.ForeignKey(Profesional, on_delete=models.CASCADE)
 
