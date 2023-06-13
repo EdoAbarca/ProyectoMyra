@@ -40,18 +40,15 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     
 ##########################################################################
 
-#cambios que se pueden hacer:
-#cambiar cargo por contrato
-#poner atributo cargo a profesional
-#eliminar atributos de fecha de contrato
 class Cargo(models.Model):
     cargo = models.CharField(max_length=15)
+
+class Contrato(models.Model):
     tipoContrato = models.CharField(max_length=15)
-    fechaInicio = models.DateField()
-    fechaTermino = models.DateField()
 
 class Coordinador(models.Model):
     nombre = models.CharField(max_length=50)
+    #rut
     idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
 
 class Centro(models.Model):
@@ -63,10 +60,16 @@ class Area(models.Model):
 class Profesional(models.Model):
     nombre = models.CharField(max_length=50)
     rut = models.CharField(max_length=15)
+    inasistencias = models.IntegerField()
+    horasTotales = models.IntegerField()
+    horasExtras = models.IntegerField()
+    vacaciones = models.IntegerField()
+    licencia = models.IntegerField()
     idCentro = models.ForeignKey(Centro, on_delete=models.CASCADE)
     idArea = models.ForeignKey(Area, on_delete=models.CASCADE)
     idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
-    #idCoordinador = models.ForeignKey(Coordinador, on_delete=models.CASCADE)
+    idContrato = models.ForeignKey(Contrato, on_delete=models.CASCADE)
+    idCoordinador = models.ForeignKey(Coordinador, on_delete=models.CASCADE)
 
 class Pago(models.Model):
     sueldoBase = models.IntegerField()
@@ -107,6 +110,7 @@ class Cliente(models.Model):
 
 class Paciente(models.Model):
     nombre = models.CharField(max_length=70)
+    #rut = models.CharField(max_length=15)
     fechaInicioAtencion = models.DateField()
     vigente = models.BooleanField()
     idZona = models.ForeignKey(Zona, on_delete=models.CASCADE)
@@ -126,10 +130,13 @@ class Asistencia(models.Model):
     asisteProfesional = models.BooleanField()
     estado = models.IntegerField()
     idProfesional = models.ForeignKey(Profesional, on_delete=models.CASCADE)
-    #idTurno = models.ForeignKey(Turno, on_delete=models.CASCADE)
+    idPaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
+    idTurno = models.ForeignKey(Turno, on_delete=models.CASCADE)
     #idPago = models.ForeignKey(Pago, on_delete=models.CASCADE)
 
 class Alerta(models.Model):
+    #tipo = char
+    #profesionales = lista o un solo profesional (id)
     fechaAlerta = models.DateField()
     descripcion = models.CharField(max_length=200)
     idPaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)

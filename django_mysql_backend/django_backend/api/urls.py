@@ -12,6 +12,10 @@ urlpatterns=[
     path('centro/<int:id>', CentroView.as_view()),
     path('cargo/', CargoView.as_view()),
     path('cargo/<int:id>', CargoView.as_view()),
+    path('contrato/', ContratoView.as_view()),
+    path('contrato/<int:id>', ContratoView.as_view()),
+    path('coordinador/', CoordinadorView.as_view()),
+    path('coordinador/<int:id>', CoordinadorView.as_view()),
     path('pago/', PagoView.as_view()),
     path('pago/<int:id>', PagoView.as_view()),
     path('region/', RegionView.as_view()),
@@ -33,9 +37,3 @@ urlpatterns=[
 	path('user', views.UserView.as_view(), name='user'),
     
 ]
-
-'''
-    path('coordinador/', CoordinadorView.as_view()),
-    path('coordinador/<int:id>', CoordinadorView.as_view()),
-
-    '''

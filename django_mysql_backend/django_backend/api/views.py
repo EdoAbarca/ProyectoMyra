@@ -53,8 +53,7 @@ class CargoView(View):
 
 	def post(self, request):
 		json_data = json.loads(request.body)
-		Cargo.objects.create(cargo=json_data['cargo'], tipoContrato=json_data['tipoContrato'],
-							 fechaInicio=json_data['fechaInicio'], fechaTermino=json_data['fechaTermino'])
+		Cargo.objects.create(cargo=json_data['cargo'])
 		datos = {'message': "Success"}
 		return JsonResponse(datos)
 
@@ -63,10 +62,7 @@ class CargoView(View):
 		cargos = list(Cargo.objects.filter(id=id).values())
 		if len(cargos)>0:
 			cargos = Cargo.objects.get(id=id)
-			cargos.cargos=json_data['cargos']
-			cargos.tipoContrato=json_data['tipoContrato']
-			cargos.fechaInicio=json_data['fechaInicio']
-			cargos.fechaTermino=json_data['fechaTermino']
+			cargos.cargo=json_data['cargos']
 			cargos.save()
 			datos={'message':"Success"}
 		else:
@@ -82,6 +78,54 @@ class CargoView(View):
 			datos = {'message':"Cargo no encontrado"}
 		return JsonResponse(datos)
 
+class ContratoView(View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+		return super().dispatch(request, *args, **kwargs)
+
+	def get(self, request, id=0):
+		if(id > 0):
+			contratos = list(Contrato.objects.filter(id=id).values())
+			if len(contratos)>0:
+				contrato = contratos[0]
+				datos = {'message': "Success", 'contrato':contrato}
+			else:
+				datos = {'message': "Contrato no encontrado."}
+			return JsonResponse(datos)
+		else:
+			contratos = list(Contrato.objects.values())
+			if len(contratos)>0:
+				datos = {'message': "Success", 'contratos':contratos}
+			else:
+				datos = {'message': "Sin contratos."}
+			return JsonResponse(datos)
+
+	def post(self, request):
+		json_data = json.loads(request.body)
+		Contrato.objects.create(tipoContrato=json_data['tipoContrato'])
+		datos = {'message': "Success"}
+		return JsonResponse(datos)
+
+	def put(self, request, id):
+		json_data = json.loads(request.body)
+		contratos = list(Contrato.objects.filter(id=id).values())
+		if len(contratos)>0:
+			contratos = Contrato.objects.get(id=id)
+			contratos.tipoContrato=json_data['tipoContrato']
+			contratos.save()
+			datos={'message':"Success"}
+		else:
+			datos={'message':"Contrato no encontrado"}
+		return JsonResponse(datos)
+
+	def delete(self, request, id):
+		contratos = list(Contrato.objects.filter(id=id).values())
+		if len(contratos) > 0:
+			Contrato.objects.filter(id=id).delete()
+			datos = {'message':"Success"}
+		else:
+			datos = {'message':"Contrato no encontrado"}
+		return JsonResponse(datos)
 
 class CoordinadorView(View):
 	@method_decorator(csrf_exempt)
@@ -251,10 +295,16 @@ class ProfesionalView(View):
 			datos_profesional = {
 				'nombre': profesional.nombre,
 				'rut': profesional.rut,
+				'inasistencias': profesional.inasistencias,
+				'horasTotales': profesional.horasTotales,
+				'horasExtras': profesional.horasExtras,
+				'vacaciones': profesional.vacaciones,
+				'licencia': profesional.licencia,
 				'idCentro': profesional.idCentro.id,
 				'idArea': profesional.idArea.id,
 				'idCargo': profesional.idCargo.id,
-				#'idCoordinador': profesional.idCoordinador.id,
+				'idContrato': profesional.idContrato.id,
+				'idCoordinador': profesional.idCoordinador.id,
 				'turnos': [
 					{'tipoTurno': turno.tipoTurno, 'fechaInicio': turno.fechaInicio, 'horaInicio': turno.horaInicio,
 					 'fechaTermino': turno.fechaTermino, 'horaTermino': turno.horaTermino} for turno in turnos],
@@ -284,7 +334,11 @@ class ProfesionalView(View):
 	def post(self, request):
 		json_data = json.loads(request.body)
 		#Profesional.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], idCargo=json_data['idCargo'],idCoordinador=json_data['idCoordinador'])
-		Profesional.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], idCentro=json_data['idCentro'], idArea=['idArea'], idCargo=json_data['idCargo'])
+		Profesional.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], inasistencias=json_data['inasistencias'],
+								   horasTotales=json_data['horasTotales'], horasExtras=json_data['horasExtras'],
+								   vacaciones=json_data['vacaiones'], licencia=json_data['licencia'],
+								   idCentro=json_data['idCentro'], idArea=['idArea'], idCargo=json_data['idCargo'],
+								   idContrato=json_data['idContrato'], idCoordinador=json_data['idCoordinador'])
 		datos = {'message':"Success"}
 		return JsonResponse(datos)
 
@@ -295,10 +349,16 @@ class ProfesionalView(View):
 			profesional = Profesional.objects.get(id=id)
 			profesional.nombre=json_data['nombre']
 			profesional.rut=json_data['rut']
+			profesional.inasistencias=json_data['inasistencias']
+			profesional.horasTotales=json_data['horasTotales']
+			profesional.horasExtras=json_data['horasExtras']
+			profesional.vacaciones=json_data['vacaiones']
+			profesional.licencia=json_data['licencia']
 			profesional.idCentro=json_data['idCentro']
 			profesional.idArea=json_data['idArea']
 			profesional.idCargo=json_data['idCargo']
-			#profesional.idCoordinador=json_data['idCoordinador']
+			profesional.idContrato = json_data['idContrato']
+			profesional.idCoordinador=json_data['idCoordinador']
 			profesional.save()
 			datos={'message':"Success"}
 		else:
@@ -698,7 +758,8 @@ class AsistenciaView(View):
 		json_data = json.loads(request.body)
 		Asistencia.objects.create(fechaAsistencia=json_data['fechaAsistencia'],
 								  asisteProfesional=json_data['asisteProfesional'],estado=json_data['estado'],
-								  idProfesional=json_data['idProfesional'])
+								  idProfesional=json_data['idProfesional'], idPaciente=json_data['idPaciente'],
+								  idTurno=json_data['idTurno'])
 		datos = {'message': "Success"}
 		return JsonResponse(datos)
 
@@ -712,6 +773,8 @@ class AsistenciaView(View):
 			asistencias.asisteProfesional=json_data['asisteProfesional']
 			asistencias.estado=json_data['estado']
 			asistencias.idProfesional=json_data['idProfesional']
+			asistencias.idPaciente=json_data['idPaciente']
+			asistencias.idTurno=json_data['idTurno']
 			asistencias.save()
 			datos = {'message':"Success"}
 		else:
