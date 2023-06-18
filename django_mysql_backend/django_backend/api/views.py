@@ -305,7 +305,9 @@ class ProfesionalView(View):
 				'idArea_id': profesional.idArea.id,
 				'idCargo_id': profesional.idCargo.id,
 				'idContrato_id': profesional.idContrato.id,
+				'tipoContrato': profesional.idContrato.tipoContrato,
 				'idCoordinador_id': profesional.idCoordinador.id,
+				'nombreCoordinador': profesional.idCoordinador.nombre,
 				#'turnos': [
 				#	{'tipoTurno': turno.tipoTurno, 'fechaInicio': turno.fechaInicio, 'horaInicio': turno.horaInicio,
 				#	 'fechaTermino': turno.fechaTermino, 'horaTermino': turno.horaTermino} for turno in turnos],
@@ -655,6 +657,7 @@ class PacienteView(View):
 			datos_paciente = {
 				'nombre': paciente.nombre,
 				'fechaInicioAtencion': paciente.fechaInicioAtencion,
+				#'tipoTurno': paciente.tipoTurno,
 				'vigente': paciente.vigente,
 				'idZona_id': paciente.idZona.id,
 				'idRegion_id': paciente.idRegion.id,
