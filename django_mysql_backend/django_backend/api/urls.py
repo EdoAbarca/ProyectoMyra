@@ -29,6 +29,9 @@ urlpatterns=[
     path('filter-position/<int:id_area>/', FilterAreaView.as_view(), name='filter-position'),
     path('filter-center/<int:id_centro>/', FilterCenterView.as_view(), name='filter-center'),
     #path('get-profesional/<int:id_profesional>/', MyraView.as_view(), name='get-profesional'),
+    path('search-paciente/', SearchPacienteView.as_view(), name='search-paciente'),
+    path('filter-client-type/<int:id_cliente>/', FilterTipoClienteView.as_view(), name='filter-client-type'),
+    path('filter-turn-type/<int:id_turno>/', FilterTipoTurnoView.as_view(), name='filter-turn-type'),
 
     path('cargar_excel', views.cargar_excel),
     path('register', views.UserRegister.as_view(), name='register'),

@@ -890,7 +890,7 @@ class FilterCenterView(View):
 		datos = {'message': 'Success', 'profesionales': datos_profesionales}
 		return JsonResponse(datos)
 
-	class SearchPacienteView(View):
+class SearchPacienteView(View):
 		@method_decorator(csrf_exempt)
 		def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
 			return super().dispatch(request, *args, **kwargs)
@@ -908,7 +908,7 @@ class FilterCenterView(View):
 
 			return JsonResponse(datos)
 
-	class FilterTipoClienteView(View):
+class FilterTipoClienteView(View):
 		@method_decorator(csrf_exempt)
 		def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
 			return super().dispatch(request, *args, **kwargs)
@@ -934,7 +934,7 @@ class FilterCenterView(View):
 			datos = {'message': 'Success', 'pacientes': datos_pacientes}
 			return JsonResponse(datos)
 
-	class FilterTipoTurnoView(View):
+class FilterTipoTurnoView(View):
 		@method_decorator(csrf_exempt)
 		def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
 			return super().dispatch(request, *args, **kwargs)
