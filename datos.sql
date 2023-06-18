@@ -132,3 +132,5 @@ INSERT INTO rotativa_myra.api_asistencia (id, fechaAsistencia, asisteProfesional
 VALUES (3, "2023-03-16", True, 1, 4, 4, 4);
 INSERT INTO rotativa_myra.api_asistencia (id, fechaAsistencia, asisteProfesional, estado, idProfesional_id, idPaciente_id, idTurno_id)
 VALUES (4, "2023-03-03", True, 1, 5, 1, 1);
+
+COMMIT;

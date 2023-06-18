@@ -291,6 +291,7 @@ class ProfesionalView(View):
 
 			turnos = Turno.objects.filter(idProfesional_id=id)
 			pagos = Pago.objects.filter(idProfesional_id=id)
+			asistencias = Asistencia.objects.filter(idProfesional_id=id)
 
 			datos_profesional = {
 				'nombre': profesional.nombre,
@@ -300,14 +301,18 @@ class ProfesionalView(View):
 				'horasExtras': profesional.horasExtras,
 				'vacaciones': profesional.vacaciones,
 				'licencia': profesional.licencia,
-				'idCentro': profesional.idCentro.id,
-				'idArea': profesional.idArea.id,
-				'idCargo': profesional.idCargo.id,
-				'idContrato': profesional.idContrato.id,
-				'idCoordinador': profesional.idCoordinador.id,
-				'turnos': [
-					{'tipoTurno': turno.tipoTurno, 'fechaInicio': turno.fechaInicio, 'horaInicio': turno.horaInicio,
-					 'fechaTermino': turno.fechaTermino, 'horaTermino': turno.horaTermino} for turno in turnos],
+				'idCentro_id': profesional.idCentro.id,
+				'idArea_id': profesional.idArea.id,
+				'idCargo_id': profesional.idCargo.id,
+				'idContrato_id': profesional.idContrato.id,
+				'idCoordinador_id': profesional.idCoordinador.id,
+				#'turnos': [
+				#	{'tipoTurno': turno.tipoTurno, 'fechaInicio': turno.fechaInicio, 'horaInicio': turno.horaInicio,
+				#	 'fechaTermino': turno.fechaTermino, 'horaTermino': turno.horaTermino} for turno in turnos],
+				'asistencias': [
+					{'fechaAsistencia': asistencia.fechaAsistencia, 'asisteProfesional': asistencia.asisteProfesional,
+					 'estado': asistencia.estado, 'nombrePaciente': asistencia.idPaciente.nombre ,
+					 'idTurno_id': asistencia.idTurno.id } for asistencia in asistencias],
 				'pagos': [
 					{'sueldoBase': pago.sueldoBase, 'gratificacion': pago.gratificacion, 'horaExtra': pago.horaExtra,
 					 'bonos': pago.bonos, 'aguinaldo': pago.aguinaldo, 'vacaciones': pago.vacaciones,
@@ -627,12 +632,37 @@ class PacienteView(View):
 
 	def get(self, request, id=0):
 		if (id > 0):
-			pacientes = list(Paciente.objects.filter(id=id).values())
-			if len(pacientes) > 0:
-				paciente = pacientes[0]
-				datos = {'message': "Success", 'paciente': paciente}
-			else:
-				datos = {'message': "Paciente no encontrado."}
+			try:
+				paciente = Paciente.objects.get(id=id)
+			except Paciente.DoesNotExist:
+				datos = {'message': 'Profesional no encontrado'}
+				return JsonResponse(datos, status=404)
+
+			datos_asistencias = []
+			asistencias = Asistencia.objects.filter(idPaciente_id=id)
+			for asistencia in asistencias:
+				datos_asistencia = {
+					'fechaAsistencia': asistencia.fechaAsistencia,
+					'asisteProfesional': asistencia.asisteProfesional,
+					'estado': asistencia.estado,
+					'idTurno_id': asistencia.idTurno.id,
+					'nombreProfesional':asistencia.idProfesional.nombre,
+					'rutProfesional': asistencia.idProfesional.rut,
+					# Agregar más campos según tus necesidades
+				}
+				datos_asistencias.append(datos_asistencia)
+
+			datos_paciente = {
+				'nombre': paciente.nombre,
+				'fechaInicioAtencion': paciente.fechaInicioAtencion,
+				'vigente': paciente.vigente,
+				'idZona_id': paciente.idZona.id,
+				'idRegion_id': paciente.idRegion.id,
+				'idCliente_id': paciente.idCliente.id,
+				'asistencias': datos_asistencias,
+			}
+
+			datos = {'message': 'Success', 'paciente': datos_paciente}
 			return JsonResponse(datos)
 		else:
 			pacientes = list(Paciente.objects.values())
@@ -717,7 +747,7 @@ class TurnoView(View):
 			turnos.horas=json_data['horas']
 			turnos.idPaciente=json_data['idPaciente']
 			turnos.idProfesional=json_data['idProfesional']
-			pacientes.save()
+			turnos.save()
 			datos = {'message': "Success"}
 		else:
 			datos = {'message': "Turno no encontrado"}
@@ -824,9 +854,9 @@ class FilterAreaView(View):
 			datos_profesional = {
 				'nombre': profesional.nombre,
 				'rut': profesional.rut,
-				'idCentro': profesional.idCentro.id,
-				'idArea': profesional.idArea.id,
-				'idCargo': profesional.idCargo.id,
+				'idCentro_id': profesional.idCentro.id,
+				'idArea_id': profesional.idArea.id,
+				'idCargo_id': profesional.idCargo.id,
 				#'idCoordinador': profesional.idCoordinador.id,
 			}
 
@@ -849,9 +879,9 @@ class FilterCenterView(View):
 			datos_profesional = {
 				'nombre': profesional.nombre,
 				'rut': profesional.rut,
-				'idCentro': profesional.idCentro.id,
-				'idArea': profesional.idArea.id,
-				'idCargo': profesional.idCargo.id,
+				'idCentro_id': profesional.idCentro.id,
+				'idArea_id': profesional.idArea.id,
+				'idCargo_id': profesional.idCargo.id,
 				#'idCoordinador': profesional.idCoordinador.id,
 			}
 
@@ -859,6 +889,77 @@ class FilterCenterView(View):
 
 		datos = {'message': 'Success', 'profesionales': datos_profesionales}
 		return JsonResponse(datos)
+
+	class SearchPacienteView(View):
+		@method_decorator(csrf_exempt)
+		def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+			return super().dispatch(request, *args, **kwargs)
+
+		def get(self, request):
+			query = request.GET.get('query', '')
+			pacientes = Paciente.objects.filter(
+				Q(nombre__icontains=query) | Q(rut__icontains=query)
+			).values()
+
+			if pacientes.exists:
+				datos = {'message': 'Success', 'pacientes': list(pacientes)}
+			else:
+				datos = {'message': 'No se encontraron coincidencias'}
+
+			return JsonResponse(datos)
+
+	class FilterTipoClienteView(View):
+		@method_decorator(csrf_exempt)
+		def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+			return super().dispatch(request, *args, **kwargs)
+
+		def get(self, request, id_cliente=0):
+			pacientes = Paciente.objects.filter(idCliente_id=id_cliente)
+
+			datos_pacientes = []
+
+			for paciente in pacientes:
+				datos_paciente = {
+					'nombre': paciente.nombre,
+					'rut': paciente.rut,
+					'fechaInicioAtencion': paciente.fechaInicioAtencion,
+					'vigente': paciente.vigente,
+					'idZona_id': paciente.idZona.id,
+					'idRegion_id': paciente.idRegion.id,
+					'idCliente_id': paciente.idCliente.id,
+				}
+
+				datos_pacientes.append(datos_paciente)
+
+			datos = {'message': 'Success', 'pacientes': datos_pacientes}
+			return JsonResponse(datos)
+
+	class FilterTipoTurnoView(View):
+		@method_decorator(csrf_exempt)
+		def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+			return super().dispatch(request, *args, **kwargs)
+
+		def get(self, request, id_turno=0):
+			pacientes = Paciente.objects.filter(idTurno_id=id_turno)
+
+			datos_pacientes = []
+
+			for paciente in pacientes:
+				datos_paciente = {
+					'nombre': paciente.nombre,
+					'rut': paciente.rut,
+					'fechaInicioAtencion': paciente.fechaInicioAtencion,
+					'vigente': paciente.vigente,
+					'idZona_id': paciente.idZona.id,
+					'idRegion_id': paciente.idRegion.id,
+					'idCliente_id': paciente.idCliente.id,
+				}
+
+				datos_pacientes.append(datos_paciente)
+
+			datos = {'message': 'Success', 'pacientes': datos_pacientes}
+			return JsonResponse(datos)
+
 
 '''
 class MyraView(View):
