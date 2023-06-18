@@ -46,25 +46,29 @@ class Cargo(models.Model):
 class Contrato(models.Model):
     tipoContrato = models.CharField(max_length=15)
 
-class Coordinador(models.Model):
-    nombre = models.CharField(max_length=50)
-    #rut
-    idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
-
 class Centro(models.Model):
     nombreCentro = models.CharField(max_length=30)
+
+class Coordinador(models.Model):
+    nombre = models.CharField(max_length=50)
+    rut = models.CharField(max_length=15)
+    idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
+    idCentro = models.ForeignKey(Centro, on_delete=models.CASCADE)
 
 class Area(models.Model):
     nombreArea = models.CharField(max_length=30)
 
+#llas estadisticas podrian ponerse en otra entidad para cada profesional
 class Profesional(models.Model):
     nombre = models.CharField(max_length=50)
     rut = models.CharField(max_length=15)
+    #
     inasistencias = models.IntegerField()
     horasTotales = models.IntegerField()
     horasExtras = models.IntegerField()
     vacaciones = models.IntegerField()
     licencia = models.IntegerField()
+    #
     idCentro = models.ForeignKey(Centro, on_delete=models.CASCADE)
     idArea = models.ForeignKey(Area, on_delete=models.CASCADE)
     idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
@@ -110,7 +114,8 @@ class Cliente(models.Model):
 
 class Paciente(models.Model):
     nombre = models.CharField(max_length=70)
-    #rut = models.CharField(max_length=15)
+    rut = models.CharField(max_length=15)
+    tipoTurno = models.CharField(max_length=10)
     fechaInicioAtencion = models.DateField()
     vigente = models.BooleanField()
     idZona = models.ForeignKey(Zona, on_delete=models.CASCADE)
@@ -118,7 +123,6 @@ class Paciente(models.Model):
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
 class Turno(models.Model):
-    tipoTurno = models.CharField(max_length=10)
     fechaInicio = models.DateField()
     fechaTermino = models.DateField()
     horas = models.IntegerField()

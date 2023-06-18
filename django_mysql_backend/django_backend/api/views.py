@@ -61,9 +61,9 @@ class CargoView(View):
 		json_data = json.loads(request.body)
 		cargos = list(Cargo.objects.filter(id=id).values())
 		if len(cargos)>0:
-			cargos = Cargo.objects.get(id=id)
-			cargos.cargo=json_data['cargos']
-			cargos.save()
+			cargo = Cargo.objects.get(id=id)
+			cargo.cargo=json_data['cargos']
+			cargo.save()
 			datos={'message':"Success"}
 		else:
 			datos={'message':"Cargo no encontrado"}
@@ -127,56 +127,6 @@ class ContratoView(View):
 			datos = {'message':"Contrato no encontrado"}
 		return JsonResponse(datos)
 
-class CoordinadorView(View):
-	@method_decorator(csrf_exempt)
-	def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-		return super().dispatch(request, *args, **kwargs)
-
-	def get(self, request, id=0):
-		if (id > 0):
-			coordinadores = list(Coordinador.objects.filter(id=id).values())
-			if len(coordinadores) > 0:
-				coordinador = coordinadores[0]
-				datos = {'message': "Success", 'coordinador': coordinador}
-			else:
-				datos = {'message': "Coordinador no encontrado."}
-			return JsonResponse(datos)
-		else:
-			coordinadores = list(Coordinador.objects.values())
-			if len(coordinadores) > 0:
-				datos = {'message': "Success", 'coordinadores': coordinadores}
-			else:
-				datos = {'message': "Sin coordinadores."}
-			return JsonResponse(datos)
-
-	def post(self, request):
-		json_data = json.loads(request.body)
-		Coordinador.objects.create(nombre=json_data['nombre'], idCargo=json_data['idCargo'])
-		datos = {'message': "Success"}
-		return JsonResponse(datos)
-
-	def put(self, request, id):
-		json_data = json.loads(request.body)
-		coordinadores = list(Coordinador.objects.filter(id=id).values())
-		if len(coordinadores) > 0:
-			coordinador = Coordinador.objects.get(id=id)
-			coordinador.nombre = json_data['nombre']
-			coordinador.idCargo = json_data['idCargo']
-			coordinador.save()
-			datos = {'message': "Success"}
-		else:
-			datos = {'message': "Coordinador no encontrado"}
-		return JsonResponse(datos)
-
-	def delete(self, request, id):
-		coordinadores = list(Coordinador.objects.filter(id=id).values())
-		if len(coordinadores) > 0:
-			Coordinador.objects.filter(id=id).delete()
-			datos = {'message': "Success"}
-		else:
-			datos = {'message': "Coordinador no encontrado"}
-		return JsonResponse(datos)
-
 class CentroView(View):
 	@method_decorator(csrf_exempt)
 	def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
@@ -225,6 +175,60 @@ class CentroView(View):
 		else:
 			datos = {'message': "Centro no encontrado"}
 		return JsonResponse(datos)
+
+class CoordinadorView(View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+		return super().dispatch(request, *args, **kwargs)
+
+	def get(self, request, id=0):
+		if (id > 0):
+			coordinadores = list(Coordinador.objects.filter(id=id).values())
+			if len(coordinadores) > 0:
+				coordinador = coordinadores[0]
+				datos = {'message': "Success", 'coordinador': coordinador}
+			else:
+				datos = {'message': "Coordinador no encontrado."}
+			return JsonResponse(datos)
+		else:
+			coordinadores = list(Coordinador.objects.values())
+			if len(coordinadores) > 0:
+				datos = {'message': "Success", 'coordinadores': coordinadores}
+			else:
+				datos = {'message': "Sin coordinadores."}
+			return JsonResponse(datos)
+
+	def post(self, request):
+		json_data = json.loads(request.body)
+		Coordinador.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], idCargo=json_data['idCargo'],
+								   idCentro=json_data['idCentro'])
+		datos = {'message': "Success"}
+		return JsonResponse(datos)
+
+	def put(self, request, id):
+		json_data = json.loads(request.body)
+		coordinadores = list(Coordinador.objects.filter(id=id).values())
+		if len(coordinadores) > 0:
+			coordinador = Coordinador.objects.get(id=id)
+			coordinador.nombre = json_data['nombre']
+			coordinador.rut=json_data['rut']
+			coordinador.idCargo = json_data['idCargo']
+			coordinador.idCentro=json_data['idCentro']
+			coordinador.save()
+			datos = {'message': "Success"}
+		else:
+			datos = {'message': "Coordinador no encontrado"}
+		return JsonResponse(datos)
+
+	def delete(self, request, id):
+		coordinadores = list(Coordinador.objects.filter(id=id).values())
+		if len(coordinadores) > 0:
+			Coordinador.objects.filter(id=id).delete()
+			datos = {'message': "Success"}
+		else:
+			datos = {'message': "Coordinador no encontrado"}
+		return JsonResponse(datos)
+
 
 class AreaView(View):
 	@method_decorator(csrf_exempt)
@@ -656,8 +660,9 @@ class PacienteView(View):
 
 			datos_paciente = {
 				'nombre': paciente.nombre,
+				'rut': paciente.rut,
+				'tipoTurno': paciente.tipoTurno,
 				'fechaInicioAtencion': paciente.fechaInicioAtencion,
-				#'tipoTurno': paciente.tipoTurno,
 				'vigente': paciente.vigente,
 				'idZona_id': paciente.idZona.id,
 				'idRegion_id': paciente.idRegion.id,
@@ -677,7 +682,8 @@ class PacienteView(View):
 
 	def post(self, request):
 		json_data = json.loads(request.body)
-		Paciente.objects.create(nombre=json_data['nombre'], fechaInicioAtencion=json_data['fechaInicioAtencion'],
+		Paciente.objects.create(nombre=json_data['nombre'], rut=json_data['rut'],
+								tipoTurno=json_data['tipoTurno'], fechaInicioAtencion=json_data['fechaInicioAtencion'],
 								vigente=json_data['vigente'], idZona=json_data['idZona'], idRegion=json_data['idRegion'],
 								idCliente=json_data['idCliente'])
 		datos = {'message': "Success"}
@@ -687,14 +693,16 @@ class PacienteView(View):
 		json_data = json.loads(request.body)
 		pacientes = list(Paciente.objects.filter(id=id).values())
 		if len(pacientes) > 0:
-			pacientes = Paciente.objects.get(id=id)
-			pacientes.nombre = json_data['nombre']
-			pacientes.fechaInicioAtencion=json_data['fechaInicioAtencion']
-			pacientes.vigente=json_data['vigente']
-			pacientes.idZona=json_data['idZona']
-			pacientes.idRegion=json_data['idRegion']
-			pacientes.idCliente=json_data['idCliente']
-			pacientes.save()
+			paciente = Paciente.objects.get(id=id)
+			paciente.nombre = json_data['nombre']
+			paciente.rut = json_data['rut']
+			paciente.tipoTurno = json_data['tipoTurno']
+			paciente.fechaInicioAtencion=json_data['fechaInicioAtencion']
+			paciente.vigente=json_data['vigente']
+			paciente.idZona=json_data['idZona']
+			paciente.idRegion=json_data['idRegion']
+			paciente.idCliente=json_data['idCliente']
+			paciente.save()
 			datos = {'message': "Success"}
 		else:
 			datos = {'message': "Paciente no encontrado"}
@@ -733,7 +741,7 @@ class TurnoView(View):
 
 	def post(self, request):
 		json_data = json.loads(request.body)
-		Turno.objects.create(tipoTurno=json_data['tipoTurno'], fechaInicio=json_data['fechaInicio'],
+		Turno.objects.create(fechaInicio=json_data['fechaInicio'],
 							 fechaTermino=json_data['fechaTermino'], horas=json_data['horas'],
 							 idPaciente=json_data['idPaciente'], idProfesional=json_data['idProfesional'])
 		datos = {'message': "Success"}
@@ -744,7 +752,6 @@ class TurnoView(View):
 		turnos = list(Turno.objects.filter(id=id).values())
 		if len(turnos) > 0:
 			turnos = Turno.objects.get(id=id)
-			turnos.tipoTurno=json_data['tipoTurno']
 			turnos.fechaInicio=json_data['fechaInicio']
 			turnos.fechaTermino=json_data['fechaTermino']
 			turnos.horas=json_data['horas']
@@ -925,6 +932,7 @@ class FilterTipoClienteView(View):
 				datos_paciente = {
 					'nombre': paciente.nombre,
 					'rut': paciente.rut,
+					'tipoTurno': paciente.tipoTurno,
 					'fechaInicioAtencion': paciente.fechaInicioAtencion,
 					'vigente': paciente.vigente,
 					'idZona_id': paciente.idZona.id,
@@ -951,6 +959,7 @@ class FilterTipoTurnoView(View):
 				datos_paciente = {
 					'nombre': paciente.nombre,
 					'rut': paciente.rut,
+					'tipoTurno': paciente.tipoTurno,
 					'fechaInicioAtencion': paciente.fechaInicioAtencion,
 					'vigente': paciente.vigente,
 					'idZona_id': paciente.idZona.id,
