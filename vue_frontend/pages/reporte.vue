@@ -1,4 +1,5 @@
 <script>
+//import Cookies from 'js-cookie';
 export default {
   head() {
     return {
@@ -22,11 +23,28 @@ export default {
         excel: this.excel,
       };
       console.log(data);
+      this.$axios.setHeader(
+          "Content-Type",
+          "multipart/form-data"
+        ); //Para soportar archivos como el excel
       try {
-        const res = await this.$axios.post("/carga_excel", data);
+        //const csrftoken = Cookies.get("csrftoken");
+        //console.log(csrftoken);
+        //const res = await this.$axios.get("/carga_excel", {title: this.title, date: this.date, excel: this.excel});
+        //let headers = {"Content-Type": "multipart/form-data",};
+        
+        const res = await this.$axios.post(
+          "/carga_excel",
+          {
+            title: this.title,
+            date: this.date,
+            excel: this.excel,
+          },
+          //{ headers: headers }
+        );
         console.log(res);
       } catch (e) {
-        console.log(e.message);
+        console.log("Error: ", e.message);
       }
     },
   },
@@ -47,7 +65,7 @@ export default {
                 >
               </v-toolbar>
               <v-card-text>
-                <v-form>
+                <v-form method='POST' enctype="multipart/form-data"> 
                   <v-text-field
                     name="title"
                     label="Título"
@@ -60,13 +78,15 @@ export default {
                     type="date"
                     v-model="date"
                   ></v-text-field>
-                  <v-text-field
-                    id="excel"
-                    name="Archivo"
-                    label="Excel"
-                    type="file"
+                  <v-file-input
+                    accept=".xlsx"
+                    label="Excel (archivo .xlsx)"
+                    name="excel"
+                    outlined
                     v-model="excel"
-                  ></v-text-field>
+                    show-size
+                  >
+                  </v-file-input>
                 </v-form>
               </v-card-text>
               <v-card-actions>

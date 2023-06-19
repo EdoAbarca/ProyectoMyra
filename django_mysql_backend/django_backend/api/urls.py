@@ -33,7 +33,7 @@ urlpatterns=[
     path('filter-client-type/<int:id_cliente>/', FilterTipoClienteView.as_view(), name='filter-client-type'),
     path('filter-turn-type/<int:id_turno>/', FilterTipoTurnoView.as_view(), name='filter-turn-type'),
 
-    path('cargar_excel', views.cargar_excel),
+    path('carga_excel', CargaExcelView.as_view()),
     path('register', views.UserRegister.as_view(), name='register'),
 	path('log', views.UserLogin.as_view(), name='login'),
 	path('logout', views.UserLogout.as_view(), name='logout'),

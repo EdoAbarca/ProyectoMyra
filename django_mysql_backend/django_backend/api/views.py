@@ -12,7 +12,7 @@ import pandas as pd
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, requires_csrf_token
 from django.db.models import Q
 from rest_framework import status, permissions
 from rest_framework.response import Response
@@ -1069,15 +1069,39 @@ class MyraView(View):
 
 #Adaptar con pandas
 
-@login_required
-def cargar_excel(self, request):
-	if request.method == 'POST':
-		file = request.FILES['excel_file']
-		df = pd.read_excel(file)
-		for index, row in df.iterrows():
-		#Crear elementos y mandar a BD
-			print(index+row)
-'''   
+class CargaExcelView(View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+		return super().dispatch(request, *args, **kwargs)
+
+	def post(self, request): #Esto es lo que va
+		try:
+			print(request)
+			print(request.headers)
+			json_data = json.loads(request.body)
+			print(json_data)
+			print(json_data['excel']) #Imprime un diccionario vacio
+			#file = request.FILES['excel'] #Aqui falla
+			#print(file)
+			#df = pd.read_excel(file, sheet_name=2)
+			#print(file)
+			#print(df)
+			#for index, row in df.iterrows():
+				#print(index) #Imprime el indice de la tupla
+				#print(row) #Imprime la tupla
+				#for i in row:
+					#print(i) #Imprime cada elemento de la tupla
+			
+			datos = {'message':'success', 'status':status.HTTP_201_CREATED}
+			return JsonResponse(datos)
+		except:
+			datos = {'message':'fail', 'status':status.HTTP_409_CONFLICT}
+			return JsonResponse(datos)
+
+
+
+
+'''   		
 @csrf_exempt 
 def signup(self, request):
 	print(request)
