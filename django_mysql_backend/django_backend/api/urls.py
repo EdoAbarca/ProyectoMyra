@@ -24,6 +24,12 @@ urlpatterns=[
     path('zona/<int:id>', ZonaView.as_view()),
     path('cliente/', ClienteView.as_view()),
     path('cliente/<int:id>', ClienteView.as_view()),
+    path('asistencia/', AsistenciaView.as_view()),
+    path('asistencia/<int:id>', AsistenciaView.as_view()),
+    path('paciente/', PacienteView.as_view()),
+    path('paciente/<int:id>', PacienteView.as_view()),
+    path('turno/', TurnoView.as_view()),
+    path('turno/<int:id>', TurnoView.as_view()),
 
     path('search-profesional/', SearchView.as_view(), name='search-profesional'),
     path('filter-position/<int:id_area>/', FilterAreaView.as_view(), name='filter-position'),

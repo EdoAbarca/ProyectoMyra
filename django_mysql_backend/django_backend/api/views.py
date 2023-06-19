@@ -62,7 +62,7 @@ class CargoView(View):
 		cargos = list(Cargo.objects.filter(id=id).values())
 		if len(cargos)>0:
 			cargo = Cargo.objects.get(id=id)
-			cargo.cargo=json_data['cargos']
+			cargo.cargo=json_data['cargo']
 			cargo.save()
 			datos={'message':"Success"}
 		else:
