@@ -629,7 +629,54 @@ class ClienteView(View):
 			datos = {'message': "Cliente no encontrado"}
 		return JsonResponse(datos)
 
-#Pendiente: Paciente, Turno
+class TipoTurnoView(View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+		return super().dispatch(request, *args, **kwargs)
+
+	def get(self, request, id=0):
+		if(id > 0):
+			tipoturnos = list(TipoTurno.objects.filter(id=id).values())
+			if len(tipoturnos)>0:
+				tipoturno = tipoturnos[0]
+				datos = {'message': "Success", 'tipoturno':tipoturno}
+			else:
+				datos = {'message': "Tipo turno no encontrado."}
+			return JsonResponse(datos)
+		else:
+			tipoturnos = list(TipoTurno.objects.values())
+			if len(cargos)>0:
+				datos = {'message': "Success", 'tipoturnos':tipoturnos}
+			else:
+				datos = {'message': "Sin tipo turnos."}
+			return JsonResponse(datos)
+
+	def post(self, request):
+		json_data = json.loads(request.body)
+		TipoTurno.objects.create(tipoTurno=json_data['tipoTurno'])
+		datos = {'message': "Success"}
+		return JsonResponse(datos)
+
+	def put(self, request, id):
+		json_data = json.loads(request.body)
+		tipoturnos = list(TipoTurno.objects.filter(id=id).values())
+		if len(tipoturnos)>0:
+			tipoturno = TipoTurno.objects.get(id=id)
+			tipoturno.tipoTurno=json_data['cargo']
+			tipoturno.save()
+			datos={'message':"Success"}
+		else:
+			datos={'message':"Tipo turno no encontrado"}
+		return JsonResponse(datos)
+
+	def delete(self, request, id):
+		tipoturnos = list(TipoTurno.objects.filter(id=id).values())
+		if len(tipoturnos) > 0:
+			TipoTurno.objects.filter(id=id).delete()
+			datos = {'message':"Success"}
+		else:
+			datos = {'message':"Tipo turno no encontrado"}
+		return JsonResponse(datos)
 
 class PacienteView(View):
 	@method_decorator(csrf_exempt)
@@ -660,13 +707,13 @@ class PacienteView(View):
 
 			datos_paciente = {
 				'nombre': paciente.nombre,
-				'rut': paciente.rut,
 				'tipoTurno': paciente.tipoTurno,
 				'fechaInicioAtencion': paciente.fechaInicioAtencion,
 				'vigente': paciente.vigente,
 				'idZona_id': paciente.idZona.id,
 				'idRegion_id': paciente.idRegion.id,
 				'idCliente_id': paciente.idCliente.id,
+				'idTipoTurno': paciente.idTipoTurno.id,
 				'asistencias': datos_asistencias,
 			}
 
@@ -682,10 +729,10 @@ class PacienteView(View):
 
 	def post(self, request):
 		json_data = json.loads(request.body)
-		Paciente.objects.create(nombre=json_data['nombre'], rut=json_data['rut'],
-								tipoTurno=json_data['tipoTurno'], fechaInicioAtencion=json_data['fechaInicioAtencion'],
+		Paciente.objects.create(nombre=json_data['nombre'],
+								fechaInicioAtencion=json_data['fechaInicioAtencion'],
 								vigente=json_data['vigente'], idZona=json_data['idZona'], idRegion=json_data['idRegion'],
-								idCliente=json_data['idCliente'])
+								idCliente=json_data['idCliente'], idTipoTurno=json_data['idTipoTurno'])
 		datos = {'message': "Success"}
 		return JsonResponse(datos)
 
@@ -695,13 +742,12 @@ class PacienteView(View):
 		if len(pacientes) > 0:
 			paciente = Paciente.objects.get(id=id)
 			paciente.nombre = json_data['nombre']
-			paciente.rut = json_data['rut']
-			paciente.tipoTurno = json_data['tipoTurno']
 			paciente.fechaInicioAtencion=json_data['fechaInicioAtencion']
 			paciente.vigente=json_data['vigente']
 			paciente.idZona=json_data['idZona']
 			paciente.idRegion=json_data['idRegion']
 			paciente.idCliente=json_data['idCliente']
+			paciente.idTipoTurno = json_data['idTipoTurno']
 			paciente.save()
 			datos = {'message': "Success"}
 		else:

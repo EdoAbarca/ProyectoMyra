@@ -112,15 +112,19 @@ class Zona(models.Model):
 class Cliente(models.Model):
     nombreCliente = models.CharField(max_length=70)
 
-class Paciente(models.Model):
-    nombre = models.CharField(max_length=70)
-    rut = models.CharField(max_length=15)
+class TipoTurno(models.Model):
     tipoTurno = models.CharField(max_length=10)
+
+class Paciente(models.Model):
+    #añadir cuidado
+    #añadir gasto por paciente (sprint 3)
+    nombre = models.CharField(max_length=70)
     fechaInicioAtencion = models.DateField()
     vigente = models.BooleanField()
     idZona = models.ForeignKey(Zona, on_delete=models.CASCADE)
     idRegion = models.ForeignKey(Region, on_delete=models.CASCADE)
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    idTipoTurno = models.ForeignKey(TipoTurno, on_delete=models.CASCADE)
 
 class Turno(models.Model):
     fechaInicio = models.DateField()
