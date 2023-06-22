@@ -10,8 +10,8 @@ export default {
   middleware: "auth",
   data() {
     return {
-      title: null,
-      date: null,
+      title: "",
+      date: "",
       excel: null,
     };
   },
@@ -23,25 +23,21 @@ export default {
         excel: this.excel,
       };
       console.log(data);
+      
+      //const input = document.querySelector('#excelInput').files[0];
+      //console.log(input);
+
+      let formData = new FormData(); 
+      formData.append("excel", this.excel, this.excel.name);
+      formData.append("title", this.title);
+      formData.append("date", this.date);
+
       this.$axios.setHeader(
           "Content-Type",
           "multipart/form-data"
-        ); //Para soportar archivos como el excel
-      try {
-        //const csrftoken = Cookies.get("csrftoken");
-        //console.log(csrftoken);
-        //const res = await this.$axios.get("/carga_excel", {title: this.title, date: this.date, excel: this.excel});
-        //let headers = {"Content-Type": "multipart/form-data",};
-        
-        const res = await this.$axios.post(
-          "/carga_excel",
-          {
-            title: this.title,
-            date: this.date,
-            excel: this.excel,
-          },
-          //{ headers: headers }
         );
+      try {
+        const res = await this.$axios.post("/carga_excel", formData);
         console.log(res);
       } catch (e) {
         console.log("Error: ", e.message);
@@ -85,6 +81,7 @@ export default {
                     outlined
                     v-model="excel"
                     show-size
+                    id="excelInput"
                   >
                   </v-file-input>
                 </v-form>

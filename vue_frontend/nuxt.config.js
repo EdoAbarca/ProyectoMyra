@@ -69,13 +69,13 @@ export default {
         tokenRequired: false,
         tokenType: false,
         user: {
-          autoFetch: false,
-          property: false,
+          autoFetch: true,
+          property: 'data.user',
           withCredentials: true,
         },
         endpoints: {
           login: { url: '/log', method: 'post', propertyName:'data'},
-          user: { url: '/user', method: 'get', propertyName:false },
+          user: { url: '/user', method: 'get' },
           logout: { url: '/logout', method: 'post' }
         },
       }

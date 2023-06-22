@@ -5,7 +5,6 @@ from api import views
 urlpatterns=[
     path('profesional/', ProfesionalView.as_view()),
     path('profesional/<int:id>', ProfesionalView.as_view()),
-    path('profesional/<str:search>', ProfesionalView.as_view()),
     path('paciente/', PacienteView.as_view()),
     path('paciente/<int:id>', PacienteView.as_view()),
     path('area/', AreaView.as_view()),
@@ -31,7 +30,9 @@ urlpatterns=[
     path('paciente/', PacienteView.as_view()),
     path('paciente/<int:id>', PacienteView.as_view()),
     path('turno/', TurnoView.as_view()),
-    path('turno/<int:id>', TurnoView.as_view()),
+    path('turno/<int:id>', TurnoView.as_view()),    
+    path('tipo_turno/', TipoTurnoView.as_view()),
+    path('tipo_turno/<int:id>', TipoTurnoView.as_view()),
 
     path('search-profesional/', SearchView.as_view(), name='search-profesional'),
     path('filter-position/<int:id_area>/', FilterAreaView.as_view(), name='filter-position'),
@@ -40,7 +41,9 @@ urlpatterns=[
     path('search-paciente/', SearchPacienteView.as_view(), name='search-paciente'),
     path('filter-client-type/<int:id_cliente>/', FilterTipoClienteView.as_view(), name='filter-client-type'),
     path('filter-turn-type/<int:id_turno>/', FilterTipoTurnoView.as_view(), name='filter-turn-type'),
-
+    path('reporte_profesional/<int:id_profesional>', ReporteProfesionalView.as_view()),
+    path('carga_excel', CargaExcelView.as_view()),
+    
     path('carga_excel', CargaExcelView.as_view()),
     path('register', views.UserRegister.as_view(), name='register'),
 	path('log', views.UserLogin.as_view(), name='login'),
