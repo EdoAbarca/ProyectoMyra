@@ -47,14 +47,7 @@ export default {
   padding: 0;
   box-sizing: content-box;
 }
-.ContenedorPrincipal {
-  position: absolute;
-  width: 100%;
-  height: 100%;
 
-  display: flex;
-  flex-direction: column;
-}
 .Navegacion {
   position: relative;
   width: 100%;

@@ -1,5 +1,7 @@
 <script>
 import BarraNav from "../components/BarraNav.vue";
+import Redireccion from "../components/Redireccion.vue";
+
 import { mapGetters } from "vuex";
 
 export default {
@@ -16,8 +18,10 @@ export default {
   },
   components: {
     BarraNav,
+    Redireccion
   },
   computed: {
+    
     ...mapGetters(["isAuthenticated", "loggedInUser"]),
   },
   methods: {
@@ -83,10 +87,7 @@ export default {
     </div>
   </div>
   <div class="ContenedorPrincipal" v-else>
-    <h1>Rotativa Myra</h1>
-    <hr />
-    <h3>Inicie sesión para utilizar las funcionalidades de la plataforma</h3>
-    <v-btn id="boton" href="/login">Iniciar sesión</v-btn>
+      <Redireccion/> 
   </div>
 </template>
 
@@ -101,15 +102,14 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-
   display: flex;
   flex-direction: column;
+  overflow-y: hidden;
 }
 .Navegacion {
   position: relative;
   width: 100%;
   height: 60px;
-
   z-index: 10;
 }
 .Contenedores {
