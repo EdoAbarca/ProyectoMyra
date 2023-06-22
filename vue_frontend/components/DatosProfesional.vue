@@ -1,19 +1,24 @@
 <script>
 import DatosBasicosProf from './DatosBasicosProf.vue'
 import Estadistica  from './Estadistica.vue'
-import BotonObtener from './BotonObtener'
+import BotonObtener from './BotonObtener.vue'
+import HistorialAsistenciaProf from './HistorialAsistenciaProf.vue'
 
 import Acordeon from './Acordeon.vue'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapState,mapGetters, mapMutations } from 'vuex'
 
 export default {
   components: {
     DatosBasicosProf,
     Estadistica,
     BotonObtener,
-    Acordeon
+    Acordeon,
+    HistorialAsistenciaProf
     },
     computed:{
+        ...mapState('profesional',[
+            'dataProfesional'       
+        ]),
         ...mapGetters('profesional',[
             'getDatosBasicos',
             'getEstadisticas',
@@ -33,6 +38,28 @@ export default {
                 box.setAttribute('aria-expanded', 'false');
             }
 
+        },
+        cambiar(id){
+            if(id ==='remuneraciones'){
+                document.getElementById('remuneraciones').style.zIndex = '100';
+                document.getElementById('remuneraciones').style.opacity = '1';
+                document.getElementById('btCambioDerecha').style.backgroundColor = '#669098';
+                document.getElementById('asistencias').style.zIndex = '0';
+                document.getElementById('asistencias').style.opacity = '0';
+                document.getElementById('btCambioIzquierda').style.backgroundColor = '#5AB3C6';
+                
+            }
+            else{
+                document.getElementById('remuneraciones').style.zIndex = '0';
+                document.getElementById('remuneraciones').style.opacity = '0';
+                document.getElementById('asistencias').style.zIndex = '100';
+                document.getElementById('asistencias').style.opacity = '1';
+
+                document.getElementById('btCambioDerecha').style.backgroundColor = '#5AB3C6';
+                document.getElementById('btCambioIzquierda').style.backgroundColor = '#669098';
+
+            }
+
         }
     }
 }
@@ -43,29 +70,31 @@ export default {
             <div class="contEfecto" v-if="getMostrar===true">
                 <div class="DatosBasicos">
                     <DatosBasicosProf 
-                    :nombre="getDatosBasicos.nombre"
-                    :rut="getDatosBasicos.rut"
-                    :area="getDatosBasicos.area"
-                    :cargo="getDatosBasicos.cargo"
-                    :coordinador="getDatosBasicos.coordinador"
-                    :contrato="getDatosBasicos.contrato"
+                    :nombre="dataProfesional.nombre"
+                    :rut="dataProfesional.rut"
+                    :area="dataProfesional.idArea_id"
+                    :centro="dataProfesional.idCentro_id"
+                    :coordinador="dataProfesional.nombreCoordinador"
+                    :contrato="dataProfesional.tipoContrato"
+                    :idCoord="dataProfesional.idCoordinador_id"
                     />
                 </div>
                 <div class="EstadisticasProfesional">
-                    <Estadistica tipo="Inasistencias" :valor="getEstadisticas.inasistencias"/>
+                    <Estadistica tipo="Inasistencias" :valor="dataProfesional.inasistencias"/>
                     
-                    <Estadistica tipo="Horas totales" :valor="getEstadisticas.horasTotales"/>
-                    <Estadistica tipo="Horas Extra" :valor="getEstadisticas.horasExtra"/>
-                    <Estadistica tipo="Vacaciones" :valor="getEstadisticas.diasVacaciones"/>
-                    <Estadistica tipo="Licencias" :valor="getEstadisticas.diasLicencia"/>
+                    <Estadistica tipo="Horas totales" :valor="dataProfesional.horasTotales"/>
+                    <Estadistica tipo="Horas Extra" :valor="dataProfesional.horasExtras"/>
+                    <Estadistica tipo="Vacaciones" :valor="dataProfesional.vacaciones"/>
+                    <Estadistica tipo="Licencias" :valor="dataProfesional.licencia"/>
                 </div>
                 <div class="DatosCambiantes">
                     <div class="BotonesCambio">
-                        <div class="BtnDerecha"> Remuneración</div>
-                        <div class="BtnIzquierda">Asistencias</div>
+                        <div class="BtnDerecha" id="btCambioDerecha" @click="cambiar('remuneraciones')"> Remuneración</div>
+                        <div class="BtnIzquierda" id="btCambioIzquierda" @click="cambiar('asistencias')">Asistencias</div>
                     </div>
                     <div class = "Informacion">
-                        <Acordeon/>
+                        <Acordeon id="remuneraciones"/>
+                        <HistorialAsistenciaProf id="asistencias"/>
                     </div>
                 </div>
                 <div class="BtnObtenerReporte">
@@ -107,6 +136,7 @@ export default {
 .DatosBasicos{
     position: relative;
     display: flex;
+    justify-content: center;
     width: 100%;
     height: 20%;
     
@@ -123,22 +153,31 @@ export default {
 .DatosCambiantes{
     position: relative;
     display: flex;
-    background-color: #F9F9F9;
+    flex-direction: column;
     width: 100%;
     height: 55%;
-    flex-direction: column;
+    justify-content: center;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.15));
+    
+    
 }
 .BotonesCambio{
     display: flex;
     position: relative;
-    
-    width: 100%;
+    left: 25%;
+    width: 50%;
     height: 8%;
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: 500;
     font-family: Arial, Helvetica, sans-serif;
+    z-index: -1;
+    background-color: #5AB3C6;
+    border-radius:  12.5px 12.5px 0 0 ;
+    
     
 
 }
+
 .BtnDerecha, .BtnIzquierda{
     position: relative;
     display: flex;
@@ -147,18 +186,16 @@ export default {
     justify-content: center;
     align-items: center;
     color: white;
-    background-color: #669098;
-    border-radius: 12.5px 0px 0px 0px;
+    
+    border-radius: 12.5px 12.5px 0px 0px;
     transition: all 200ms linear;
     cursor: pointer;
+    background-color: #669098;
 }
 
 .BtnIzquierda{
-    border-radius: 0px 12.5px 0px 0px;
-}
-
-.BtnDerecha:hover,.BtnIzquierda:hover{
-    background-color: #52CBE2;
+    border-radius: 12.5px 12.5px 0px 0px;
+    background-color: #5AB3C6;
 }
 
 
@@ -167,8 +204,10 @@ export default {
     position: relative;
     display: flex;
     height: 100%;
-    width: 100%;
-
+    left: 3%;
+    width: 93%;
+    justify-content: center;
+    transition: all 200ms linear;
     
 }
 .BtnObtenerReporte{
@@ -180,6 +219,20 @@ export default {
     justify-content: center;
     align-items: center;
 
+}
+#remuneraciones{
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    opacity: 1;
+    transition: all 250ms linear;
+}
+#asistencias{
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: -100;
+    transition: all 250ms linear;
 }
 
 

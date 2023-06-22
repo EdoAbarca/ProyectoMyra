@@ -3,6 +3,7 @@ import BotonBarra from "./BotonBarra.vue";
 import BotonBarraCircular from "./BotonBarraCircular.vue";
 
 export default {
+  props:['page'],
   data() {
     return {
       fechaReporte: "24-06-2021",
@@ -12,6 +13,8 @@ export default {
     BotonBarra,
     BotonBarraCircular,
   },
+  methods:{
+  }
 };
 </script>
 

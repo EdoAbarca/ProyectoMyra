@@ -1,30 +1,34 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
-import { mapMutations } from 'vuex'
+import { mapMutations,mapActions } from 'vuex'
 import EtiquetaProfesional from './EtiquetaProfesional.vue';
 
 export default {
 
-    props: ['nombre','rut','area'],
-
+    props: ['nombre','rut','area','centro', 'id'],
+    components:{
+        EtiquetaProfesional
+    },
     computed:{
     },
     methods:{
-    
         ...mapMutations({
-            recuperarDatos: 'profesional/recuperarDatos',
-            mostrar: 'profesional/mostrar'
-        })
+            mostrar: 'profesional/mostrar',
+        }),
+        ...mapActions('profesional',[
+            'fetchProfesional'       
+        ]), 
     }
 }
 </script>
 <template>
-    <li tabindex="0" class="ProfesionalLista" @click="recuperarDatos(rut),mostrar(rut)">
+    <li tabindex="0" class="ProfesionalLista" @click="fetchProfesional(id),mostrar(rut)">
         <div class="ContenedorEtiquetaProfesional">
-            <EtiquetaProfesional :area="area"/>
+            <EtiquetaProfesional id="etiquetaCentro" :area="null" :centro="centro"/>
+            <EtiquetaProfesional id="etiquetaArea" :area="area" :centro="null"/>
         </div>
         <div class="ContenedorNombreProfesional">{{ nombre }}</div>
-        <div class="ContenedorRutProfesional">Rut: {{ rut }}</div>
+        <div class="ContenedorRutProfesional">{{ rut }}</div>
     </li>
 
 </template>
@@ -43,54 +47,49 @@ export default {
     text-align: center;
     overflow: hidden;
 
-    font-size: 15px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 500;
     cursor: pointer;
     transition: all 200ms linear;
+    color: #253C41;
 }
 .ContenedorEtiquetaProfesional{
     position: relative;
-    width: 25%;
+    min-width: 220px;
+    margin-left: 2%;
+    width: 32%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    
 }
 .ContenedorNombreProfesional{
     position: relative;
-    width: 50%;
+    display: flex;
+    width: 45%;
+    min-width: 150px;
     height: 100%;
-    padding-top: 10px;
-    left: 2%;
-    justify-content: center;
+    margin-left: 10px;
+
+    align-items: center;
     text-align: left;
+    z-index: 100;
+    font-size: 14px;
+    
 
     
 }
 
 .ContenedorRutProfesional{
-    width: 25%;
+    width: 15%;
     height: 100%;
-    padding-top: 10px;
-    justify-content: center;
+    min-width: 50px;
+    left: -3%;
+    display: flex;
+    align-items: center;
     text-align: left;
-}
-
-.EtiquetaProfesional{
-    
-    text-align: center;
-    position: relative;
-    width: 80%;
-    height: 25px;
-    color: white;
-    border-radius: 9px;
-
-    font-size: 12px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 600;
-    line-height: 25px;
+    font-size: 14px;
+    z-index: 200;
 }
 .ProfesionalLista:hover{
     background-color: #E7E7E7;
@@ -99,6 +98,7 @@ export default {
 .ProfesionalLista:focus{
     background-color: #E7E7E7;
     color: #48ABBF;
+    
 }
 
 </style>

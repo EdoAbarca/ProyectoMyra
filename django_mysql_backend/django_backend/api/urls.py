@@ -6,6 +6,8 @@ urlpatterns=[
     path('profesional/', ProfesionalView.as_view()),
     path('profesional/<int:id>', ProfesionalView.as_view()),
     path('profesional/<str:search>', ProfesionalView.as_view()),
+    path('paciente/', PacienteView.as_view()),
+    path('paciente/<int:id>', PacienteView.as_view()),
     path('area/', AreaView.as_view()),
     path('area/<int:id>', AreaView.as_view()),
     path('centro/', CentroView.as_view()),

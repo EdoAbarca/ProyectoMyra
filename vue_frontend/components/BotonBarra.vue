@@ -14,7 +14,6 @@ export default {
 <template>
     
         <div class="fondo">
-            
             <NuxtLink :to="getLink()" class="btn from-center">
                     {{ tipo }}
             </NuxtLink>

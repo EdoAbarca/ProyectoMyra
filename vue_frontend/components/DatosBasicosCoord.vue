@@ -1,30 +1,17 @@
 <script>
 import EtiquetaProfesional from './EtiquetaProfesional.vue';
-import { mapState, mapMutations, mapGetters, mapActions} from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 export default {
 
-props: ['nombre','rut','area','centro','coordinador','contrato', 'idCoord'],
+props: ['nombre','rut','area','centro','coordinador','contrato'],
 computed:{
 },
-methods:{
-    ...mapMutations({
-            mostrar: 'coordinador/mostrar',
-        }),
-        ...mapActions('coordinador',[
-            'fetchCoordinador'       
-        ]),
-        
-        direccionar(id){
-            this.fetchCoordinador(id)
-            this.$router.push('/coordinadores') 
-        }
-}
 
 }
 </script>
 <template>
     <div class="ContenedorBaseDatos"  >
-        <div id="tituloDatosProfesional">Datos del Profesional
+        <div id="tituloDatosProfesional">Datos del Coordinador
             <span id ="separador"></span>
         </div>
         <div class="Cont-Info-Basica" >
@@ -40,7 +27,7 @@ methods:{
         </div>
         <div class="Cont-Coord" >
             <div id="datosIzquierdaCoord">
-                <h1 id="nombreCoord" class="TextoContenido" @click="direccionar(idCoord),mostrar(idCoord)" >Coordinador: {{ coordinador }}</h1>
+                <h1 id="nombreCoord" class="TextoContenido">Coordinador: {{ coordinador }}</h1>
                 
             </div>
             <div id="datosDerechaCoord">

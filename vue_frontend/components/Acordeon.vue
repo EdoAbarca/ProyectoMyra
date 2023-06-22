@@ -1,16 +1,12 @@
 <script>
 
-import {mapGetters} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 export default{
-    data() {
-        return {
-        opcion: 'CATEGORIAS',
-        idAnterior:"idbase"
-    }},
 	computed:{
-		...mapGetters('profesional',[
-            'getPagos',
-        ])
+		...mapState('profesional',[
+            'dataProfesional',
+			'pagosProfesional'       
+        ]),
 	},
     methods:{
         acordeon(id){
@@ -29,115 +25,115 @@ export default{
 
 </script>
 <template>
-    <div class="contenedorAcordeon">
+    <div class="containerRemu">
+		<div id="barraDatosAcordeon" class="barraDatos">
+			<h1 id="tituloTipoRemuneracion">Tipo</h1>
+            <h1 id="tituloMonto">Monto</h1>
+		</div>
         <div class="accordion">
 
 			<div class="accordion-item">
                 <button id="accordion-button-1" aria-expanded="false"  >
                     <span class="accordion-title">Sueldo Base </span>
-					<span class="valorPago"> ${{getPagos.sueldoBase}}</span>  
+					<span class="valorPago"> ${{pagosProfesional.sueldoBase}}</span>  
                 </button>
             </div>
 
 			<div class="accordion-item">
                 <button id="accordion-button-1" aria-expanded="false"  >
                     <span class="accordion-title">Gratificaciones </span>
-					<span class="valorPago"> ${{getPagos.gratificaciones}}</span>  
+					<span class="valorPago"> ${{pagosProfesional.gratificacion}}</span>  
                 </button>
             </div>
 
 			<div class="accordion-item">
                 <button id="accordion-button-1" aria-expanded="false"  >
                     <span class="accordion-title">Horas Extras </span>
-					<span class="valorPago"> ${{getPagos.horasExtra}}</span>  
+					<span class="valorPago"> ${{pagosProfesional.horaExtra}}</span>  
                 </button>
             </div>
 
 			<div class="accordion-item">
                 <button id="accordion-button-2" aria-expanded="false" @click="acordeon('accordion-button-2')" >
                     <span class="accordion-title">Extras Movilización </span>
-					<span class="valorPago"> ${{getPagos.extraMovilizacion}}</span>
+					<span class="valorPago"> $Sacar este total</span>
                     <span class="icon" aria-hidden="true"></span>
                 </button>
                 <div class="accordion-content">
-                    <p>Movilización <span class="valorPago"> ${{getPagos.movilizacion}}</span></p>
-					<p>Colación <span class="valorPago"> ${{getPagos.colacion}}</span></p>
-					<p>Viatico <span class="valorPago"> ${{getPagos.viatico}}</span></p>
+                    <p>Movilización <span class="valorPago"> ${{pagosProfesional.movilizacion}}</span></p>
+					<p>Colación <span class="valorPago"> ${{pagosProfesional.colacion}}</span></p>
+					<p>Viatico <span class="valorPago"> ${{pagosProfesional.viatico}}</span></p>
                 </div>
             </div>
 
 			<div class="accordion-item">
                 <button id="accordion-button-3" aria-expanded="false" @click="acordeon('accordion-button-3')" >
                     <span class="accordion-title">Bonos </span>
-					<span class="valorPago"> ${{getPagos.bonosTotales}}</span>
+					<span class="valorPago"> $Se debe sacar este total</span>
                     <span class="icon" aria-hidden="true"></span>
                 </button>
                 <div class="accordion-content">
-                    <p>Bonos <span class="valorPago"> ${{getPagos.bonos}}</span></p>
-					<p>Asignación Familiar <span class="valorPago"> ${{getPagos.asignacion}}</span></p>
-					<p>Aguinaldo <span class="valorPago"> ${{getPagos.anticipos}}</span></p>
-					<p>Vacaciones <span class="valorPago"> $</span></p>
-					<p>B. Sala Cuna <span class="valorPago"> ${{getPagos.salaCuna}}</span></p>
+                    <p>Bonos <span class="valorPago"> ${{pagosProfesional.bonos}}</span></p>
+					<p>Asignación Familiar <span class="valorPago"> ${{pagosProfesional.asignacionFamiliar}}</span></p>
+					<p>Aguinaldo <span class="valorPago"> ${{pagosProfesional.aguinaldo}}</span></p>
+					<p>Vacaciones <span class="valorPago"> ${{pagosProfesional.vacaciones}}</span></p>
+					<p>B. Sala Cuna <span class="valorPago"> ${{pagosProfesional.salaCuna}}</span></p>
                 </div>
             </div>
 
 			<div class="accordion-item">
                 <button id="totalHaberes" aria-expanded="false"  >
                     <span class="accordion-title">Total Haberes </span>
-					<span class="valorPago"> ${{getPagos.totalHaberes}}</span>  
+					<span class="valorPago"> Calcular este dato</span>  
                 </button>
             </div>
 
 			<div class="accordion-item">
                 <button id="totalImponible" aria-expanded="false"  >
                     <span class="accordion-title">Total Imponible </span>
-					<span class="valorPago"> ${{getPagos.totalImponible}}</span>  
+					<span class="valorPago"> $Calcular este dato</span>  
                 </button>
             </div>
 
             <div class="accordion-item">
                 <button id="accordion-button-4" aria-expanded="false" @click="acordeon('accordion-button-4')" >
                     <span class="accordion-title">Descuentos </span>
-					<span class="valorPago"> ${{getPagos.descuentosTotales}}</span>
+					<span class="valorPago"> $Calcular este dato</span>
                     <span class="icon" aria-hidden="true"></span>
                 </button>
                 <div class="accordion-content">
-                    <p>AFP <span class="valorPago"> ${{getPagos.afp}}</span></p>
-					<p>ISAPRE <span class="valorPago"> ${{getPagos.isapre}}</span></p>
-					<p>FONASA <span class="valorPago"> ${{getPagos.fonasa}}</span></p>
-					<p>Seguro de cesantia <span class="valorPago"> ${{getPagos.seguroCesantia}}</span></p>
-					<p>Impuesto único <span class="valorPago"> ${{getPagos.impuestoUnico}}</span></p>
-					<p>Cuenta Ahorro AFP <span class="valorPago"> ${{getPagos.cuentaAFP}}</span></p>
-					<p>Descuentos CCAF <span class="valorPago"> ${{getPagos.descuentosCCAF}}</span></p>
-					<p>Anticipos <span class="valorPago"> ${{getPagos.anticipos}}</span></p>
-					<p>Descuentos <span class="valorPago"> ${{getPagos.descuentos}}</span></p>
-					<p>Ley 3% <span class="valorPago"> ${{getPagos.ley3}}</span></p>
+                    <p>AFP <span class="valorPago"> ${{pagosProfesional.afp}}</span></p>
+					<p>ISAPRE <span class="valorPago"> ${{pagosProfesional.isapre}}</span></p>
+					<p>FONASA <span class="valorPago"> ${{pagosProfesional.fonasa}}</span></p>
+					<p>Seguro de cesantia <span class="valorPago"> ${{pagosProfesional.segCes}}</span></p>
+					<p>Impuesto único <span class="valorPago"> ${{pagosProfesional.imptoUnico}}</span></p>
+					<p>Cuenta Ahorro AFP <span class="valorPago"> ${{pagosProfesional.ctaAfp}}</span></p>
+					<p>Descuentos CCAF <span class="valorPago"> $Falta este dato</span></p>
+					<p>Anticipos <span class="valorPago"> ${{pagosProfesional.anticipos}}</span></p>
+					<p>Descuentos <span class="valorPago"> ${{pagosProfesional.descuento}}</span></p>
+					<p>Ley 3% <span class="valorPago"> ${{pagosProfesional.ley3}}</span></p>
                 </div>
             </div>
         </div>
-		<div id="totalLiquido"><p>Total Liquido <span class="valorPago"> ${{getPagos.totalLiquido}}</span></p></div>
+		<div id="totalLiquido"><p>Total Liquido <span class="valorPago"> $Calcular este dato</span></p></div>
 
     </div>
 
 </template>
 <style>
 @import url('https://fonts.googleapis.com/css?family=Hind:300,400&display=swap');
- * {
-	 box-sizing: border-box;
-}
- *::before, *::after {
-	 box-sizing: border-box;
-}
 
- .contenedorAcordeon {
 
+ .containerRemu {
     position: absolute;
     display: flex;
 	width: 100%;
     height: 100%;
 	font-family: Arial, Helvetica, sans-serif;
 	flex-direction: column;
-
+	background-color: white;
+	border-radius: 12.5px;
+	
 
 }
  .accordion .accordion-item {
@@ -155,8 +151,8 @@ export default{
 	 width: 100%;
      height: 30px;
 	
-	 color: #7288a2;
-	 font-size: 15px;
+	 color: #527178;
+	 font-size: 14px;
 	 font-weight: 400;
 	 border: none;
 	 background: none; 
@@ -172,8 +168,9 @@ export default{
 	 border: 1px solid #03b5d2;
 }
  .accordion button .accordion-title {
-	 padding: 1em 1.5em 1em 0;
-	 padding-left: 3%;
+	position: relative;
+	padding: 1em 1.5em 1em 0;
+	padding-left: 6%;
 }
  .accordion button .icon {
 	 display: flex;
@@ -213,29 +210,39 @@ export default{
 }
  .accordion button[aria-expanded='true'] + .accordion-content {
 	 opacity: 1;
+	 height: 100%;
 	 max-height: 100%;
 	 transition: all 200ms linear;
-	 will-change: opacity, max-height;
+
 }
 .accordion button[aria-expanded='true']+ .accordion-item{
 	height: 100%;
 }
- .accordion .accordion-content {
+.accordion-content {
 	 opacity: 0;
+	 height: 0%;
 	 max-height: 0;
-	 overflow: hidden;
 	 transition: opacity 200ms linear, max-height 200ms linear;
-	 will-change: opacity, max-height;
+
+	 color: #7288a2;
 	 
 }
  .accordion .accordion-content p {
-	 font-size: 12px;
+	 font-size: 0px;
 	 font-weight: 300;
 	 margin-top: 2%;
 	 margin-bottom: 2%;
-	 padding-left: 3%;
+	 padding-left: 6%;
+	 height: 0px;
+	 transition: all 150ms linear;
 
 
+}
+
+.accordion button[aria-expanded='true'] + .accordion-content p {
+	font-size: 12px;
+	height: 12px;
+	transition: all 150ms linear;
 }
  
 .accordion{
@@ -245,25 +252,24 @@ export default{
 	height: 90%;
     flex-direction: column;
 	overflow-y: scroll;
+
 }
 .accordion-item{
 	display: flex;
 	position: relative;
     flex-direction: column;
 
-
 }
 .valorPago{
 	position: absolute;
-	right: 0%;
-	width: 50%;
-
+	left: 61%;
+	
 }
+
 #totalLiquido{
 	position: relative;
 	display: flex;
 	background-color: #DEEFF2;
-	right: 0px;
 	width: 100%;
 	height: 10%;
 	bottom: 0%;
@@ -271,11 +277,34 @@ export default{
 	font-weight: 600;
 	color: #005D71;
 	border-radius: 0px 0px 12.5px 12.5px;
+	
 }
 #totalLiquido p{
-	padding-left: 3%;
+	padding-left: 6%;
 }
 #accordion-button-4{
 color: #FF8E85;
+}
+#tituloTipoRemuneracion{
+	position: relative;
+	width: 47%;
+	text-align: left;
+	margin: 6%;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: 600;
+	
+}
+#tituloMonto{
+  position: relative;
+  display: flex;
+  text-align: left;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+}
+#barraDatosAcordeon{
+	width: 100%;
+	border-radius: 12.5px 12.5px 0 0;
 }
 </style>

@@ -1,24 +1,46 @@
 <script>
-import{mapMutations} from 'vuex'
+import{mapMutations,mapActions, mapState} from 'vuex'
 export default{
     data() {
     return {
-      opcion: 'Categorias',
+      opcion: 'Centros',
       idAnterior:"idbase",
     }
   },
 
   methods:{
+    ...mapState('selectores',[
+            'selectorCentro',     
+        ]),
+
     ...mapMutations({
-        elegirCategoria: 'profesional/elegirCategoria'
+        elegirCategoria: 'profesional/elegirCategoria',
+        modificarArea: 'selectores/modificarArea',
+        modificarCentro: 'selectores/modificarCentro',
+
     }),
+    ...mapActions('profesional',[
+            'fetchProfesionales',
+            'filtrarCentro'       
+        ]),
     filtro(valor){
 
       this.opcion = valor;
-      if(valor === 'TODAS'){
+      if(valor === 0){
         valor = null;
+        this.fetchProfesionales();
       }
-      this.elegirCategoria(valor)
+      this.elegirCategoria(valor);
+      this.filtrarCentro();
+    },
+    ocultarSelector(){
+      if(this.selectorArea === true){
+        document.getElementById("dropdown").checked = false;
+        this.modificarCentro(false)
+      }
+    },
+    mostrarSelector(){
+      this.modificarCentro(true)
     }
   }
 }
@@ -30,32 +52,48 @@ export default{
 
   	<form class="sec-center">
 
-            <input class="dropdown" type="checkbox" id="dropdown" name="dropdown"/>
-	  	   <label class="for-dropdown" for="dropdown">{{opcion}}<div class="uil"></div></label>
+      <input class="dropdown" type="checkbox" id="dropdown" name="dropdown" >
+	  	<label class="for-dropdown" for="dropdown">
+        <h1 id="textoDropBox">{{opcion}}</h1>
+        <div class="uil"></div>
+      </label>
 
 	  
   		<div class="section-dropdown"> 
             <div class="columna">
                 <div class="contenedorEleccion" id="item1">
-                    <input  class="Radio-eleccion" id="Todas" type="radio" @click="filtro('TODAS')"/>
-                    <label  class="elementoSelect" for="Todas">TODAS</label>
+                    <input  class="Radio-eleccion" id="Todas" type="radio" value="Centros" v-model ="opcion" @click="filtro(0)" />
+                    <label  class="elementoSelect" for="Todas">Todos</label>
                 </div>
 
                 <div class="contenedorEleccion" id="item2">
-                    <input  class="Radio-eleccion" id="Admin" type="radio"  @click="filtro('ADMINISTRACION')"/>
-                    <label  class="elementoSelect" for="Admin">ADMINISTRACIÓN</label>
+                    <input  class="Radio-eleccion" id="Admin" type="radio" value="Administración" v-model ="opcion" @click="filtro(1)"/>
+                    <label  class="elementoSelect" for="Admin">Administración</label>
                 </div>
 
                 <div class="contenedorEleccion" id="item3">
-                    <input  class="Radio-eleccion" id="Cuidados" type="radio" @click="filtro('CUIDADOS')"/>
-                    <label  class="elementoSelect" for="Cuidados">CUIDADOS</label>
+                    <input  class="Radio-eleccion" id="Cuidados" type="radio" value="Cuidados" v-model ="opcion" @click="filtro(2)"/>
+                    <label  class="elementoSelect" for="Cuidados">Cuidados</label>
+                </div>
+
+                <div class="contenedorEleccion" id="item3">
+                    <input  class="Radio-eleccion" id="Residencia" type="radio" value="Residencia" v-model ="opcion" @click="filtro(3)"/>
+                    <label  class="elementoSelect" for="Residencia">Residencia</label>
                 </div>
     
             </div>
             <div class="columna">
               <div class="contenedorEleccion">
-                    <input  class="Radio-eleccion" id="Otros" type="radio" @click="filtro('OTROS')" />
-                    <label  class="elementoSelect" for="Otros">OTROS</label>
+                    <input  class="Radio-eleccion" id="Hotel" type="radio" value="Hotel Clínico" v-model ="opcion"  @click="filtro(4)" />
+                    <label  class="elementoSelect" for="Hotel">Hotel Clínico</label>
+                </div>
+              <div class="contenedorEleccion">
+                    <input  class="Radio-eleccion" id="SMI" type="radio" value="SMI" v-model ="opcion" @click="filtro(5)" />
+                    <label  class="elementoSelect" for="SMI">SMI</label>
+                </div>
+              <div class="contenedorEleccion">
+                    <input  class="Radio-eleccion" id="Otro" type="radio" value="Otro" v-model ="opcion" @click="filtro(6)" />
+                    <label  class="elementoSelect" for="Otro">Otro</label>
                 </div>
               
 
@@ -68,12 +106,15 @@ export default{
 <style>
 .sec-center {
   position: relative;
-  max-width: 100%;
+  width: 35%;
+  min-width: 200px;
   max-height: 30px;
   
   z-index: 200;
   box-sizing: border-box;
-  border-radius: 0px 0px 14px 14px;
+  border-radius: 0px 0px 0px 8px;
+  background-color: #D9D9D9;
+  color:#D9D9D9 ;
 }
 
 .contenedorEleccion{
@@ -91,7 +132,7 @@ export default{
     font-weight: 600;
     font-size: 12px;
     vertical-align: middle;
-    padding-top: 8px;
+    
     padding-left: 10px;
     margin: 2px 0;
 
@@ -113,15 +154,19 @@ export default{
     box-sizing: border-box;
 }
 .elementoSelect{
+  display: flex;
     width: 100%;
     height: 100%;
     cursor: pointer;
+    font-display: flex;
+    align-items: center;
+    vertical-align: middle;
 }
 
 .section-dropdown{
   position: relative;
-  width: 50%;
-  height: 100%;
+  width: 300px;
+  height: 150px;
   top: 20px;
   box-sizing: border-box;
 
@@ -163,6 +208,7 @@ export default{
   content: '';
   display: block;
   z-index: 1;
+  
 }
 .section-dropdown:after {
   position: absolute;
@@ -177,32 +223,23 @@ export default{
   display: block;
   z-index: 2;
   transition: all 200ms linear;
+
+  
 }
 
 .dropdown:checked + .for-dropdown,
 .dropdown:not(:checked) + .for-dropdown{
 
   position: relative;
-  width: 200px;
-
-
-  font-family: 'Roboto', sans-serif;
-  font-weight: 600;
-  font-size: 12px;
-  line-height:20px;
-  
-
- 
+  width: 85%;
   border-radius: 4px;
   border: none;
-  background-color: white;
-  color: #B9B8B8;
   box-shadow: 0 12px 35px 0 rgba(255,235,167,.15);
 
   cursor: pointer;
- 
-
   display: inline-block;
+
+
   
 }
 .dropdown:checked + .for-dropdown:before,
@@ -216,6 +253,7 @@ export default{
   z-index: -1;
   cursor: auto;
   pointer-events: none;
+  
 }
 .dropdown:checked + .for-dropdown:before{
     pointer-events: auto;
@@ -233,20 +271,33 @@ export default{
 }
 
 .for-dropdown{
-    
-    padding-left: 10px;
-    vertical-align: middle;
+
+    position: relative;
     display: flex;
-    background-color: #D9D9D9;
+    height: 20px;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    
+    background-color: white;
+
+}
+#textoDropBox{
+  top: 3px;
+  left: 10px;
+  position: relative;
+  display: flex;
+  font-size: 12px;
+  align-items: center;  
+
 
 }
 
 .uil{
-    top: 5px;
-    left: 170px;
+    position: relative;
+    left: 80%;
+    bottom: 40%;
     z-index: 2001;
-    position: absolute;
-    display: flex;
     width: 0; 
     height: 0; 
     border-left: 8px solid transparent;

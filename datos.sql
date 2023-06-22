@@ -5,17 +5,28 @@ BEGIN;
 -- INSERT INTO rotativa_myra.api_contrato (id, contrato, fecha_inicio, fecha_termino)
 
 -- Centro
-INSERT INTO rotativa_myra.api_centro (id, nombreCentro) VALUES (1, "Residencia");
-INSERT INTO rotativa_myra.api_centro (id, nombreCentro) VALUES (2, "Regiones");
-INSERT INTO rotativa_myra.api_centro (id, nombreCentro) VALUES (3, "Cuidados");
-INSERT INTO rotativa_myra.api_centro (id, nombreCentro) VALUES (4, "SMI");
-INSERT INTO rotativa_myra.api_centro (id, nombreCentro) VALUES (5, "Administración");
-INSERT INTO rotativa_myra.api_centro (id, nombreCentro) VALUES (6, "Hotel Clinico");
+INSERT INTO rotativa_myra.api_centro (id, nombreCentro) VALUES (1, "Administración");
+INSERT INTO rotativa_myra.api_centro (id, nombreCentro) VALUES (2, "Cuidados");
+INSERT INTO rotativa_myra.api_centro (id, nombreCentro) VALUES (3, "Residencia");
+INSERT INTO rotativa_myra.api_centro (id, nombreCentro) VALUES (4, "Hotel Clínico");
+INSERT INTO rotativa_myra.api_centro (id, nombreCentro) VALUES (5, "SMI");
+INSERT INTO rotativa_myra.api_centro (id, nombreCentro) VALUES (6, "Otro");
 
 -- Area
-INSERT INTO rotativa_myra.api_area (id, nombreArea) VALUES (1, "Administracion");
-INSERT INTO rotativa_myra.api_area (id, nombreArea) VALUES (2, "Cuidados");
-INSERT INTO rotativa_myra.api_area (id, nombreArea) VALUES (3, "Kinesiologia");
+INSERT INTO rotativa_myra.api_area (id, nombreArea) VALUES (1, "Administradores");
+INSERT INTO rotativa_myra.api_area (id, nombreArea) VALUES (2, "Auxiliares");
+INSERT INTO rotativa_myra.api_area (id, nombreArea) VALUES (3, "Coordinadores");
+INSERT INTO rotativa_myra.api_area (id, nombreArea) VALUES (4, "Cuidadores");
+INSERT INTO rotativa_myra.api_area (id, nombreArea) VALUES (5, "Enfermeros");
+INSERT INTO rotativa_myra.api_area (id, nombreArea) VALUES (6, "Fonoaudiólogos");
+INSERT INTO rotativa_myra.api_area (id, nombreArea) VALUES (7, "Kinesiólogos");
+INSERT INTO rotativa_myra.api_area (id, nombreArea) VALUES (8, "Médicos");
+INSERT INTO rotativa_myra.api_area (id, nombreArea) VALUES (9, "Nutricionistas");
+INSERT INTO rotativa_myra.api_area (id, nombreArea) VALUES (10, "Podólogos");
+INSERT INTO rotativa_myra.api_area (id, nombreArea) VALUES (11, "Practicantes");
+INSERT INTO rotativa_myra.api_area (id, nombreArea) VALUES (12, "TENS");
+INSERT INTO rotativa_myra.api_area (id, nombreArea) VALUES (13, "Terapeutas");
+INSERT INTO rotativa_myra.api_area (id, nombreArea) VALUES (14, "Otros");
 
 -- Cargo
 INSERT INTO rotativa_myra.api_cargo (id, cargo) VALUES (1, "TENS");
@@ -88,20 +99,23 @@ INSERT INTO rotativa_myra.api_zona (id, nombreZona) VALUES (6, "Graneros");
 INSERT INTO rotativa_myra.api_zona (id, nombreZona) VALUES (7, "Melipilla");
 
 -- Cliente
-INSERT INTO rotativa_myra.api_cliente (id, nombreCliente) VALUES (1, "ISL");
-INSERT INTO rotativa_myra.api_cliente (id, nombreCliente) VALUES (2, "mutual");
-INSERT INTO rotativa_myra.api_cliente (id, nombreCliente) VALUES (3, "particular");
-INSERT INTO rotativa_myra.api_cliente (id, nombreCliente) VALUES (4, "ACHS");
-INSERT INTO rotativa_myra.api_cliente (id, nombreCliente) VALUES (5, "Human Solutions");
-INSERT INTO rotativa_myra.api_cliente (id, nombreCliente) VALUES (6, "residencia");
+INSERT INTO rotativa_myra.api_cliente (id, nombreCliente) VALUES (1, "ACHS");
+INSERT INTO rotativa_myra.api_cliente (id, nombreCliente) VALUES (2, "Human Solutions");
+INSERT INTO rotativa_myra.api_cliente (id, nombreCliente) VALUES (3, "ISL");
+INSERT INTO rotativa_myra.api_cliente (id, nombreCliente) VALUES (4, "Mutual");
+INSERT INTO rotativa_myra.api_cliente (id, nombreCliente) VALUES (5, "Particular");
+INSERT INTO rotativa_myra.api_cliente (id, nombreCliente) VALUES (6, "Residencia");
+INSERT INTO rotativa_myra.api_cliente (id, nombreCliente) VALUES (7, "Otro");
 
 -- Tipo Turno
-INSERT INTO rotativa_myra.api_tipoturno (id, tipoTurno) VALUES (1, "1");
-INSERT INTO rotativa_myra.api_tipoturno (id, tipoTurno) VALUES (2, "2");
-INSERT INTO rotativa_myra.api_tipoturno (id, tipoTurno) VALUES (3, "3");
-INSERT INTO rotativa_myra.api_tipoturno (id, tipoTurno) VALUES (4, "4");
-INSERT INTO rotativa_myra.api_tipoturno (id, tipoTurno) VALUES (5, "5");
-INSERT INTO rotativa_myra.api_tipoturno (id, tipoTurno) VALUES (6, "6");
+INSERT INTO rotativa_myra.api_tipoturno (id, tipoTurno) VALUES (1, "2 Hrs");
+INSERT INTO rotativa_myra.api_tipoturno (id, tipoTurno) VALUES (2, "4 Hrs");
+INSERT INTO rotativa_myra.api_tipoturno (id, tipoTurno) VALUES (3, "6 Hrs");
+INSERT INTO rotativa_myra.api_tipoturno (id, tipoTurno) VALUES (4, "8 Hrs");
+INSERT INTO rotativa_myra.api_tipoturno (id, tipoTurno) VALUES (5, "10 Hrs");
+INSERT INTO rotativa_myra.api_tipoturno (id, tipoTurno) VALUES (6, "12 Hrs");
+INSERT INTO rotativa_myra.api_tipoturno (id, tipoTurno) VALUES (7, "24 Hrs");
+INSERT INTO rotativa_myra.api_tipoturno (id, tipoTurno) VALUES (8, "Otro");
 
 -- Paciente
 INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)

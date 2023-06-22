@@ -316,7 +316,7 @@ class ProfesionalView(View):
 				#	{'tipoTurno': turno.tipoTurno, 'fechaInicio': turno.fechaInicio, 'horaInicio': turno.horaInicio,
 				#	 'fechaTermino': turno.fechaTermino, 'horaTermino': turno.horaTermino} for turno in turnos],
 				'asistencias': [
-					{'fechaAsistencia': asistencia.fechaAsistencia, 'asisteProfesional': asistencia.asisteProfesional,
+					{'id':asistencia.id, 'fechaAsistencia': asistencia.fechaAsistencia, 'asisteProfesional': asistencia.asisteProfesional,
 					 'estado': asistencia.estado, 'nombrePaciente': asistencia.idPaciente.nombre ,
 					 'idTurno_id': asistencia.idTurno.id } for asistencia in asistencias],
 				'pagos': [
@@ -695,12 +695,14 @@ class PacienteView(View):
 			asistencias = Asistencia.objects.filter(idPaciente_id=id)
 			for asistencia in asistencias:
 				datos_asistencia = {
+					'id':asistencia.id,
 					'fechaAsistencia': asistencia.fechaAsistencia,
 					'asisteProfesional': asistencia.asisteProfesional,
 					'estado': asistencia.estado,
 					'idTurno_id': asistencia.idTurno.id,
 					'nombreProfesional':asistencia.idProfesional.nombre,
 					'rutProfesional': asistencia.idProfesional.rut,
+					'idArea_id': asistencia.idProfesional.idArea.id
 					# Agregar más campos según tus necesidades
 				}
 				datos_asistencias.append(datos_asistencia)
@@ -715,6 +717,8 @@ class PacienteView(View):
 				'idCliente_id': paciente.idCliente.id,
 				'idTipoTurno': paciente.idTipoTurno.id,
 				'asistencias': datos_asistencias,
+				'zona': paciente.idZona.nombreZona,
+				'region': paciente.idRegion.nombreRegion
 			}
 
 			datos = {'message': 'Success', 'paciente': datos_paciente}
@@ -908,6 +912,7 @@ class FilterAreaView(View):
 
 		for profesional in profesionales:
 			datos_profesional = {
+				'id': profesional.id,
 				'nombre': profesional.nombre,
 				'rut': profesional.rut,
 				'idCentro_id': profesional.idCentro.id,
@@ -933,6 +938,7 @@ class FilterCenterView(View):
 
 		for profesional in profesionales:
 			datos_profesional = {
+				'id': profesional.id,
 				'nombre': profesional.nombre,
 				'rut': profesional.rut,
 				'idCentro_id': profesional.idCentro.id,
@@ -976,6 +982,7 @@ class FilterTipoClienteView(View):
 
 			for paciente in pacientes:
 				datos_paciente = {
+					'id': paciente.id,
 					'nombre': paciente.nombre,
 					'rut': paciente.rut,
 					'tipoTurno': paciente.tipoTurno,
@@ -1003,6 +1010,7 @@ class FilterTipoTurnoView(View):
 
 			for paciente in pacientes:
 				datos_paciente = {
+					'id': paciente.id,
 					'nombre': paciente.nombre,
 					'rut': paciente.rut,
 					'tipoTurno': paciente.tipoTurno,
