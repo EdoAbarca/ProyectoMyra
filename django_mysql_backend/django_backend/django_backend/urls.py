@@ -16,8 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from dotenv import load_dotenv
+from os import environ
+load_dotenv()
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/',include('api.urls'))
+    path(environ.get('ADMIN_URL'), admin.site.urls),
+    path(environ.get('API_URL'),include('api.urls'))
 ]

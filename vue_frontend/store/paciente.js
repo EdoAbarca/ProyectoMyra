@@ -1,4 +1,4 @@
-import axios from 'axios';
+//import axios from 'axios';
 export const state = () => ({
     categoriaElegida: null,
     datoBuscadoPaciente: null,
@@ -7,7 +7,7 @@ export const state = () => ({
     historialAtencion:[],
     dataPacientes:[],
     dataPaciente:[],
-    pagosProfesional:[],
+    pagospaciente:[],
     
   })
 export const getters = {
@@ -25,7 +25,7 @@ export const getters = {
         return state.datosPaciente
     },
     getHistorial(state){
-        return state.profesionalesActivos
+        return state.pacienteesActivos
     }
 }
 export const mutations = {
@@ -63,9 +63,12 @@ export const mutations = {
 
   export const actions = {
     async fetchPacientes({ commit,state }) {
-      const path = 'http://127.0.0.1:8000/api/paciente/';
+      const path = this.$config.pacienteURL;
       try {
-        const res = await axios.get(path);
+        const res = await this.$axios.get(path, 
+          {
+            headers:{Authorization: `Bearer ${localStorage.getItem("access")}`}
+          });
         const datos = res.data.pacientes;
         commit('setPacientes', datos);
         }  
@@ -77,10 +80,13 @@ export const mutations = {
 
     async fetchPaciente({ commit,state },id) {
 
-        const id_profesional = id.toString();
-        const path = 'http://127.0.0.1:8000/api/paciente/'+ id_profesional;
+        const id_paciente = id.toString();
+        const path = this.$config.pacienteURL + id_paciente;
         try {
-            const res = await axios.get(path);
+            const res = await this.$axios.get(path, 
+              {
+                headers:{Authorization: `Bearer ${localStorage.getItem("access")}`}
+              });
             const datos = res.data.paciente;
             
             commit('setPaciente', datos);
@@ -105,9 +111,12 @@ export const mutations = {
         if(state.categoriaElegida != null){
             const categoria = state.categoriaElegida.toString();
 
-            const path = 'http://127.0.0.1:8000/api/filter-client-type/'+ categoria;
+            const path = this.$config.filterClientTypeURL+ categoria;
             try {
-                const res = await axios.get(path);
+                const res = await this.$axios.get(path, 
+                  {
+                    headers:{Authorization: `Bearer ${localStorage.getItem("access")}`}
+                  });
                 const datos = res.data.pacientes;
                 
                 commit('setPacientes', datos);
@@ -121,9 +130,12 @@ export const mutations = {
         if(state.categoriaElegida != null){
             const area = state.categoriaElegida.toString();
 
-            const path = 'http://127.0.0.1:8000/api/filter-turn-type/'+ area;
+            const path = this.$config.filterTurnTypeURL + area;
             try {
-                const res = await axios.get(path);
+                const res = await this.$axios.get(path, 
+                  {
+                    headers:{Authorization: `Bearer ${localStorage.getItem("access")}`}
+                  });
                 const datos = res.data.pacientes;
                 
                 commit('setPacientes', datos);

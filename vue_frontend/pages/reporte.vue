@@ -37,7 +37,7 @@ export default {
           "multipart/form-data"
         );
       try {
-        const res = await this.$axios.post("/carga_excel", formData);
+        const res = await this.$axios.post(this.$config.cargaExcelURL, formData);
         console.log(res);
       } catch (e) {
         console.log("Error: ", e.message);

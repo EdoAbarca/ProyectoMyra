@@ -1,4 +1,4 @@
-import axios from 'axios';
+//import this.$axios from 'this.$axios';
 export const state = () => ({
     categoriaElegida: null,
     datoBuscadoCoord: null,
@@ -13,8 +13,8 @@ export const mutations = {
     setCoordinadores(state,lista){
         state.dataCoordinadores = lista;
     },
-    setCoordinador(state,datosProfesional){
-        state.dataCoordinador = datosProfesional;
+    setCoordinador(state,datoscoordinador){
+        state.dataCoordinador = datoscoordinador;
     },
     mostrar(state,id){
         const idAnterior = state.idAnterior
@@ -38,9 +38,9 @@ export const mutations = {
 
   export const actions = {
     async fetchCoordinadores({ commit }) {
-      const path = 'http://127.0.0.1:8000/api/coordinador/';
+      const path = this.$config.coordinadorURL;
       try {
-        const res = await axios.get(path);
+        const res = await this.$axios.get(path);
         const datos = res.data.coordinadores;
         commit('setCoordinadores', datos);
         }  
@@ -51,10 +51,10 @@ export const mutations = {
 
     async fetchCoordinador({ commit,state },id) {
 
-        const id_profesional = id.toString();
-        const path = 'http://127.0.0.1:8000/api/coordinador/'+ id_profesional;
+        const id_coordinador = id.toString();
+        const path = this.$config.coordinadorURL+ id_coordinador;
         try {
-            const res = await axios.get(path);
+            const res = await this.$axios.get(path);
             const datos = res.data.coordinador;
             
             commit('setCoordinador', datos);
@@ -77,9 +77,9 @@ export const mutations = {
         if(state.categoriaElegida != null){
             const categoria = state.categoriaElegida.toString();
 
-            const path = 'http://127.0.0.1:8000/api/filter-center/'+ categoria;
+            const path = this.$config.filterCenterURL+ categoria;
             try {
-                const res = await axios.get(path);
+                const res = await this.$axios.get(path);
                 const datos = res.data.Coordinadores;
                 
                 commit('setCoordinadores', datos);
@@ -93,9 +93,9 @@ export const mutations = {
         if(state.categoriaElegida != null){
             const area = state.categoriaElegida.toString();
 
-            const path = 'http://127.0.0.1:8000/api/filter-position/'+ area;
+            const path = this.$config.filterPositionURL + area;
             try {
-                const res = await axios.get(path);
+                const res = await this.$axios.get(path);
                 const datos = res.data.Coordinadores;
                 
                 commit('setCoordinadores', datos);
@@ -109,3 +109,4 @@ export const mutations = {
         commit('setCoordinadores', []);
       }
   }
+  

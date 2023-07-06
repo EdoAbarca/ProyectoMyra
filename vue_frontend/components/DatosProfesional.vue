@@ -59,7 +59,8 @@ export default {
     //FUNCION PARA EXPORTAR EXCEL
     async getReportHandler() {
       try {
-        const res = await this.$axios.get("/reporte_profesional/1"); //El "1" debe ser el ID del profesional, a recuperar desde la vista de muestra de datos
+        const id_profesional = '1';  //El "1" debe ser el ID del profesional, a recuperar desde la vista de muestra de datos
+        const res = await this.$axios.get(this.$config.reporteProfesionalURL+id_profesional);
         let data = res.data;
 
         // Create a new workbook

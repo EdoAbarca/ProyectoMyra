@@ -1,4 +1,4 @@
-import axios from 'axios';
+//import this.$axios from 'this.$axios';
 export const state = () => ({
     categoriaElegida: null,
     datoBuscadoProfesional: null,
@@ -93,13 +93,18 @@ export const mutations = {
 
   export const actions = {
     async fetchProfesionales({ commit }) {
-      const path = 'http://127.0.0.1:8000/api/profesional/';
+      const path = this.$config.profesionalURL;
       try {
-        const res = await axios.get(path);
+        const res = await this.$axios.get(path, 
+            {
+              headers:{Authorization: `Bearer ${localStorage.getItem("access")}`}
+            });
         const datos = res.data.profesionales;
         commit('setProfesionales', datos);
         }  
       catch (error) {
+        //Si tira error, hay que llamar a la url que retorna un nuevo access token
+        //y sobreescribirlo en el local storage, esto para todas las requests
         console.log(error);
         }
     },
@@ -107,9 +112,12 @@ export const mutations = {
     async fetchProfesional({ commit,state },id) {
 
         const id_profesional = id.toString();
-        const path = 'http://127.0.0.1:8000/api/profesional/'+ id_profesional;
+        const path = this.$config.profesionalURL + id_profesional;
         try {
-            const res = await axios.get(path);
+            const res = await this.$axios.get(path, 
+                {
+                  headers:{Authorization: `Bearer ${localStorage.getItem("access")}`}
+                });
             const datos = res.data.profesional;
             
             commit('setProfesional', datos);
@@ -132,9 +140,12 @@ export const mutations = {
         if(state.categoriaElegida != null){
             const categoria = state.categoriaElegida.toString();
 
-            const path = 'http://127.0.0.1:8000/api/filter-center/'+ categoria;
+            const path = this.$config.filterCenterURL+ categoria;
             try {
-                const res = await axios.get(path);
+                const res = await this.$axios.get(path, 
+                    {
+                      headers:{Authorization: `Bearer ${localStorage.getItem("access")}`}
+                    });
                 const datos = res.data.profesionales;
                 
                 commit('setProfesionales', datos);
@@ -148,9 +159,12 @@ export const mutations = {
         if(state.categoriaElegida != null){
             const area = state.categoriaElegida.toString();
 
-            const path = 'http://127.0.0.1:8000/api/filter-position/'+ area;
+            const path = this.$config.filterPostionURL+ area;
             try {
-                const res = await axios.get(path);
+                const res = await this.$axios.get(path, 
+                    {
+                      headers:{Authorization: `Bearer ${localStorage.getItem("access")}`}
+                    });
                 const datos = res.data.profesionales;
                 
                 commit('setProfesionales', datos);

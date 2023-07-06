@@ -24,18 +24,32 @@ export default {
     },
     async loginHandler() {
       try {
-        this.$auth.loginWith("local", {
+        
+        let res = await this.$auth.loginWith("local", {
           data: { 
             email: this.email, 
             password: this.password },
         });
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.access);
+
+        //this.$auth.setToken('local', res.data.access);
+        localStorage.setItem('access', res.data.access);
+        localStorage.setItem('refresh', res.data.refresh);
+        //this.$auth.setToken('local', 'refresh', refreshToken);
+         /*let res = await this.$axios.post(process.env.LOGIN_URL, {
+          email: this.email,
+          password: this.password,
+        });*/
       } catch (e) {
         console.log("Error:", e.message);
       }
 
-      if (this.isAuthenticated) {
+      
+      /*if (this.isAuthenticated) {
       this.$router.push("/home");
-    }
+      } */
     },
 
     cambiar(id){

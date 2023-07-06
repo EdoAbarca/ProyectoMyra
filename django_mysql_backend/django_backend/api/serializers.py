@@ -1,31 +1,50 @@
 from rest_framework import serializers
-from django.contrib.auth import get_user_model, authenticate
+from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
-
-UserModel = get_user_model()
+from django.contrib.auth.models import User
+from .models import *
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
 
 class UserRegisterSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = UserModel
+		model = User
 		fields = '__all__'
-	def create(self, clean_data):
-		user_obj = UserModel.objects.create_user(email=clean_data['email'], password=clean_data['password'])
-		user_obj.username = clean_data['username']
-		user_obj.save()
-		return user_obj
+	def create(self, validated_data):
+		user = User.objects.create_user(**validated_data)
+		return user
 
-class UserLoginSerializer(serializers.Serializer):
-	email = serializers.EmailField()
-	password = serializers.CharField()
+class UserLoginSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = User
+		fields = ('email', 'password')
 	##
-	def check_user(self, clean_data):
-		user = authenticate(username=clean_data['email'], password=clean_data['password'])
+	def check_credentials(self, clean_data):
+		user = authenticate(email=clean_data['email'], password=clean_data['password'])
 		if not user:
-			raise ValidationError('user not found')
+			raise ValidationError('Autenticación rechazada')
 		return user
 
 class UserSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = UserModel
-		fields = ('email', 'username')
+		model = User
+		fields = ('id','username', 'is_superuser', 'is_staff', 'is_active','date_joined', 'last_login')
 		#fields = '__all__'
+
+
+class CargoSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Cargo
+		fields = '__all__'
+
+class ProfesionalSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Profesional
+		fields = '__all__'
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username_field = 'email'
+
+class CustomTokenRefreshSerializer(TokenRefreshSerializer):
+    #sername_field = 'email'
+	pass

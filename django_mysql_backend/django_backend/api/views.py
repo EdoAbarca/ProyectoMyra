@@ -6,15 +6,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import json
 import pandas as pd
-from django.contrib.auth import login, logout
+#from django.contrib.auth import login, logout
 from django.db.models import Q
 from rest_framework import status, permissions
 from rest_framework.response import Response
-from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
-from rest_framework.response import Response
-from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
-from .validations import custom_validation, validate_email, validate_password
+from .serializers import *
+from rest_framework.parsers import MultiPartParser
+
 
 #############################################################################################
 #############################################################################################
@@ -22,54 +21,62 @@ from .validations import custom_validation, validate_email, validate_password
 
 # CRUD
 
-class CargoView(View):
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        return super().dispatch(request, *args, **kwargs)
+class CargoView(APIView):
+    permission_classes = [permissions.IsAdminUser]
 
     def get(self, request, id=0):
-        if (id > 0):
-            cargos = list(Cargo.objects.filter(id=id).values())
-            if len(cargos) > 0:
-                cargo = cargos[0]
-                datos = {'message': "Success", 'cargo': cargo}
+        try:
+            if (id > 0):
+                cargo = Cargo.objects.get(id=id)
+                serializer = CargoSerializer(cargo)
+                data = {"message": "Success", "cargo": serializer.data}
+                return Response(data, status=status.HTTP_200_OK)
             else:
-                datos = {'message': "Cargo no encontrado."}
-            return JsonResponse(datos)
-        else:
-            cargos = list(Cargo.objects.values())
-            if len(cargos) > 0:
-                datos = {'message': "Success", 'cargos': cargos}
-            else:
-                datos = {'message': "Sin cargos."}
-            return JsonResponse(datos)
-
+                cargos = Cargo.objects.all()
+                serializer = CargoSerializer(cargos, many=True)
+                data = {"message": "Success", "cargos": serializer.data}
+                return Response(data, status=status.HTTP_200_OK)
+        except Exception as error:
+            data = {"message": "Error: "+str(error)}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+            
     def post(self, request):
-        json_data = json.loads(request.body)
-        Cargo.objects.create(cargo=json_data['cargo'])
-        datos = {'message': "Success"}
-        return JsonResponse(datos)
+        try:
+            serializer = CargoSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                data = {"message": "Success"}
+                return Response(data, status=status.HTTP_201_CREATED)
+            data = {"message": "Error: "+serializer.errors.__str__()}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            data = {"message": "Error: "+str(error)}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, id):
-        json_data = json.loads(request.body)
-        cargos = list(Cargo.objects.filter(id=id).values())
-        if len(cargos) > 0:
+        try:
             cargo = Cargo.objects.get(id=id)
-            cargo.cargo = json_data['cargo']
-            cargo.save()
-            datos = {'message': "Success"}
-        else:
-            datos = {'message': "Cargo no encontrado"}
-        return JsonResponse(datos)
+            if cargo is not None:
+                serializer = CargoSerializer(cargo, data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as error:
+            data = {"message": "Error: "+str(error)}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id):
-        cargos = list(Cargo.objects.filter(id=id).values())
-        if len(cargos) > 0:
-            Cargo.objects.filter(id=id).delete()
-            datos = {'message': "Success"}
-        else:
-            datos = {'message': "Cargo no encontrado"}
-        return JsonResponse(datos)
+        try:
+            cargo = Cargo.objects.get(id=id)
+            if cargo is not None:
+                cargo.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as error:
+            data = {"message": "Error: "+str(error)}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ContratoView(View):
@@ -290,7 +297,7 @@ class ProfesionalView(View):
                 datos = {'message': 'Profesional no encontrado'}
                 return JsonResponse(datos, status=404)
 
-            turnos = Turno.objects.filter(idProfesional_id=id)
+            
             pagos = Pago.objects.filter(idProfesional_id=id)
             asistencias = Asistencia.objects.filter(idProfesional_id=id)
 
@@ -1025,11 +1032,8 @@ class FilterTipoTurnoView(View):
         return JsonResponse(datos)
 
 
-class CargaExcelView(View):
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        return super().dispatch(request, *args, **kwargs)
-
+class CargaExcelView(APIView):
+    parser_classes = [MultiPartParser]
     def post(self, request):
         try:
             title = request.POST.get('title')
@@ -1042,11 +1046,11 @@ class CargaExcelView(View):
             # df = pd.read_excel(file)
             print(df)
             # for index, row in df.iterrows():
-            datos = {'message': 'success', 'status': status.HTTP_201_CREATED}
-            return JsonResponse(datos)
+            datos = {'message': 'success'}
+            return Response(datos, status=status.HTTP_201_CREATED)
         except:
-            datos = {'message': 'fail', 'status': status.HTTP_409_CONFLICT}
-            return JsonResponse(datos)
+            datos = {'message': 'fail'}
+            return Response(datos, status=status.HTTP_409_CONFLICT)
 
 
 class ReporteProfesionalView(View):
@@ -1070,19 +1074,22 @@ class ReporteProfesionalView(View):
 #############################################################################################
 
 # USUARIO
-
+'''
 class UserRegister(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
-        print(request.data)
-        clean_data = custom_validation(request.data)
-        serializer = UserRegisterSerializer(data=clean_data)
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.create(clean_data)
-            if user:
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        #clean_data = custom_validation(request.data)
+        clean_data = request.data
+        try:
+            serializer = UserRegisterSerializer(data=clean_data)
+            if serializer.is_valid(raise_exception=True):
+                user = serializer.create(clean_data)
+                if user:
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except Exception as error:
+            data = {'Error': str(error)}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserLogin(APIView):
@@ -1091,31 +1098,131 @@ class UserLogin(APIView):
 
     def post(self, request):
         data = request.data
-        assert validate_email(data)
-        assert validate_password(data)
-        serializer = UserLoginSerializer(data=data)
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.check_user(data)
-            login(request, user)
-            return Response({'data': serializer.data}, status=status.HTTP_200_OK)
-
+        try:
+            #assert validate_email(data)
+            #assert validate_password(data)
+            serializer = UserLoginSerializer(data=data)
+            if serializer.is_valid(raise_exception=True):
+                user = serializer.check_credentials(data)
+                print(user)
+                if user:
+                    serializer = CustomTokenObtainPairSerializer(data=request.data)
+                    if serializer.is_valid(raise_exception=True):
+                        return Response({'message':'Success', 'data': serializer.validated_data}, status=status.HTTP_200_OK)
+                else:
+                    return Response({'message':'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+        except Exception as error:
+            data = {'Error': str(error)}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+            
 
 class UserLogout(APIView):
-    permission_classes = (permissions.AllowAny,)
-    authentication_classes = ()
+    permission_classes = (permissions.IsAuthenticated,)
+    #authentication_classes = (SessionAuthentication,)
 
     def post(self, request):
-        logout(request)
-        return Response(status=status.HTTP_200_OK)
+        try:
+            logout(request)
+            return Response(status=status.HTTP_200_OK)
+        except Exception as error:
+            data = {'Error': str(error)}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     authentication_classes = (SessionAuthentication,)
 
     def get(self, request):
         try:
             serializer = UserSerializer(request.user)
             return Response({'user': serializer.data}, status=status.HTTP_200_OK)
-        except:
-            return Response({'user': 'No hay sesión iniciada'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as error:
+            data = {'Error': str(error),'user': 'No hay sesión iniciada'}
+            return Response(data, status=status.HTTP_404_NOT_FOUND)
+
+'''
+
+from rest_framework_simplejwt.tokens import RefreshToken
+class UserRegister(APIView):
+    """
+    An endpoint for the client to create a new User.
+    """
+
+    permission_classes = (permissions.AllowAny,)
+    #serializer_class = serializers.UserRegistrationSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        token = RefreshToken.for_user(user)
+        data = serializer.data
+        data["tokens"] = {"refresh": str(token), "access": str(token.access_token)}
+        return Response(data, status=status.HTTP_201_CREATED)
+
+class UserLogin(APIView):
+    """
+    An endpoint to authenticate existing users using their email and password.
+    """
+
+    permission_classes = (permissions.AllowAny,)
+    #serializer_class = serializers.UserLoginSerializer
+
+    def post(self, request, *args, **kwargs):
+        try:
+            serializer = UserLoginSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            user = serializer.validated_data
+            print(user)
+            storedUser = User.objects.get(email=user['email'])
+            #serializer = serializers.CustomUserSerializer(user)
+            print(storedUser)
+            token = RefreshToken.for_user(storedUser)
+            #data = serializer.data
+            data = {"refresh": str(token), "access": str(token.access_token)}
+            print(data)
+            #login(request, user)
+            return Response(data, status=status.HTTP_200_OK)
+        except Exception as error:
+            data = {'Error': str(error)}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+
+class UserLogout(APIView):
+    """
+    An endpoint to logout users.
+    """
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            refresh_token = request.data["refresh"]
+            print(refresh_token)
+            token = RefreshToken(refresh_token)
+            print("Token a mandar a blacklist:", token)
+            token.blacklist()
+            #logout(request)
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as error:
+            data = {'Error': str(error)}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+
+class UserView(APIView):
+    """
+    Get, Update user information
+    """
+
+    permission_classes = (permissions.AllowAny,)
+    #serializer_class = serializers.CustomUserSerializer
+
+    def get(self, request):
+        try:
+            print(request)
+            #print(request.data)
+            print(request.user)
+            serializer = UserSerializer(request.user)
+            return Response({'user': serializer.data}, status=status.HTTP_200_OK)
+        except Exception as error:
+            data = {'Error': str(error),'user': 'No hay sesión iniciada'}
+            return Response(data, status=status.HTTP_404_NOT_FOUND)

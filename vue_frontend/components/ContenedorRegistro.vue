@@ -25,7 +25,7 @@ export default {
       };
       console.log(data);
       try {
-        const res = await this.$axios.post("/register", {
+        const res = await this.$axios.post(this.$config.registerURL, {
           username: this.username,
           email: this.email,
           password: this.password,

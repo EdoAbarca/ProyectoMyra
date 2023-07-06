@@ -2,6 +2,7 @@
 import BarraNav from "../components/BarraNav.vue";
 import Redireccion from "../components/Redireccion.vue";
 
+
 import { mapGetters } from "vuex";
 
 export default {
@@ -24,13 +25,25 @@ export default {
     
     ...mapGetters(["isAuthenticated", "loggedInUser"]),
   },
+  mounted: function () {
+    
+  },
   methods: {
     async logoutHandler() {
       try {
+        let res = this.$axios.post(this.$config.logoutURL, {
+          refresh: localStorage.getItem("refresh")}, 
+          {
+            headers:{Authorization: `Bearer ${localStorage.getItem("access")}`}
+          }
+        );
+        console.log(res);
         await this.$auth.logout();
+        localStorage.removeItem("access");
+        localStorage.removeItem("refresh");
         this.$nuxt.refresh();
       } catch (e) {
-        console.log(e.message);
+        console.log("Error: ", e.message);
       }
     },
   },
@@ -87,7 +100,7 @@ export default {
     </div>
   </div>
   <div class="ContenedorPrincipal" v-else>
-      <Redireccion/> 
+    <Redireccion />
   </div>
 </template>
 

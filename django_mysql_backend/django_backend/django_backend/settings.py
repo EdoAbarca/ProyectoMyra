@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+from os import environ
+from datetime import timedelta
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k^&u$ogk=6*%bcs16_*5f#020@u5y758$1oe(j)dz*w47u6tet'
+SECRET_KEY = environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -33,10 +38,74 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    #'rest_framework.authtoken',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'api'
 ]
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(hours=12),
+    
+    'ROTATE_REFRESH_TOKENS': False,
+    #'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': False,
+
+    'ALGORITHM': 'HS256',
+    #'VERIFYING_KEY': None,
+    #'AUDIENCE': None,
+    #'ISSUER': None,
+    #'JWK_URL': None,
+    #'LEEWAY': 0,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'USER_AUTHENTICATION_RULE': 'rest_framework_simplejwt.authentication.default_user_authentication_rule',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'JTI_CLAIM': 'jti',
+
+    #'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    #'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    #'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
+
+'''
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=90),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': False,
+
+    'ALGORITHM': 'HS256',
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+    'JWK_URL': None,
+    'LEEWAY': 0,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'USER_AUTHENTICATION_RULE': 'rest_framework_simplejwt.authentication.default_user_authentication_rule',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'JTI_CLAIM': 'jti',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
+'''
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -49,21 +118,16 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
-'''
+
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend', #Esto se debe considerar para cuando se despliegue en IAAS/PAAS (https://www.django-rest-framework.org/api-guide/authentication/)
+    #'django.contrib.auth.backends.ModelBackend', #Esto se debe considerar para cuando se despliegue en IAAS/PAAS (https://www.django-rest-framework.org/api-guide/authentication/),
+    'api.email_auth.EmailBackend'
 ]
-'''
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        #'rest_framework.authentication.TokenAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.AllowAny',
-    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
 }
 
 ROOT_URLCONF = 'django_backend.urls'
@@ -92,21 +156,18 @@ WSGI_APPLICATION = 'django_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'localhost', #Cambiar cuando se despliegue en el servidor
-        'PORT': '3306',
-        'USER': 'root',
-        'PASSWORD': 'mysql',
-        #'PASSWORD': 'admin',
-        'NAME': 'rotativa_myra',
+        'ENGINE': environ.get('ENGINE'),
+        'HOST': environ.get('HOST'), #Cambiar cuando se despliegue en el servidor
+        'PORT': environ.get('PORT'),
+        'USER': environ.get('USER'),
+        'PASSWORD': environ.get('PASSWORD'),
+        'NAME': environ.get('NAME'),
         'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+            'init_command': environ.get('INIT_COMMAND'),
         }
     }
 }
 
-## User model
-AUTH_USER_MODEL = 'api.AppUser'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -148,15 +209,15 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ALLOWED_HOSTS = ['*']
+#ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [environ.get('ALLOWED_HOST')]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
+    environ.get('FRONTEND_URL'),
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
+    environ.get('FRONTEND_URL'),
 ]
 
 CORS_ALLOW_CREDENTIALS = True
