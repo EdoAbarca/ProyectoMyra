@@ -76,14 +76,17 @@ class Cliente(models.Model):
     nombreCliente = models.CharField(max_length=70)
 
 class TipoTurno(models.Model):
+    #testear
     tipoTurno = models.CharField(max_length=10)
 
 class Paciente(models.Model):
     #añadir cuidado
-    #añadir gasto por paciente (sprint 3)
+    #crear un metodo para el calculo del gasto
+    #actualizar tests
     nombre = models.CharField(max_length=70)
     fechaInicioAtencion = models.DateField()
     vigente = models.BooleanField()
+    gasto = models.IntegerField()
     idZona = models.ForeignKey(Zona, on_delete=models.CASCADE)
     idRegion = models.ForeignKey(Region, on_delete=models.CASCADE)
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
@@ -106,10 +109,11 @@ class Asistencia(models.Model):
     #idPago = models.ForeignKey(Pago, on_delete=models.CASCADE)
 
 class Alerta(models.Model):
-    #tipo = char
-    #profesionales = lista o un solo profesional (id)
+    #testear
+    tipo = models.CharField(max_length=100)
     fechaAlerta = models.DateField()
     descripcion = models.CharField(max_length=200)
     idPaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     idAsistencia = models.ForeignKey(Asistencia, on_delete=models.CASCADE)
+    idProfesional = models.ForeignKey(Profesional, on_delete=models.CASCADE)
 

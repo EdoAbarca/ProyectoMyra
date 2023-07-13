@@ -705,6 +705,7 @@ class PacienteView(View):
                 'tipoTurno': paciente.tipoTurno,
                 'fechaInicioAtencion': paciente.fechaInicioAtencion,
                 'vigente': paciente.vigente,
+                'gasto': paciente.gasto,
                 'idZona_id': paciente.idZona.id,
                 'idRegion_id': paciente.idRegion.id,
                 'idCliente_id': paciente.idCliente.id,
@@ -728,7 +729,8 @@ class PacienteView(View):
         json_data = json.loads(request.body)
         Paciente.objects.create(nombre=json_data['nombre'],
                                 fechaInicioAtencion=json_data['fechaInicioAtencion'],
-                                vigente=json_data['vigente'], idZona=json_data['idZona'], idRegion=json_data['idRegion'],
+                                vigente=json_data['vigente'], gasto=json_data['gasto'],
+                                idZona=json_data['idZona'], idRegion=json_data['idRegion'],
                                 idCliente=json_data['idCliente'], idTipoTurno=json_data['idTipoTurno'])
         datos = {'message': "Success"}
         return JsonResponse(datos)
@@ -741,6 +743,7 @@ class PacienteView(View):
             paciente.nombre = json_data['nombre']
             paciente.fechaInicioAtencion = json_data['fechaInicioAtencion']
             paciente.vigente = json_data['vigente']
+            paciente.gasto = json_data['gasto']
             paciente.idZona = json_data['idZona']
             paciente.idRegion = json_data['idRegion']
             paciente.idCliente = json_data['idCliente']
@@ -871,8 +874,65 @@ class AsistenciaView(View):
             Asistencia.objects.filter(id=id).delete()
             datos = {'message': "Success"}
         else:
-            datos = {'message': "Asistenciano encontrada"}
+            datos = {'message': "Asistencia no encontrada"}
         return JsonResponse(datos)
+
+class AlertaView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, id=0):
+        if (id > 0):
+            alertas = list(Alerta.objects.filter(id=id).values())
+            if len(alertas) > 0:
+                alerta = alertas[0]
+                datos = {'message': "Success", 'alerta': alerta}
+            else:
+                datos = {'message': "Alerta no encontrada"}
+            return JsonResponse(datos)
+        else:
+            alertas = list(Alerta.objects.values())
+            if len(alertas) > 0:
+                datos = {'message': "Success", 'alertas': alertas}
+            else:
+                datos = {'message': "Sin alertas"}
+            return JsonResponse(datos)
+
+    def post(self, request):
+        json_data = json.loads(request.body)
+        Alerta.objects.create(tipo=json_data['tipo'], fechaAlerta=json_data['fechaAlerta'],
+                              descripcion=json_data['descripcion'], idPaciente=json_data['idPaciente'],
+                              idAsistencia=json_data['idAsistencia'],idProfesional=json_data['idProfesional'])
+        datos = {'message': "Success"}
+        return JsonResponse(datos)
+
+    def put(self, request, id):
+        json_data = json.loads(request.body)
+        alertas = list(Alerta.objects.filter(id=id).values())
+        if len(alertas) > 0:
+            alerta = Alerta.objects.get(id=id)
+            alerta.tipo = json_data['tipo']
+            alerta.fechaAlerta = json_data['fechaAlerta']
+            alerta.descripcion = json_data['descripcion']
+            alerta.idPaciente = json_data['idPaciente']
+            alerta.idAsistencia = json_data['idAsistencia']
+            alerta.idProfesional = json_data['idProfesional']
+            alerta.save()
+            datos = {'message': "Success"}
+        else:
+            datos = {'message': "Alerta no encontrada."}
+        return JsonResponse(datos)
+
+    def delete(self, request, id):
+        alertas = list(Alerta.objects.filter(id=id).values())
+        if len(alertas) > 0:
+            Alerta.objects.filter(id=id).delete()
+            datos = {'message': "Success"}
+        else:
+            datos = {'message': "Alerta no encontrada"}
+        return JsonResponse(datos)
+
 
 
 #############################################################################################
