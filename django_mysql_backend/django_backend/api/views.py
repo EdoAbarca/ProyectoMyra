@@ -1032,8 +1032,12 @@ class FilterTipoTurnoView(View):
         return JsonResponse(datos)
 
 
-class CargaExcelView(APIView):
-    parser_classes = [MultiPartParser]
+class CargaExcelView(View):
+    #parser_classes = [MultiPartParser]
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        return super().dispatch(request, *args, **kwargs)
+    
     def post(self, request):
         try:
             title = request.POST.get('title')
@@ -1045,12 +1049,15 @@ class CargaExcelView(APIView):
             df = pd.read_excel(file, sheet_name=2)
             # df = pd.read_excel(file)
             print(df)
-            # for index, row in df.iterrows():
+            for row in df.iloc[4:].head(100).itertuples(index=True, name=None):
+                print(row)
+                #print(row[0])
+                #print(row[1])
             datos = {'message': 'success'}
-            return Response(datos, status=status.HTTP_201_CREATED)
+            return JsonResponse(datos, status=status.HTTP_201_CREATED)
         except:
             datos = {'message': 'fail'}
-            return Response(datos, status=status.HTTP_409_CONFLICT)
+            return JsonResponse(datos, status=status.HTTP_409_CONFLICT)
 
 
 class ReporteProfesionalView(View):
