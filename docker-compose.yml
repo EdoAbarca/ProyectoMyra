@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  django:
+    build: ./django_mysql_backend
+    container_name: django
+    volumes:
+      - .:/api
+    ports:
+      - "8000:8000"
+    #image: 
+    depends_on:
+      - mysql
+    networks:
+      - myra-network
+  nodejs:
+    build: ./vue_frontend
+    container_name: nuxtjs
+    volumes:
+      - .:/api
+    ports:
+      - "3000:3000"
+    #image: 
+    depends_on:
+      - mysql
+    networks:
+      - myra-network
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: rotativa_myra
+      #MYSQL_ROOT_PASSWORD: 
+    ports:
+      - 3306:3306
+    networks:
+      - myra-network
+
+networks:
+  myra-network:
+    driver: bridge
