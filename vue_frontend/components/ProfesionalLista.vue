@@ -1,5 +1,5 @@
 <script>
-import { mapState, mapGetters } from 'vuex'
+//import { mapState, mapGetters } from 'vuex'
 import { mapMutations,mapActions } from 'vuex'
 import EtiquetaProfesional from './EtiquetaProfesional.vue';
 

@@ -5,7 +5,7 @@ import BotonObtener from "./BotonObtener.vue";
 import HistorialAsistenciaProf from "./HistorialAsistenciaProf.vue";
 
 import Acordeon from "./Acordeon.vue";
-import { mapState, mapGetters, mapMutations } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import * as XLSX from "xlsx";
 
 export default {
@@ -60,8 +60,8 @@ export default {
           "#669098";
       }
     },
-    //FUNCION PARA EXPORTAR EXCEL
-    async getReportHandler() {
+    //FUNCION PARA EXPORTAR EXCEL CON REPORTE PROFESIONAL
+    generarReporteProfesional() {
       try {
         let dataProfesional = this.$store.state.profesional.dataProfesional;
         console.log("Profesional a generar reporte: ");
@@ -213,7 +213,7 @@ export default {
         const link = document.createElement("a");
         link.href = url;
         //link.setAttribute("download", "reportePrueba.xlsx");
-        const nombreXLSX = "reporte_" + dataProfesional.rut + ".xlsx";
+        const nombreXLSX = "ReporteProfesional_" + dataProfesional.rut + ".xlsx";
         link.setAttribute("download", nombreXLSX);
 
         // Click al link para iniciar la descarga
@@ -284,7 +284,7 @@ export default {
         </div>
         <div class="BtnObtenerReporte">
           <!-- <BotonObtener />-->
-          <v-btn @click="getReportHandler">Obtener Reporte</v-btn>
+          <v-btn @click="generarReporteProfesional">Obtener Reporte</v-btn>
         </div>
       </div>
     </transition>

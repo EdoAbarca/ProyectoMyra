@@ -694,14 +694,14 @@ class PacienteView(View):
 
             datos_paciente = {
                 'nombre': paciente.nombre,
-                'tipoTurno': paciente.tipoTurno,
+                'tipoTurno': paciente.idTipoTurno.tipoTurno,
                 'fechaInicioAtencion': paciente.fechaInicioAtencion,
                 'vigente': paciente.vigente,
                 'gasto': paciente.gasto,
                 'idZona_id': paciente.idZona.id,
                 'idRegion_id': paciente.idRegion.id,
                 'idCliente_id': paciente.idCliente.id,
-                'idTipoTurno': paciente.idTipoTurno.id,
+                'idTipoTurno_id': paciente.idTipoTurno.id,
                 'asistencias': datos_asistencias,
                 'zona': paciente.idZona.nombreZona,
                 'region': paciente.idRegion.nombreRegion
