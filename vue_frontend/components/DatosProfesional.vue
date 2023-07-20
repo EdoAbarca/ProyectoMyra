@@ -17,7 +17,11 @@ export default {
     HistorialAsistenciaProf,
   },
   computed: {
-    ...mapState("profesional", ["dataProfesional"]),
+    ...mapState("profesional", [
+      "dataProfesional",
+      "pagosProfesional",
+      "asistencias",
+    ]),
     ...mapGetters("profesional", [
       "getDatosBasicos",
       "getEstadisticas",
@@ -59,40 +63,163 @@ export default {
     //FUNCION PARA EXPORTAR EXCEL
     async getReportHandler() {
       try {
-        const id_profesional = '1';  //El "1" debe ser el ID del profesional, a recuperar desde la vista de muestra de datos
-        const res = await this.$axios.get(this.$config.reporteProfesionalURL+id_profesional);
-        let data = res.data;
+        let dataProfesional = this.$store.state.profesional.dataProfesional;
+        console.log("Profesional a generar reporte: ");
+        console.log(dataProfesional);
 
-        // Create a new workbook
+        //Formateo de datos basicos profesional
+        var datosBasicos = [
+          {
+            Profesional: dataProfesional.nombre,
+            RUT: dataProfesional.rut,
+            "Coordinador/a": dataProfesional.nombreCoordinador,
+            "Tipo contrato": dataProfesional.tipoContrato,
+            "Horas extras": dataProfesional.horasExtras,
+            "Horas totales": dataProfesional.horasTotales,
+            Inasistencias: dataProfesional.inasistencias,
+            "Licencia (dias)": dataProfesional.licencia,
+          },
+        ];
+
+        // Workbook
         const workbook = XLSX.utils.book_new();
 
-        // Create a worksheet and add the data to it
-        const worksheet = XLSX.utils.json_to_sheet(data.data);
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+        // Worksheet
+        // Datos basicos profesional
+        const worksheet1 = XLSX.utils.json_to_sheet(datosBasicos);
+        XLSX.utils.book_append_sheet(
+          workbook,
+          worksheet1,
+          "Datos basicos profesional"
+        );
+        const columnHeaders1 = Object.keys(datosBasicos[0]);
 
-        // Generate the Excel file
+        const columnWidths1 = columnHeaders1.map((header) => {
+          return {
+            wch:
+              Math.max(
+                header.length,
+                ...datosBasicos.map(
+                  (item) => (item[header] || "").toString().length
+                )
+              ) + 2,
+          };
+        });
+
+        worksheet1["!cols"] = columnWidths1;
+
+        const headerCellStyle = { font: { bold: true } };
+
+        //Esto deja la primera fila en negrita, no funciona
+        //Posible solucion: Instalar xlsx-js-style o xlsx-style
+        const headerRange1 = XLSX.utils.decode_range(worksheet1["!ref"]);
+        for (let i = headerRange1.s.c; i <= headerRange1.e.c; i++) {
+          const cellAddress = XLSX.utils.encode_cell({
+            r: headerRange1.s.r,
+            c: i,
+          });
+          const cell = worksheet1[cellAddress];
+          const header = columnHeaders1[i];
+          cell.s = headerCellStyle;
+          cell.v = header; // Set the cell value explicitly as the header text
+          cell.t = "s"; // Set the cell type as string (text)
+        }
+
+        // Asistencias
+        const worksheet2 = XLSX.utils.json_to_sheet(
+          dataProfesional.asistencias
+        );
+        XLSX.utils.book_append_sheet(workbook, worksheet2, "Asistencias");
+
+        const columnHeaders2 = Object.keys(dataProfesional.asistencias[0]);
+
+        const columnWidths2 = columnHeaders2.map((header) => {
+          return {
+            wch:
+              Math.max(
+                header.length,
+                ...dataProfesional.asistencias.map(
+                  (item) => (item[header] || "").toString().length
+                )
+              ) + 2,
+          };
+        });
+
+        worksheet2["!cols"] = columnWidths2;
+
+        //Esto deja la primera fila en negrita, no funciona
+        const headerRange2 = XLSX.utils.decode_range(worksheet2["!ref"]);
+        for (let i = headerRange2.s.c; i <= headerRange2.e.c; i++) {
+          const cellAddress = XLSX.utils.encode_cell({
+            r: headerRange2.s.r,
+            c: i,
+          });
+          const cell = worksheet2[cellAddress];
+          const header = columnHeaders2[i];
+          cell.s = headerCellStyle;
+          cell.v = header; // Set the cell value explicitly as the header text
+          cell.t = "s"; // Set the cell type as string (text)
+        }
+
+        // Pagos
+        const worksheet3 = XLSX.utils.json_to_sheet(dataProfesional.pagos);
+        XLSX.utils.book_append_sheet(workbook, worksheet3, "Pagos");
+
+        const columnHeaders3 = Object.keys(dataProfesional.pagos[0]);
+
+        const columnWidths3 = columnHeaders3.map((header) => {
+          return {
+            wch:
+              Math.max(
+                header.length,
+                ...dataProfesional.pagos.map(
+                  (item) => (item[header] || "").toString().length
+                )
+              ) + 2,
+          };
+        });
+
+        worksheet3["!cols"] = columnWidths3;
+
+        //Esto deja la primera fila en negrita, no funciona
+        const headerRange3 = XLSX.utils.decode_range(worksheet3["!ref"]);
+        for (let i = headerRange3.s.c; i <= headerRange3.e.c; i++) {
+          const cellAddress = XLSX.utils.encode_cell({
+            r: headerRange3.s.r,
+            c: i,
+          });
+          const cell = worksheet3[cellAddress];
+          const header = columnHeaders3[i];
+          cell.s = headerCellStyle;
+          cell.v = header; // Set the cell value explicitly as the header text
+          cell.t = "s"; // Set the cell type as string (text)
+        }
+
+        // Generar el Excel
         const excelBuffer = XLSX.write(workbook, {
           bookType: "xlsx",
           type: "array",
         });
 
-        // Convert the Excel buffer to a Blob
+        // Excel buffer a Blob
         const blob = new Blob([excelBuffer], {
           type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         });
 
-        // Create a URL object from the Blob
+        // Crear el URL desde el blob
         const url = window.URL.createObjectURL(blob);
 
-        // Create a temporary link element and set its properties
+        // Link temporal para gestar la descarga
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", "reportePrueba.xlsx");
+        //link.setAttribute("download", "reportePrueba.xlsx");
+        const nombreXLSX = "reporte_" + dataProfesional.rut + ".xlsx";
+        link.setAttribute("download", nombreXLSX);
 
-        // Simulate a click on the link to initiate the file download
+        // Click al link para iniciar la descarga
         link.click();
 
-        // Clean up the URL object
+        // Se borra el URL
         window.URL.revokeObjectURL(url);
       } catch (e) {
         console.log("Error: ", e);
@@ -156,7 +283,8 @@ export default {
           </div>
         </div>
         <div class="BtnObtenerReporte">
-          <BotonObtener />
+          <!-- <BotonObtener />-->
+          <v-btn @click="getReportHandler">Obtener Reporte</v-btn>
         </div>
       </div>
     </transition>

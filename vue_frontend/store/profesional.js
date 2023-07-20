@@ -34,7 +34,8 @@ export const getters = {
         return state.estProfesional
     },
     getDatosBasicos(state){
-        return state.datosProfesional
+        //return state.datosProfesional
+        return state.dataProfesional
     },
     getProfesionales(state){
         return state.profesionales

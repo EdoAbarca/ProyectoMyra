@@ -21,62 +21,54 @@ from rest_framework.parsers import MultiPartParser
 
 # CRUD
 
-class CargoView(APIView):
-    permission_classes = [permissions.IsAdminUser]
+class CargoView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, id=0):
-        try:
-            if (id > 0):
-                cargo = Cargo.objects.get(id=id)
-                serializer = CargoSerializer(cargo)
-                data = {"message": "Success", "cargo": serializer.data}
-                return Response(data, status=status.HTTP_200_OK)
+        if (id > 0):
+            cargos = list(Cargo.objects.filter(id=id).values())
+            if len(cargos) > 0:
+                cargo = cargos[0]
+                datos = {'message': "Success", 'cargo': cargo}
             else:
-                cargos = Cargo.objects.all()
-                serializer = CargoSerializer(cargos, many=True)
-                data = {"message": "Success", "cargos": serializer.data}
-                return Response(data, status=status.HTTP_200_OK)
-        except Exception as error:
-            data = {"message": "Error: "+str(error)}
-            return Response(data, status=status.HTTP_400_BAD_REQUEST)
-            
+                datos = {'message': "Cargo no encontrado."}
+            return JsonResponse(datos)
+        else:
+            cargos = list(Cargo.objects.values())
+            if len(cargos) > 0:
+                datos = {'message': "Success", 'cargos': cargos}
+            else:
+                datos = {'message': "Sin cargos."}
+            return JsonResponse(datos)
+
     def post(self, request):
-        try:
-            serializer = CargoSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                data = {"message": "Success"}
-                return Response(data, status=status.HTTP_201_CREATED)
-            data = {"message": "Error: "+serializer.errors.__str__()}
-            return Response(data, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as error:
-            data = {"message": "Error: "+str(error)}
-            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        json_data = json.loads(request.body)
+        Cargo.objects.create(cargo=json_data['cargo'])
+        datos = {'message': "Success"}
+        return JsonResponse(datos)
 
     def put(self, request, id):
-        try:
+        json_data = json.loads(request.body)
+        cargos = list(Cargo.objects.filter(id=id).values())
+        if len(cargos) > 0:
             cargo = Cargo.objects.get(id=id)
-            if cargo is not None:
-                serializer = CargoSerializer(cargo, data=request.data)
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response(serializer.data, status=status.HTTP_200_OK)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        except Exception as error:
-            data = {"message": "Error: "+str(error)}
-            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+            cargo.cargo = json_data['cargo']
+            cargo.save()
+            datos = {'message': "Success"}
+        else:
+            datos = {'message': "Cargo no encontrado"}
+        return JsonResponse(datos)
 
     def delete(self, request, id):
-        try:
-            cargo = Cargo.objects.get(id=id)
-            if cargo is not None:
-                cargo.delete()
-                return Response(status=status.HTTP_204_NO_CONTENT)
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        except Exception as error:
-            data = {"message": "Error: "+str(error)}
-            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        cargos = list(Cargo.objects.filter(id=id).values())
+        if len(cargos) > 0:
+            Cargo.objects.filter(id=id).delete()
+            datos = {'message': "Success"}
+        else:
+            datos = {'message': "Cargo no encontrado"}
+        return JsonResponse(datos)
 
 
 class ContratoView(View):

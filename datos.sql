@@ -118,18 +118,18 @@ INSERT INTO rotativa_myra.api_tipoturno (id, tipoTurno) VALUES (7, "24 Hrs");
 INSERT INTO rotativa_myra.api_tipoturno (id, tipoTurno) VALUES (8, "Otro");
 
 -- Paciente
-INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)
-VALUES (1, "Guillermo Quiñones Guzman", "2023-03-03", True,1, 1, 1, 1);
-INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)
-VALUES (2, "Rodrigo Belmar Pando", "2023-03-01", True,2, 3, 1, 1);
-INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)
-VALUES (3, "Juan Munita Alfaro", "2023-03-01", True,3, 4, 1, 1);
-INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)
-VALUES (4, "Oscar Orlando Lopez Roldan", "2023-03-01", True,4, 5, 6, 1);
-INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)
-VALUES (5, "Carlos Antonio Fernandez Hernandez", "2023-03-01", True,5, 6, 6, 1);
-INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)
-VALUES (6, "Residencia Myrasalud", "2023-03-01", True,6, 7, 1, 6);
+INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, gasto, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)
+VALUES (1, "Guillermo Quiñones Guzman", "2023-03-03", True, 20000, 1, 1, 1, 1);
+INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, gasto, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)
+VALUES (2, "Rodrigo Belmar Pando", "2023-03-01", True, 30000, 2, 3, 1, 1);
+INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, gasto, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)
+VALUES (3, "Juan Munita Alfaro", "2023-03-01", True, 35000, 3, 4, 1, 1);
+INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, gasto, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)
+VALUES (4, "Oscar Orlando Lopez Roldan", "2023-03-01", True,40000,4, 5, 6, 1);
+INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, gasto, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)
+VALUES (5, "Carlos Antonio Fernandez Hernandez", "2023-03-01", True,25000,5, 6, 6, 1);
+INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, gasto, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)
+VALUES (6, "Residencia Myrasalud", "2023-03-01", True,10000, 6, 7, 1, 6);
 
 -- Turno (añadir mas)
 INSERT INTO rotativa_myra.api_turno (id, fechaInicio, fechaTermino, horas, idPaciente_id, idProfesional_id)
