@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 from os import environ
 load_dotenv()
 from rest_framework_simplejwt import views as jwt_views
-from .serializers import CustomTokenRefreshSerializer
 
 urlpatterns=[
     path(environ.get('PROFESIONAL_URL'), ProfesionalView.as_view()),
@@ -50,10 +49,8 @@ urlpatterns=[
     path(environ.get('CARGA_EXCEL_URL'), CargaExcelView.as_view()),
     
     path(environ.get('REGISTER_URL'), views.UserRegister.as_view(), name='register'),
-	path(environ.get('LOGIN_URL'), views.UserLogin.as_view(), name='login'),
+	path(environ.get('LOGIN_URL'), jwt_views.TokenObtainPairView.as_view(serializer_class=CustomTokenObtainPairSerializer), name='login'),
 	path(environ.get('LOGOUT_URL'), views.UserLogout.as_view(), name='logout'),
 	path(environ.get('USER_URL'), views.UserView.as_view(), name='user'),
-    
-    #path('token/', jwt_views.TokenObtainPairView.as_view(serializer_class=CustomTokenObtainPairSerializer), name='token_obtain_pair'),
-    path(environ.get('TOKEN_REFRESH_URL'), jwt_views.TokenRefreshView.as_view(serializer_class=CustomTokenRefreshSerializer), name='token_refresh'),
+    path(environ.get('TOKEN_REFRESH_URL'), jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 ]

@@ -6,14 +6,15 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import json
 import pandas as pd
-#from django.contrib.auth import login, logout
 from django.db.models import Q
-from rest_framework import status, permissions
+from rest_framework import status
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import *
 from rest_framework.parsers import MultiPartParser
-
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 #############################################################################################
 #############################################################################################
@@ -1133,129 +1134,37 @@ class ReporteProfesionalView(View):
 #############################################################################################
 
 # USUARIO
-'''
-class UserRegister(APIView):
-    permission_classes = (permissions.AllowAny,)
 
-    def post(self, request):
-        #clean_data = custom_validation(request.data)
-        clean_data = request.data
-        try:
-            serializer = UserRegisterSerializer(data=clean_data)
-            if serializer.is_valid(raise_exception=True):
-                user = serializer.create(clean_data)
-                if user:
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
-        except Exception as error:
-            data = {'Error': str(error)}
-            return Response(data, status=status.HTTP_400_BAD_REQUEST)
-
-
-class UserLogin(APIView):
-    permission_classes = (permissions.AllowAny,)
-    authentication_classes = (SessionAuthentication,)
-
-    def post(self, request):
-        data = request.data
-        try:
-            #assert validate_email(data)
-            #assert validate_password(data)
-            serializer = UserLoginSerializer(data=data)
-            if serializer.is_valid(raise_exception=True):
-                user = serializer.check_credentials(data)
-                print(user)
-                if user:
-                    serializer = CustomTokenObtainPairSerializer(data=request.data)
-                    if serializer.is_valid(raise_exception=True):
-                        return Response({'message':'Success', 'data': serializer.validated_data}, status=status.HTTP_200_OK)
-                else:
-                    return Response({'message':'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-        except Exception as error:
-            data = {'Error': str(error)}
-            return Response(data, status=status.HTTP_400_BAD_REQUEST)
-            
-
-class UserLogout(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    #authentication_classes = (SessionAuthentication,)
-
-    def post(self, request):
-        try:
-            logout(request)
-            return Response(status=status.HTTP_200_OK)
-        except Exception as error:
-            data = {'Error': str(error)}
-            return Response(data, status=status.HTTP_400_BAD_REQUEST)
-
-
-class UserView(APIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    authentication_classes = (SessionAuthentication,)
-
-    def get(self, request):
-        try:
-            serializer = UserSerializer(request.user)
-            return Response({'user': serializer.data}, status=status.HTTP_200_OK)
-        except Exception as error:
-            data = {'Error': str(error),'user': 'No hay sesión iniciada'}
-            return Response(data, status=status.HTTP_404_NOT_FOUND)
-
-'''
-
-from rest_framework_simplejwt.tokens import RefreshToken
 class UserRegister(APIView):
     """
     An endpoint for the client to create a new User.
     """
+    permission_classes = [AllowAny,]
 
-    permission_classes = (permissions.AllowAny,)
-    #serializer_class = serializers.UserRegistrationSerializer
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        token = RefreshToken.for_user(user)
-        data = serializer.data
-        data["tokens"] = {"refresh": str(token), "access": str(token.access_token)}
-        return Response(data, status=status.HTTP_201_CREATED)
-
-class UserLogin(APIView):
-    """
-    An endpoint to authenticate existing users using their email and password.
-    """
-
-    permission_classes = (permissions.AllowAny,)
-    #serializer_class = serializers.UserLoginSerializer
-
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         try:
-            serializer = UserLoginSerializer(data=request.data)
+            serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            user = serializer.validated_data
-            print(user)
-            storedUser = User.objects.get(email=user['email'])
-            #serializer = serializers.CustomUserSerializer(user)
-            print(storedUser)
-            token = RefreshToken.for_user(storedUser)
-            #data = serializer.data
-            data = {"refresh": str(token), "access": str(token.access_token)}
-            print(data)
-            #login(request, user)
-            return Response(data, status=status.HTTP_200_OK)
+            serializer.save()
+            data = serializer.data
+            return Response(data, status=status.HTTP_201_CREATED)
         except Exception as error:
             data = {'Error': str(error)}
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
+
+#UserLogin está cubierto por la clase de JWT que genera los tokens
 
 class UserLogout(APIView):
     """
     An endpoint to logout users.
     """
+    authentication_classes = [JWTAuthentication,]
+    permission_classes = [IsAuthenticated,]
 
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         try:
+            print("Request user: ")
+            print(request.user)
             refresh_token = request.data["refresh"]
             print(refresh_token)
             token = RefreshToken(refresh_token)
@@ -1267,12 +1176,12 @@ class UserLogout(APIView):
             data = {'Error': str(error)}
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-class UserView(APIView):
+class UserView(APIView): #En desuso temporalmente
     """
-    Get, Update user information
+    Get user information
     """
-
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    authentication_classes = [JWTAuthentication,]
     #serializer_class = serializers.CustomUserSerializer
 
     def get(self, request):
