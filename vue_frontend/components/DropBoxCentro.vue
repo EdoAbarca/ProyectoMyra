@@ -1,46 +1,64 @@
 <script>
 import{mapMutations,mapActions, mapState} from 'vuex'
 export default{
+    props:['page'],
     data() {
     return {
-      opcion: 'Centros',
+      opcion: '',
       idAnterior:"idbase",
     }
   },
 
+  computed:{
+    ...mapState('selectores', ['selectorCentro','selectorCliente']),
+
+  },
   methods:{
-    ...mapState('selectores',[
-            'selectorCentro',     
-        ]),
 
     ...mapMutations({
-        elegirCategoria: 'profesional/elegirCategoria',
-        modificarArea: 'selectores/modificarArea',
-        modificarCentro: 'selectores/modificarCentro',
-
+        catProfesional: 'profesional/elegirCategoria',
+        catPaciente: 'paciente/elegirCategoria',
+        elegirSelector: 'selectores/elegirSelector',
     }),
     ...mapActions('profesional',[
             'fetchProfesionales',
             'filtrarCentro'       
         ]),
+    ...mapActions('paciente',[
+            'filtrarCliente'       
+        ]),
+        ...mapActions('selectores',[
+            'fetchSelectoresCentro',
+            'fetchSelectoresCliente',             
+        ]),
     filtro(valor){
 
-      this.opcion = valor;
+      document.getElementById("dropdown").checked = false;
+
       if(valor === 0){
         valor = null;
         this.fetchProfesionales();
       }
-      this.elegirCategoria(valor);
-      this.filtrarCentro();
-    },
-    ocultarSelector(){
-      if(this.selectorArea === true){
-        document.getElementById("dropdown").checked = false;
-        this.modificarCentro(false)
+      
+      if(this.page === 'profesionales'){
+        this.catProfesional(valor);
+        this.filtrarCentro();
+      }
+      if(this.page==='pacientes'){
+        this.catPaciente(valor);
+        this.filtrarCliente();
       }
     },
-    mostrarSelector(){
-      this.modificarCentro(true)
+    ocultar(id){
+      if(id ==='combobox2'){
+                document.getElementById('combobox1').style.zIndex = '150';
+                document.getElementById('combobox2').style.zIndex = '200';
+      }
+      else{
+          document.getElementById('combobox2').style.zIndex = '150';
+          document.getElementById('combobox1').style.zIndex = '200';
+      }
+
     }
   }
 }
@@ -50,55 +68,58 @@ export default{
 <template>
      
 
-  	<form class="sec-center">
+  	<form class="sec-center" id="combobox1">
 
-      <input class="dropdown" type="checkbox" id="dropdown" name="dropdown" >
-	  	<label class="for-dropdown" for="dropdown">
-        <h1 id="textoDropBox">{{opcion}}</h1>
+      <input v-if="page == 'profesionales'" class="dropdown" type="checkbox" id="dropdown" name="dropdown" @click="fetchSelectoresCentro">
+      <input v-if="page == 'pacientes'" class="dropdown" type="checkbox" id="dropdown" name="dropdown" @click="fetchSelectoresCliente">
+	  	<label class="for-dropdown" for="dropdown" @click="ocultar('combobox1')">
+          <h1 id="textoDropBox" v-if="page ==='profesionales'">Centro - {{opcion}}</h1>
+          <h1 id="textoDropBox" v-if="page ==='pacientes'">Cliente - {{opcion}}</h1>
         <div class="uil"></div>
       </label>
 
 	  
   		<div class="section-dropdown"> 
-            <div class="columna">
-                <div class="contenedorEleccion" id="item1">
-                    <input  class="Radio-eleccion" id="Todas" type="radio" value="Centros" v-model ="opcion" @click="filtro(0)" />
-                    <label  class="elementoSelect" for="Todas">Todos</label>
+            <div class="columna" v-if="page == 'profesionales'">
+                <div class="contenedorEleccion"
+                  v-for="(item) in selectorCentro"
+                  :key="item.id"
+                  :id = "'itemCentro'+item.id"
+                  >
+                    <input  class="Radio-eleccion" 
+                    :id="item.nombreCentro" 
+                    type="radio" 
+                    :value="item.nombreCentro" 
+                    v-model ="opcion" 
+                    @click="filtro(item.id)" 
+                    />
+                    <label  class="elementoSelect" 
+                    :for="item.nombreCentro"
+                    >
+                    {{ item.nombreCentro }}
+                  </label>
                 </div>
-
-                <div class="contenedorEleccion" id="item2">
-                    <input  class="Radio-eleccion" id="Admin" type="radio" value="Administración" v-model ="opcion" @click="filtro(1)"/>
-                    <label  class="elementoSelect" for="Admin">Administración</label>
+              </div>
+              <div class="columna" v-if="page == 'pacientes'">
+                <div class="contenedorEleccion"
+                  v-for="(item) in selectorCliente"
+                  :key="item.id"
+                  :id = "'itemCentro'+item.id"
+                  >
+                    <input  class="Radio-eleccion" 
+                    :id="item.nombreCliente" 
+                    type="radio" 
+                    :value="item.nombreCliente" 
+                    v-model ="opcion" 
+                    @click="filtro(item.id)" 
+                    />
+                    <label  class="elementoSelect" 
+                    :for="item.nombreCliente"
+                    >
+                    {{ item.nombreCliente }}
+                  </label>
                 </div>
-
-                <div class="contenedorEleccion" id="item3">
-                    <input  class="Radio-eleccion" id="Cuidados" type="radio" value="Cuidados" v-model ="opcion" @click="filtro(2)"/>
-                    <label  class="elementoSelect" for="Cuidados">Cuidados</label>
-                </div>
-
-                <div class="contenedorEleccion" id="item3">
-                    <input  class="Radio-eleccion" id="Residencia" type="radio" value="Residencia" v-model ="opcion" @click="filtro(3)"/>
-                    <label  class="elementoSelect" for="Residencia">Residencia</label>
-                </div>
-    
-            </div>
-            <div class="columna">
-              <div class="contenedorEleccion">
-                    <input  class="Radio-eleccion" id="Hotel" type="radio" value="Hotel Clínico" v-model ="opcion"  @click="filtro(4)" />
-                    <label  class="elementoSelect" for="Hotel">Hotel Clínico</label>
-                </div>
-              <div class="contenedorEleccion">
-                    <input  class="Radio-eleccion" id="SMI" type="radio" value="SMI" v-model ="opcion" @click="filtro(5)" />
-                    <label  class="elementoSelect" for="SMI">SMI</label>
-                </div>
-              <div class="contenedorEleccion">
-                    <input  class="Radio-eleccion" id="Otro" type="radio" value="Otro" v-model ="opcion" @click="filtro(6)" />
-                    <label  class="elementoSelect" for="Otro">Otro</label>
-                </div>
-              
-
-            </div>
-  			
+              </div>
         </div>
   	</form>
 
@@ -118,19 +139,18 @@ export default{
 }
 
 .contenedorEleccion{
-    color: #48ABBF;
+  color: #48ABBF;
     position: relative; 
     box-sizing: border-box;
     
     width: 99%;
-    height: 30px;
-    
     display: flex;
+    min-height: 30px;
 
     transition: all 200ms linear;
     font-family: 'Roboto', sans-serif;
-    font-weight: 600;
-    font-size: 12px;
+    font-weight: 400;
+    font-size: 15px;
     vertical-align: middle;
     
     padding-left: 10px;
@@ -146,11 +166,12 @@ export default{
 }
 
 .columna{
-    position: relative;
+  position: relative;
     display: flex;
     width: 100%;
+    max-height: 240px;
     flex-direction: column;
-    overflow: hidden;
+    overflow-y:scroll;
     box-sizing: border-box;
 }
 .elementoSelect{
@@ -165,8 +186,7 @@ export default{
 
 .section-dropdown{
   position: relative;
-  width: 300px;
-  height: 150px;
+  width: 230px;
   top: 20px;
   box-sizing: border-box;
 
@@ -296,7 +316,7 @@ export default{
 .uil{
     position: relative;
     left: 80%;
-    bottom: 40%;
+    bottom: 60%;
     z-index: 2001;
     width: 0; 
     height: 0; 

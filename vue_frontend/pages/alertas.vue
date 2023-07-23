@@ -4,9 +4,15 @@ import ContenidoLista from "../components/ContenidoLista.vue";
 import BuscadorProfesionales from "../components/BuscadorProfesionales.vue";
 import DatosProfesional from "../components/DatosProfesional.vue";
 
-import DatosCoordinador from "../components/DatosCoordinador.vue";
+import DatosAlerta from "~/components/DatosAlerta.vue";
 export default {
-  name: 'coordinadores',
+  head() {
+    return {
+      title: "Vista profesionales - Rotativa Myra",
+    };
+  },
+  middleware: "auth",
+
   data() {
     return {
       fechaReporte: "24-06-2021",
@@ -14,7 +20,7 @@ export default {
   },
   components: {
     BarraNav,
-    DatosCoordinador
+    DatosAlerta
 },
 };
 </script>
@@ -28,15 +34,15 @@ export default {
     <div class="Contenedores">
       <div class="ContenedorGris">
         <div class="fondoGris" >
-          <BuscadorProfesionales :page="'coordinadores'" />
-          <ContenidoLista :page="'coordinadores'" />
+          <BuscadorProfesionales :page="'profesionales'" />
+          <ContenidoLista :page="'alertas'" />
         </div>
         
       </div>
       <div class="Separador"></div>
       <div class="ContenedorGris">
         <div class="fondoGris" >
-          <DatosCoordinador />
+          <DatosAlerta />
         </div>
         
       </div>

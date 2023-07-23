@@ -25,7 +25,7 @@ export default {
 }
 </script>
 <template>
-    <li tabindex="0" class="AsistenciaLista" @click="direccionar(idPac),mostrar(rut)">
+    <div tabindex="0" class="AsistenciaLista" @click="direccionar(idPac),mostrar(rut)">
         <div class="ContenedorEstado">
             <EtiquetaAsistencia  :estado="estado"/>
         </div>
@@ -33,7 +33,7 @@ export default {
         <div class="ContenedorNombrePaciente">{{ nombrePaciente }}</div>
         <div class="ContenedorRutPaciente">{{ rutPaciente }}</div>
         
-    </li>
+    </div>
 
 </template>
 

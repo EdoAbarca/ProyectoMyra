@@ -1,5 +1,5 @@
 <script>
-//import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { mapMutations,mapActions } from 'vuex'
 import EtiquetaProfesional from './EtiquetaProfesional.vue';
 
@@ -22,22 +22,24 @@ export default {
 }
 </script>
 <template>
-    <li tabindex="0" class="ProfesionalLista" @click="fetchProfesional(id),mostrar(rut)">
+    <div tabindex="0" class="ProfesionalLista" @click="fetchProfesional(id),mostrar(rut)">
         <div class="ContenedorEtiquetaProfesional">
             <EtiquetaProfesional id="etiquetaCentro" :area="null" :centro="centro"/>
             <EtiquetaProfesional id="etiquetaArea" :area="area" :centro="null"/>
         </div>
         <div class="ContenedorNombreProfesional">{{ nombre }}</div>
         <div class="ContenedorRutProfesional">{{ rut }}</div>
-    </li>
+    </div>
 
 </template>
 
 <style>
 .ProfesionalLista{
-    margin-top: 5px;
-    
     position: relative;
+    margin-top: 7px;
+    padding: 0;
+
+    
     width: 99%;
     height: 40px;
     display: flex;

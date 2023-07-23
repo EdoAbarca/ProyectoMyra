@@ -1,6 +1,7 @@
 <script>
 import BotonBarra from "./BotonBarra.vue";
-import BotonBarraCircular from "./BotonBarraCircular.vue";
+import MenuSesion from "./MenuSesion.vue";
+
 
 export default {
   props:['page'],
@@ -11,7 +12,7 @@ export default {
   },
   components: {
     BotonBarra,
-    BotonBarraCircular,
+    MenuSesion
   },
   methods:{
   }
@@ -23,25 +24,54 @@ export default {
     <div id="barraAzul"></div>
     <nav id="barraGris">
       <div id="botonesNavegacion">
-        <BotonBarraCircular id="bHome" />
+        <v-btn
+            id="btnHome"
+            fab
+            width="35px"
+            height="35px"
+            color="#48ABBF"
+            elevation="1"
+            dark
+            nuxt
+            to="/home"
+            left
+        >
+        <v-icon
+            medium
+            color="white"
+            >
+            mdi-home
+        </v-icon>
+        </v-btn>
       </div>
       <div id="botonesGenerales">
         <BotonBarra
           id="bProfesionales"
           tipo="Profesionales"
-          link="/profesionales"
+          link="profesionales"
         />
-        <BotonBarra id="bPacientes" tipo="Pacientes" link="/pacientes" />
+        <BotonBarra 
+          id="bPacientes" 
+          tipo="Pacientes" 
+          link="pacientes" />
         <BotonBarra
           id="bCoordinadores"
           tipo="Coordinadores"
-          link="/coordinadores"
+          link="coordinadores"
         />
-        <BotonBarra id="bAlertas" tipo="Alertas" />
+        <BotonBarra 
+          id="bAlertas" 
+          tipo="Alertas" 
+          link="alertas" />
       </div>
+      
       <div id="ultimoReporte">Último Reporte: {{ fechaReporte }}</div>
+      <div id="menuUsuario">
+        <MenuSesion/>
+      </div>   
     </nav>
   </nav>
+
 </template>
 
 <style>
@@ -54,6 +84,16 @@ export default {
   top: 0px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   font-family: Arial, Helvetica, sans-serif;
+}
+#menuUsuario{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100px;
+  height: 100%;
+  right: 0;
+  z-index: 500;
 }
 #barraAzul {
   position: absolute;
@@ -80,11 +120,12 @@ export default {
 /*----------------------CONTENEDORES DE BOTONES---------------------- */
 #botonesNavegacion {
   position: relative;
-  background-color: #eef7f9;
+
   height: 100%;
   width: 25%;
   z-index: 4;
-  align-items: center;
+  justify-content: center;
+
 }
 
 #botonesGenerales {
@@ -136,11 +177,10 @@ export default {
   right: 0%;
   z-index: 10;
 }
-#bHome {
-  margin-left: 85%;
-  margin-top: 3px;
-  width: 35px;
-  height: 35px;
+#btnHome{
+  top: 5%;
+  left: 90%;
 }
+
 </style>
   

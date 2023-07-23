@@ -24,14 +24,14 @@ export default {
 }
 </script>
 <template>
-    <li tabindex="0" class="ProfesionalLista" @click="fetchPaciente(id),mostrar(id)">
+    <div tabindex="0" class="ProfesionalLista" @click="fetchPaciente(id),mostrar(id)">
         <div class="ContenedorEtiquetaProfesional">
             <EtiquetaPaciente id="etiquetaCentro" :turno="null" :cliente="cliente"/>
             <EtiquetaPaciente id="etiquetaArea" :turno="turno" :cliente="null"/>
         </div>
         <div class="ContenedorNombreProfesional">{{ nombre }}</div>
         <div class="ContenedorRutProfesional">{{ rut }}</div>
-    </li>
+    </div>
 
 </template>
 <style>

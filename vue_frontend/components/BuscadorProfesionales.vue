@@ -2,8 +2,7 @@
 import DropBoxCentro from './DropBoxCentro.vue'
 import DropBoxArea from './DropBoxArea.vue'
 import {mapMutations, mapActions, mapState} from 'vuex'
-import DropBoxCliente from './DropBoxCliente.vue'
-import DropBoxTurno from './DropBoxTurno.vue'
+
 
 export default {
     props:['page']
@@ -17,8 +16,7 @@ export default {
     components: {
     DropBoxCentro,
     DropBoxArea,
-    DropBoxCliente,
-    DropBoxTurno
+
 },
     methods:{
         ...mapState('profesional',[
@@ -109,12 +107,14 @@ export default {
             <div class="BotonBusqueda" @click="buscar()" ><img class="lupa" src="../static/iconolupa.svg" alt=""></div>
         </div>
         <div class="BarraFiltro" v-if="page==='profesionales'">
-            <DropBoxCentro/>
-            <DropBoxArea/>
+            <DropBoxCentro :page="page" />
+            <DropBoxArea :page="page" />
+            
+            
         </div>
         <div class="BarraFiltro" v-if="page==='pacientes'">
-            <DropBoxCliente/>
-            <DropBoxTurno/>
+            <DropBoxCentro :page="page" />
+            <DropBoxArea :page="page" />
         </div>
     </div>
 </template>

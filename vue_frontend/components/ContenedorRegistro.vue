@@ -162,13 +162,13 @@ export default {
 .contRegistro{
     
     position: relative;
-  width: 85%;
-  left: -7%;
+    width: 100%;
+    top: 10%;
 
   font-family: Arial, Helvetica, sans-serif;
 }
 #textoRegistro {
-    padding-left: 15%;
+
     text-align: center;
     color: #005d71;
 }

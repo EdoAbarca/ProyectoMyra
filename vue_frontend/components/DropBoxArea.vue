@@ -1,33 +1,72 @@
 <script>
-import{mapMutations,mapActions} from 'vuex'
+import{mapMutations,mapActions, mapState} from 'vuex'
 export default{
+    props:['page'],
     data() {
     return {
-      opcion: 'Áreas',
+      
+      opcion: '',
       idAnterior:"idbase",
+      itemsArea: []
     }
+  },
+  computed:{
+    ...mapState('selectores', ['selectorArea','selectorTurno']),
+
   },
 
   methods:{
+    
     ...mapMutations({
-        elegirCategoria: 'profesional/elegirCategoria'
+        catProfesional: 'profesional/elegirCategoria',
+        catPaciente: 'paciente/elegirCategoria',
     }),
     ...mapActions('profesional',[
             'fetchProfesionales',
             'filtrarArea'       
         ]),
+    ...mapActions('paciente',[
+            'filtrarTurno'       
+        ]),
+    ...mapActions('selectores',[
+            'fetchSelectoresArea',
+            'fetchSelectoresTurno',             
+        ]),
     filtro(valor){
 
-      this.opcion = valor;
+      document.getElementById("dropdown2").checked = false;
+
       if(valor === 0){
         valor = null;
         this.fetchProfesionales();
       }
-      this.elegirCategoria(valor);
-      this.filtrarArea();
-
+      
+      if(this.page==='profesionales'){
+        this.catProfesional(valor);
+        this.filtrarArea();
+      }
+      if(this.page==='pacientes'){
+        this.catPaciente(valor);
+        this.filtrarTurnos();
+      }
+      
+    },
+    ocultar(id){
+      if(id ==='combobox2'){
+                document.getElementById('combobox1').style.zIndex = '150';
+                document.getElementById('combobox2').style.zIndex = '200';
+      }
+      else{
+          document.getElementById('combobox2').style.zIndex = '150';
+          document.getElementById('combobox1').style.zIndex = '200';
+      }
 
     }
+  },
+  mounted(){
+   
+    //this.fetchSelectoresArea;
+    //console.log('selectoresArea',this.selectorArea);
   }
 }
 
@@ -36,91 +75,58 @@ export default{
 <template>
      
 
-  	<form class="sec-center2">
+  	<form class="sec-center2" id="combobox2">
 
-            <input class="dropdown2" type="checkbox" id="dropdown2" name="dropdown2"/>
-	  	   <label class="for-dropdown2" for="dropdown2">
-          <h1 id="textoDropBox">{{opcion}}</h1>
-          <div class="uil2"></div></label>
+        <input v-if="page === 'profesionales'" class="dropdown2" type="checkbox" id="dropdown2" name="dropdown2" @click="fetchSelectoresArea"/>
+        <input v-else-if="page === 'pacientes'" class="dropdown2" type="checkbox" id="dropdown2" name="dropdown2" @click="fetchSelectoresTurno"/>
+	  	  <label class="for-dropdown2" for="dropdown2" @click="ocultar('combobox2')" >
+          <h1 id="textoDropBox" v-if="page ==='profesionales'">Área - {{opcion}}</h1>
+          <h1 id="textoDropBox" v-if="page ==='pacientes'">Turno - {{opcion}}</h1>
+          
+        <div class="uil2"></div></label>
 
 	  
   		<div class="section-dropdown2"> 
-            <div class="columna">
-                <div class="contenedorEleccion2" id="item1">
-                    <input  class="Radio-eleccion2" id="Todas" type="radio" value="Áreas" v-model ="opcion" @click="filtro(0)"/>
-                    <label  class="elementoSelect" for="Todas">Todos</label>
+            <div class="columna" v-if="page == 'profesionales'">
+                <div class="contenedorEleccion2" 
+                  v-for="(itema) in selectorArea"
+                  :key="itema.id"
+                  :id = "'itemArea'+itema.id"
+                  >
+                  <input  class="Radio-eleccion2" 
+                    :id="itema.nombreArea" 
+                    type="radio" 
+                    :value="itema.nombreArea" 
+                    v-model ="opcion" 
+                    @click="filtro(itema.id)"/>
+                  <label  class="elementoSelect" 
+                    :for="itema.nombreArea"
+                    >
+                    {{ itema.nombreArea }}
+                  </label>
                 </div>
-
-                <div class="contenedorEleccion2" id="item2">
-                    <input  class="Radio-eleccion2" id="Admins" type="radio" value="Administradores" v-model ="opcion" @click="filtro(1)"/>
-                    <label  class="elementoSelect" for="Admins">Administradores</label>
-                </div>
-
-                <div class="contenedorEleccion2" id="item3">
-                    <input  class="Radio-eleccion2" id="auxs" type="radio" value="Auxiliares" v-model ="opcion" @click="filtro(2)"/>
-                    <label  class="elementoSelect" for="auxs">Auxiliares</label>
-                </div>
-
-                <div class="contenedorEleccion2" id="item3">
-                    <input  class="Radio-eleccion2" id="coords" type="radio" value="Coordinadores" v-model ="opcion" @click="filtro(3)"/>
-                    <label  class="elementoSelect" for="coords">Coordinadores</label>
-                </div>
-                <div class="contenedorEleccion2">
-                    <input  class="Radio-eleccion2" id="cuids" type="radio" value="Cuidadores" v-model ="opcion" @click="filtro(4)" />
-                    <label  class="elementoSelect" for="cuids">Cuidadores</label>
-                </div>
-    
             </div>
-            <div class="columna">
-              
-              <div class="contenedorEleccion2">
-                    <input  class="Radio-eleccion2" id="enfs" type="radio" value="Enfermeros" v-model ="opcion" @click="filtro(5)" />
-                    <label  class="elementoSelect" for="enfs">Enfermeros</label>
-                </div>
-              <div class="contenedorEleccion2">
-                    <input  class="Radio-eleccion2" id="fonos" type="radio" value="Fonoadiólogos" v-model ="opcion" @click="filtro(6)" />
-                    <label  class="elementoSelect" for="fonos">Fonoaudiólogos</label>
-                </div>
-                <div class="contenedorEleccion2">
-                    <input  class="Radio-eleccion2" id="kines" type="radio" value="Kinesiólogos" v-model ="opcion" @click="filtro(7)" />
-                    <label  class="elementoSelect" for="kines">Kinesiólogos</label>
-                </div>
-                <div class="contenedorEleccion2">
-                    <input  class="Radio-eleccion2" id="meds" type="radio" value="Médicos" v-model ="opcion" @click="filtro(8)" />
-                    <label  class="elementoSelect" for="meds">Médicos</label>
-                </div>
-                <div class="contenedorEleccion2">
-                    <input  class="Radio-eleccion2" id="nutris" type="radio" value="Nutricionistas" v-model ="opcion" @click="filtro(9)" />
-                    <label  class="elementoSelect" for="nutris">Nutricionistas</label>
-                </div>
-                </div>
-                <div class="columna">
 
-
-                <div class="contenedorEleccion2">
-                    <input  class="Radio-eleccion2" id="pods" type="radio" value="Podólogos" v-model ="opcion" @click="filtro(10)" />
-                    <label  class="elementoSelect" for="pods">Podólogos</label>
+            <div class="columna" v-if="page == 'pacientes'">
+                <div class="contenedorEleccion2" 
+                  v-for="(itema) in selectorTurno"
+                  :key="itema.id"
+                  :id = "'itemArea'+itema.id"
+                  >
+                  <input  class="Radio-eleccion2" 
+                    :id="itema.tipoTurno" 
+                    type="radio" 
+                    :value="itema.tipoTurno" 
+                    v-model ="opcion" 
+                    @click="filtro(itema.id)"/>
+                  <label  class="elementoSelect" 
+                    :for="itema.tipoTurno"
+                    >
+                    {{ itema.tipoTurno }}
+                  </label>
                 </div>
-                <div class="contenedorEleccion2">
-                    <input  class="Radio-eleccion2" id="practs" type="radio" value="Practicantes" v-model ="opcion" @click="filtro(11)" />
-                    <label  class="elementoSelect" for="practs">Practicantes</label>
-                </div>
-                <div class="contenedorEleccion2">
-                    <input  class="Radio-eleccion2" id="tenss" type="radio" value="TENS" v-model ="opcion" @click="filtro(12)" />
-                    <label  class="elementoSelect" for="tenss">TENS</label>
-                </div>
-                <div class="contenedorEleccion2">
-                    <input  class="Radio-eleccion2" id="ters" type="radio" value="Terapeutas" v-model ="opcion" @click="filtro(13)" />
-                    <label  class="elementoSelect" for="ters">Terapeutas</label>
-                </div>
-                <div class="contenedorEleccion2">
-                    <input  class="Radio-eleccion2" id="otros" type="radio" value="Otros" v-model ="opcion" @click="filtro(14)" />
-                    <label  class="elementoSelect" for="otros">Otros</label>
-                </div>
-              
-
             </div>
-  			
+
         </div>
   	</form>
 
@@ -145,21 +151,19 @@ export default{
     box-sizing: border-box;
     
     width: 99%;
-    height: 30px;
-    
     display: flex;
+    min-height: 30px;
 
     transition: all 200ms linear;
     font-family: 'Roboto', sans-serif;
-    font-weight: 600;
-    font-size: 12px;
+    font-weight: 400;
+    font-size: 15px;
     vertical-align: middle;
     
     padding-left: 10px;
     margin: 2px 0;
 
     border-radius: 3px;
-
     
 }
 .contenedorEleccion2:hover {
@@ -171,8 +175,9 @@ export default{
     position: relative;
     display: flex;
     width: 100%;
+    max-height: 240px;
     flex-direction: column;
-    overflow: hidden;
+    overflow-y:scroll;
     box-sizing: border-box;
 }
 .elementoSelect{
@@ -187,8 +192,7 @@ export default{
 
 .section-dropdown2{
   position: relative;
-  width: 400px;
-  height: 150px;
+  width: 230px;
   top: 20px;
   box-sizing: border-box;
 
@@ -219,8 +223,8 @@ export default{
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
+  
 }
-
 
 .section-dropdown2:before {
   position: absolute;
@@ -230,6 +234,7 @@ export default{
   content: '';
   display: block;
   z-index: 1;
+  
   
 }
 .section-dropdown2:after {
@@ -245,6 +250,7 @@ export default{
   display: block;
   z-index: 2;
   transition: all 200ms linear;
+ 
 
   
 }
@@ -260,8 +266,6 @@ export default{
 
   cursor: pointer;
   display: inline-block;
-
-
   
 }
 .dropdown2:checked + .for-dropdown2:before,
@@ -318,7 +322,7 @@ export default{
 .uil2{
     position: relative;
     left: 80%;
-    bottom: 40%;
+    bottom: 60%;
     z-index: 2001;
     width: 0; 
     height: 0; 

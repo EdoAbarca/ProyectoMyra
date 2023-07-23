@@ -46,7 +46,9 @@ export default{
 <template>
     <div class="contenedorRedireccion">
     <div class="redirTop"></div>
+    <div class="redirTop topOtro"></div>
     <div class="reditBot"></div>
+    <div class="reditBot botOtro"></div>
     <div class="fondoBlanco"></div>
     
     <div class="redirCenter" id="redirCenter1">
@@ -92,7 +94,7 @@ export default{
     font-weight: 600;
     font-size: 12px;
     border-radius: 15px;
-    width: 37%;
+    width: 38%;
     background-color: #48abbf;
     color: white;
 }
@@ -103,7 +105,7 @@ export default{
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 600;
     font-size: 12px;
-    width: 25%;
+    width: 30%;
     background-color: #CDCDCD;
     color: white;
 }
@@ -123,7 +125,7 @@ export default{
 	 opacity: 1;
 	 transition-delay: 0.2s;
 }
- .redirTop:before, .reditBot:before, .redirTop:after, .reditBot:after {
+ .redirTop, .reditBot, .redirTop, .reditBot{
 	 content: '';
 	 display: block;
 	 position: absolute;
@@ -137,20 +139,24 @@ export default{
 	 z-index: 10;
 	 opacity: 0.65;
 	 transition-delay: 0.2s;
+
+     margin-left: 200px;
+	 transform-origin: -200px 50%;
+	 transition-delay: 0s;
 }
- .redirTop:before {
+ .redirTop {
 	 transform: rotate(45deg);
 	 background: #e46569;
 }
- .redirTop:after {
+ .topOtro {
 	 transform: rotate(135deg);
 	 background: #2DB7B2;
 }
- .reditBot:before {
+ .reditBot {
 	 transform: rotate(-45deg);
 	 background: #005D71;
 }
- .reditBot:after {
+ .botOtro {
 	 transform: rotate(-135deg);
 	 background: #48ABBF;
 }
@@ -159,9 +165,8 @@ export default{
 	 position: absolute;
 	 width: 400px;
 	 height: 400px;
-	 top: 45%;
-	 left: 48%;
-	 margin-left: -200px;
+	 top: 50%;
+	 left: 38%;
 	 margin-top: -200px;
 	 display: flex;
      transition: all 200ms linear;

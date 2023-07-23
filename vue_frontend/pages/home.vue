@@ -1,9 +1,10 @@
 <script>
 import BarraNav from "../components/BarraNav.vue";
+import SubirReporte from "~/components/SubirReporte.vue";
 import Redireccion from "../components/Redireccion.vue";
 
 
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Home",
@@ -19,43 +20,33 @@ export default {
   },
   components: {
     BarraNav,
-    Redireccion
-  },
+    Redireccion,
+    SubirReporte
+},
   computed: {
     
     ...mapGetters(["isAuthenticated", "loggedInUser"]),
-  },
-  mounted: function () {
     
   },
   methods: {
-    async logoutHandler() {
-      try {
-        let res = this.$axios.post(this.$config.logoutURL, {
-          refresh: localStorage.getItem("refresh")}, 
-          {
-            headers:{Authorization: `Bearer ${localStorage.getItem("access")}`}
-          }
-        );
-        console.log(res);
-        await this.$auth.logout();
-        localStorage.removeItem("access");
-        localStorage.removeItem("refresh");
-        this.$nuxt.refresh();
-      } catch (e) {
-        console.log("Error: ", e.message);
-      }
-    },
+    ...mapActions('selectores',[
+            'fetchSelectoresArea',
+            'fetchSelectoresCentro',
+            'fetchSelectoresTurno',
+            'fetchSelectoresCliente'     
+        ]),
+  
   },
 };
 </script>
 
 <template>
+  <v-app>
   <div class="ContenedorPrincipal" v-if="isAuthenticated">
     <div class="Navegacion">
       <BarraNav />
     </div>
-    <div class="Contenedores">
+    <div class="ContenedorHome">
       <div class="ContenedorGris" id="cont-home">
         <div class="ContenedorBtnImagenes">
           <NuxtLink class="BtnImg" id="btImgProfesionales" to="/profesionales">
@@ -93,31 +84,30 @@ export default {
           </NuxtLink>
         </div>
         <div class="ContenedorBtnSubir">
-          <v-btn class="BtnSubir" href="/reporte">Subir reporte</v-btn>
+          <!--<v-btn class="BtnSubir" href="/reporte">Subir reporte</v-btn>-->
+          <SubirReporte/>
         </div>
-        <v-btn class="BtnSubir" @click="logoutHandler">Cerrar sesión</v-btn>
       </div>
     </div>
   </div>
   <div class="ContenedorPrincipal" v-else>
-    <Redireccion />
+      <Redireccion/> 
   </div>
+  </v-app>
+
+
 </template>
 
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: content-box;
-}
+
 .ContenedorPrincipal {
   position: absolute;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  overflow-y: hidden;
+
 }
 .Navegacion {
   position: relative;
@@ -125,14 +115,14 @@ export default {
   height: 60px;
   z-index: 10;
 }
-.Contenedores {
+.ContenedorHome {
   overflow: hidden;
   box-sizing: border-box;
   position: relative;
   width: 100%;
   height: 100%;
 
-  margin-top: 1%;
+  margin-top: 15px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -199,6 +189,7 @@ export default {
   align-items: center;
   width: 80%;
   height: 20%;
+
 }
 .EtiquetaBotonImg {
   position: absolute;

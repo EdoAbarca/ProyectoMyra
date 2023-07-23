@@ -3,7 +3,7 @@ import DatosBasicosPaci from "./DatosBasicosPaci.vue";
 import Estadistica from "./Estadistica.vue";
 import BotonObtener from "./BotonObtener.vue";
 import HistorialAsistenciaProf from "./HistorialAsistenciaProf.vue";
-
+import GastoPaciente from './GastoPaciente.vue'
 import { mapState, mapGetters, mapMutations } from "vuex";
 import HistorialAtencion from "./HistorialAtencion.vue";
 import * as XLSX from "xlsx";
@@ -15,34 +15,57 @@ export default {
     BotonObtener,
     HistorialAsistenciaProf,
     HistorialAtencion,
+    GastoPaciente
   },
   computed: {
     ...mapState("paciente", ["dataPaciente", "mostrarPac"]),
     ...mapGetters("paciente", ["getmostrarPac"]),
   },
   methods: {
-    cambiar(id) {
-      if (id === "remuneraciones") {
-        document.getElementById("remuneraciones").style.zIndex = "100";
-        document.getElementById("remuneraciones").style.opacity = "1";
-        document.getElementById("btCambioDerecha").style.backgroundColor =
-          "#669098";
-        document.getElementById("asistencias").style.zIndex = "0";
-        document.getElementById("asistencias").style.opacity = "0";
-        document.getElementById("btCambioIzquierda").style.backgroundColor =
-          "#5AB3C6";
-      } else {
-        document.getElementById("remuneraciones").style.zIndex = "0";
-        document.getElementById("remuneraciones").style.opacity = "0";
-        document.getElementById("asistencias").style.zIndex = "100";
-        document.getElementById("asistencias").style.opacity = "1";
+    cambiar(id){
+            if(id ==='remuneraciones'){
+                document.getElementById('remuneraciones').style.zIndex = '100';
+                document.getElementById('remuneraciones').style.opacity = '1';
+                document.getElementById('btCambioDerecha').style.backgroundColor = '#669098';
 
-        document.getElementById("btCambioDerecha").style.backgroundColor =
-          "#5AB3C6";
-        document.getElementById("btCambioIzquierda").style.backgroundColor =
-          "#669098";
-      }
-    },
+                document.getElementById('asistencias').style.zIndex = '0';
+                document.getElementById('asistencias').style.opacity = '0';
+                document.getElementById('btCambioIzquierda').style.backgroundColor = '#5AB3C6';
+
+                document.getElementById('atencion').style.zIndex = '0';
+                document.getElementById('atencion').style.opacity = '0';
+                document.getElementById('btCambioCentro').style.backgroundColor = '#5AB3C6';
+                
+            }
+            else if(id ==='asistencias'){
+
+                document.getElementById('remuneraciones').style.zIndex = '0';
+                document.getElementById('remuneraciones').style.opacity = '0';
+                document.getElementById('atencion').style.zIndex = '0';
+                document.getElementById('atencion').style.opacity = '0';
+                document.getElementById('asistencias').style.zIndex = '100';
+                document.getElementById('asistencias').style.opacity = '1';
+
+                document.getElementById('btCambioCentro').style.backgroundColor = '#5AB3C6';
+                document.getElementById('btCambioDerecha').style.backgroundColor = '#5AB3C6';
+                document.getElementById('btCambioIzquierda').style.backgroundColor = '#669098';
+
+            }
+            else{
+                document.getElementById('remuneraciones').style.zIndex = '0';
+                document.getElementById('remuneraciones').style.opacity = '0';
+                document.getElementById('asistencias').style.zIndex = '0';
+                document.getElementById('asistencias').style.opacity = '0';
+                document.getElementById('atencion').style.zIndex = '100';
+                document.getElementById('atencion').style.opacity = '1';
+
+                document.getElementById('btCambioCentro').style.backgroundColor = '#669098';
+                document.getElementById('btCambioDerecha').style.backgroundColor = '#5AB3C6';
+                document.getElementById('btCambioIzquierda').style.backgroundColor = '#5AB3C6';
+
+            }
+
+        },
     //FUNCION PARA EXPORTAR EXCEL CON REPORTE PACIENTE
     generarReportePaciente() {
       try {
@@ -202,24 +225,14 @@ export default {
         </div>
         <div class="DatosCambiantes">
           <div class="BotonesCambio">
-            <div
-              class="BtnDerecha"
-              id="btCambioDerecha"
-              @click="cambiar('remuneraciones')"
-            >
-              Profesionales Activos
-            </div>
-            <div
-              class="BtnIzquierda"
-              id="btCambioIzquierda"
-              @click="cambiar('asistencias')"
-            >
-              Historial de Atención
-            </div>
-          </div>
+                        <div class="BtnDerecha" id="btCambioDerecha" @click="cambiar('remuneraciones')">Costo de Paciente </div>
+                        <div class="BtnIzquierda" id="btCambioIzquierda" @click="cambiar('asistencias')">Profesionales Activos</div>
+                        <div class="BtnIzquierda" id="btCambioCentro" @click="cambiar('atencion')">Historial de Atención</div>
+                    </div>
           <div class="Informacion">
-            <HistorialAtencion id="remuneraciones" />
-            <HistorialAtencion id="asistencias" />
+            <GastoPaciente id="remuneraciones"/>
+            <HistorialAtencion id="asistencias"/>
+            <HistorialAtencion id="atencion"/>
           </div>
         </div>
         <div class="BtnObtenerReporte">

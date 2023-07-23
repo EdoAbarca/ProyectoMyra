@@ -4,9 +4,7 @@ export default {
   props: ['tipo', 'link'],
   methods:{
     getLink(){
-        let s = ''
-
-        return s+this.link
+        return '/'+this.link
     }
   }
 }
@@ -14,23 +12,37 @@ export default {
 <template>
     
         <div class="fondo">
-            <NuxtLink :to="getLink()" class="btn from-center">
-                    {{ tipo }}
-            </NuxtLink>
+            
+            <NuxtLink
+                id="linkbarra" 
+                class="btn from-center" 
+                :to="getLink()"
+                >{{ tipo }}
+            </NuxtLink> 
+
+
         </div>   
         
 
 </template>
 
 <style>
-/* ~~~~~~~ INIT. BTN ~~~~~~~ */
 
+
+/* ~~~~~~~ INIT. BTN ~~~~~~~ */
+#linkbarra{
+    color: #afdce4;
+}
+#linkbarra:hover{
+    color: white;
+}
 .fondo{
     position: absolute;
     width: 200px;
     height: 40px;
     background-color:#48ABBF;
-    color: #C3E8EF;
+  
+
     
     border-radius: 0px 0px 30px 30px;
     
@@ -50,13 +62,14 @@ export default {
     width: 100%;
     height: 100%;
 	position: absolute;	
+    color: white;
 
 	transition: all 500ms cubic-bezier(0.77, 0, 0.175, 1);	
 	cursor: pointer;
 	user-select: none;
     border-radius: 0px 0px 30px 30px;
 
-    color: #C3E8EF;
+
     text-decoration: none;   
 }
 
@@ -68,7 +81,8 @@ export default {
 }
 
 .btn:hover {
-    color: #FFFFFF;
+    
+    color: white;
 	transition-delay: .1s;   
 }
 
@@ -88,11 +102,13 @@ export default {
 	left: 50%;
 	height: 100%;
 	width: 0;
+
     
 	border: 0px solid #92DCEB;
     background-color: #92DCEB;
     border-radius: 0px 0px 30px 30px;
     z-index: -3;
+
     
     
 }
@@ -104,6 +120,7 @@ export default {
 	width: 100%;
 	background: #005D71;
     border-radius: 0px 0px 30px 30px;
+
     
 }
 
@@ -122,6 +139,7 @@ export default {
 
 .btn:focus{
     background-color: #005D71;
+
 }
 
 

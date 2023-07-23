@@ -99,7 +99,7 @@ export default {
   </v-app>
 </template>
 <style>
-#ventanaReporte {
+/*#ventanaReporte {
   opacity: 1;
 }
 #textoReporte {
@@ -120,5 +120,5 @@ export default {
 }
 #layoutReporte {
   width: 30%;
-}
+}*/
 </style>

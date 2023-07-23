@@ -33,7 +33,7 @@ export default {
         
         </div>
         <div class ="ContenidoHistorial" :v-model="asistencias">
-            <ul>
+            <div>
                 <AsistenciaProf v-for="(assist) in asistencias"
                     :key="assist.id"
                     :nombrePaciente="assist.nombrePaciente"
@@ -42,7 +42,7 @@ export default {
                     :fecha="assist.fechaAsistencia"
                     :idPac="assist.idPaciente_id"
                 />
-            </ul>   
+            </div>   
         </div>
 
     </div>
@@ -60,9 +60,9 @@ export default {
     border-radius: 12.5px;
 }
 .ContenidoHistorial{
+    padding-left: 1%;
     position: relative;
     height: 100%;
-    padding-left: 1%;
     overflow-y: scroll;    
 }
 #barraDatosHistorial{

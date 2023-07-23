@@ -290,7 +290,6 @@ export default {
     </transition>
   </div>
 </template>
-
 <style>
 .fade-enter-active,
 .fade-leave-active {
@@ -319,16 +318,20 @@ export default {
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 20%;
+  height: 25%;
+
 }
 .EstadisticasProfesional {
   position: relative;
   display: flex;
   width: 100%;
   height: 15%;
+  align-items: center;
   flex-direction: row;
   justify-content: center;
+  
 }
+
 .DatosCambiantes {
   position: relative;
   display: flex;
@@ -337,18 +340,20 @@ export default {
   height: 55%;
   justify-content: center;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.15));
+
+  border-radius: 12.5px;
+  z-index: 1000;
+
 }
 .BotonesCambio {
   display: flex;
   position: relative;
-  left: 25%;
-  width: 50%;
+  width:100%;
   height: 8%;
   font-size: 14px;
   font-weight: 500;
   font-family: Arial, Helvetica, sans-serif;
   z-index: -1;
-  background-color: #5ab3c6;
   border-radius: 12.5px 12.5px 0 0;
 }
 
@@ -356,7 +361,8 @@ export default {
 .BtnIzquierda {
   position: relative;
   display: flex;
-  width: 50%;
+  left: 5%;
+  width: 25%;
   height: 100%;
   justify-content: center;
   align-items: center;
@@ -367,6 +373,7 @@ export default {
   cursor: pointer;
   background-color: #669098;
 }
+
 
 .BtnIzquierda {
   border-radius: 12.5px 12.5px 0px 0px;
@@ -381,6 +388,8 @@ export default {
   width: 93%;
   justify-content: center;
   transition: all 200ms linear;
+  z-index: -100;
+  
 }
 .BtnObtenerReporte {
   position: relative;
@@ -398,7 +407,7 @@ export default {
   opacity: 1;
   transition: all 250ms linear;
 }
-#asistencias {
+#asistencias,#atencion {
   width: 100%;
   height: 100%;
   opacity: 0;

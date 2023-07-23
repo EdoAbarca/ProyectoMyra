@@ -5,6 +5,7 @@ import BuscadorProfesionales from "../components/BuscadorProfesionales.vue";
 import DatosProfesional from "../components/DatosProfesional.vue";
 
 export default {
+  name:'profesionales',
   head() {
     return {
       title: "Vista profesionales - Rotativa Myra",
@@ -24,6 +25,7 @@ export default {
 </script>
 
 <template>
+  <v-app>
   <div class="ContenedorPrincipal">
     <div class="Navegacion">
       <BarraNav />
@@ -45,16 +47,14 @@ export default {
       </div>
     </div>
   </div>
+</v-app>
 </template>
 
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: content-box;
-}
+
 .ContenedorPrincipal {
+  
   position: absolute;
   width: 100%;
   height: 100%;
@@ -78,11 +78,10 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
-
-  margin-top: 0px;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  
 }
 .Separador {
   position: relative;
@@ -100,7 +99,7 @@ export default {
   justify-content: center;
 }
 .fondoGris{
-  margin-top: 4%;
+  margin-top: 3%;
   width: 100%;
   height: 100%;
 }

@@ -18,6 +18,7 @@ export default {
 </script>
 
 <template>
+  <v-app>
   <div class="ContenedorPrincipal">
     <div class="Navegacion">
       <BarraNav />
@@ -38,6 +39,7 @@ export default {
       </div>
     </div>
   </div>
+</v-app>
 </template>
 
 

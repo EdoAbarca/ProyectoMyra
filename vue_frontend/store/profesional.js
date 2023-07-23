@@ -160,7 +160,7 @@ export const mutations = {
         if(state.categoriaElegida != null){
             const area = state.categoriaElegida.toString();
 
-            const path = this.$config.filterPostionURL+ area;
+            const path = this.$config.filterPositionURL+ area;
             try {
                 const res = await this.$axios.get(path, 
                     {

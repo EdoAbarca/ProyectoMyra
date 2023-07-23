@@ -2,10 +2,12 @@
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import ProfesionalLista from './ProfesionalLista.vue'
 import PacienteLista from './PacienteLista.vue'
+import AlertaLista from './AlertaLista.vue'
 import axios from 'axios'
 
 import CoordinadorLista from './CoordinadorLista.vue'
 export default {
+
   name: 'ListaDeContenidos',
   props:['page'],
   data() {
@@ -16,7 +18,8 @@ export default {
   components: {
     ProfesionalLista,
     PacienteLista,
-    CoordinadorLista
+    CoordinadorLista,
+    AlertaLista
 },
   computed:{
 
@@ -79,8 +82,15 @@ export default {
           <h1 id="tituloRutProfesional">Rut</h1> 
         </div>
 
+        <div class="ContenedorTitulo" v-if="this.page === 'alertas'">
+          <h1 id="tituloCentro">Tipo</h1>
+          <h1 id="tituloArea"></h1>
+          <h1 id="tituloNombreProfesional">Coordinador</h1>
+          <h1 id="tituloRutProfesional">Rut</h1> 
+        </div>
+
         <div class ="ContenidoLista">
-            <ul v-if="this.page === 'profesionales'">
+            <div v-if="this.page === 'profesionales'">
                 <ProfesionalLista v-for="(prof) in dataProfesionales"
                     :key="prof.id"
                     :nombre="prof.nombre"
@@ -89,9 +99,9 @@ export default {
                     :centro="prof.idCentro_id"
                     :id="prof.id"
                 />
-            </ul>
+            </div>
             
-            <ul v-if="this.page === 'pacientes'">
+            <div v-if="this.page === 'pacientes'">
                 <PacienteLista v-for="(paciente) in dataPacientes"
                     :key="paciente.id"
                     :nombre="paciente.nombre"
@@ -100,18 +110,27 @@ export default {
                     :turno="paciente.idTipoTurno_id"
                     :id="paciente.id"
                 />
-            </ul>
+            </div>
 
 
-            <ul v-if="this.page === 'coordinadores'">
+            <div v-if="this.page === 'coordinadores'">
                 <CoordinadorLista v-for="(coord) in dataCoordinadores"
                     :key="coord.id"
                     :nombre="coord.nombre"
                     :rut="coord.rut"
                     :centro="coord.idCentro_id"
+                    :area="coord.idCargo_id"
                     :id="coord.id"
                 />
-            </ul>
+            </div>
+
+            <div v-if="this.page === 'alertas'">
+                <AlertaLista/>
+                <AlertaLista/>
+                <AlertaLista/>
+                <AlertaLista/>
+                <AlertaLista/>
+            </div>
 
         </div>
 

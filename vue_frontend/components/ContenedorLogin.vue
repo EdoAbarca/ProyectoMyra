@@ -84,7 +84,7 @@ export default {
 
 <template>
     <div class="contLogin" >
-        <!--<v-card class="elevation-12" id="cuerpoForm">-->
+        <v-card id="tarjetaLogin" elevation="0">
               <v-toolbar-title id="textoInicioSesion">Inicio de sesión</v-toolbar-title>
 
               <v-card-text>
@@ -100,7 +100,7 @@ export default {
                 <v-btn id="botonVolverLogin" @click= "cambiar('redirCenter1')">Volver</v-btn>
               </v-card-actions>   
 
-        <!---</v-card>-->
+        </v-card>
 
 </div>
             
@@ -108,17 +108,19 @@ export default {
 
 
 <style>
+
 #botonInicioLogin,#botonVolverLogin{
-    left: -5%;
+
     background-color: #CDCDCD;
     color: white;
     border-radius: 9px;
 }
 #botonInicioLogin{
-    left: -7%;
+
     background-color: #48abbf;
 }
 #formLogin{
+
     position: relative;
     width: 87%;
 }
@@ -143,8 +145,11 @@ export default {
   border-radius: 12px;
 }
 .contLogin {
+
+
   position: relative;
-  width: 80%;
+  width: 100%;
   font-family: Arial, Helvetica, sans-serif;
+  background-color: #005d71;
 }
 </style>

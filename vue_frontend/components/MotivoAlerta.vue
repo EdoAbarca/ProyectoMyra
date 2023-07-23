@@ -1,0 +1,103 @@
+<script>
+export default {
+    data(){
+        return{
+            tipoEstado: ''
+        }
+    },
+    props: ['estado', 'id'],
+
+    methods:{
+
+        elegirColor(){
+            console.log(this.estado)
+            let colorArea='#D9D9D9';
+            switch(this.estado){
+                case 1:
+                    this.tipoEstado = 'Inasistencia'
+                    colorArea = "#E67070";
+                    break
+                case 2:
+                    this.tipoEstado = 'P. Complejo'
+                    colorArea = "#FE9F47";
+                    break
+                case 3:
+                    this.tipoEstado = 'Exceso Horas'
+                    colorArea = "#AAE43";
+                    break
+                default:
+                    colorArea = "'#EBDA40'"
+            }
+            return 'background-color: '+ colorArea+';'
+
+            }
+
+        }
+
+    }
+</script>
+<template>
+    <div class="motivoAleta" >
+        <div id="contenedortitulosAlerta">
+            <div id="tituloAlerta">Paciente Complejo</div>
+            <div id="fechaMotivoAlerta"> fecha: 20-09-2022</div>
+        </div>
+        <v-divider></v-divider>
+        
+        <div id="contenidoAlerta">
+            <div id="detalleAlerta">Detalle:Aqui va el detalle de la alerta</div>
+        </div>
+    </div> 
+</template>
+<style>
+#contenedortitulosAlerta{
+    margin-top: 7px;
+    position: relative;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+
+    width: 100%;
+    height: 25px;
+}
+#fechaMotivoAlerta{
+    display: flex;
+    position: relative;
+    justify-content: center;
+    height: 100%;
+    width: 50%;
+    
+}
+#contenidoAlerta{
+    padding-left: 20px;
+    position: relative;
+    height: 60%;
+    width: 100%;
+
+}
+#tituloAlerta{
+    height: 100%;
+    width: 50%;
+    position: relative;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+.motivoAleta{
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 85%;
+    height: 75%;
+    color: white;
+    background-color: blue;
+    border-radius: 9px;
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    line-height: 25px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.15));
+}
+</style>

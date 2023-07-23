@@ -1,13 +1,42 @@
 //import axios from 'axios';
 export const state = () => ({
-    categoriaElegida: null,
-    datoBuscadoPaciente: null,
-    mostrarPac:false,
-    idAnterior: false,
-    historialAtencion:[],
-    dataPacientes:[],
-    dataPaciente:[],
-    pagospaciente:[],
+  categoriaElegida: null,
+  datoBuscadoPaciente: null,
+  mostrarPac:false,
+  idAnterior: false,
+  historialAtencion:[],
+  dataPacientes:[],
+  dataPaciente:[],
+  pagosProfesional:[],
+  costoPaciente:[
+    {
+      id: 1,
+      nombre: 'profesional 1',
+      idArea_id: 'area 1',
+      costoPorTurno : '1000000',
+      costoHora: '200000',
+      colacion: '3000',
+      movilizacion: '123450'
+    },
+    {
+      id: 2,
+      nombre: 'profesional 2',
+      idArea_id: 'area 1',
+      costoPorTurno : '4000000',
+      costoHora: '200000',
+      colacion: '3000',
+      movilizacion: '123450'
+    },
+    {
+      id: 3,
+      nombre: 'profesional 3',
+      idArea_id: 'area 1',
+      costoPorTurno : '4000000',
+      costoHora: '200000',
+      colacion: '3000',
+      movilizacion: '123450'
+    }
+  ]
     
   })
 export const getters = {

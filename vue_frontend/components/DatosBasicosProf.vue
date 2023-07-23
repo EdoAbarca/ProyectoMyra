@@ -67,6 +67,8 @@ methods:{
 
 #nombreEntidad, #rutEntidad, #cargoEntidad{
     margin-left: 15%;
+    height: 35px;
+    
 } 
 
 #nombreCoord{
@@ -169,8 +171,9 @@ methods:{
     height: 100%;
     flex-direction: column;
     align-items: center;
-
+    justify-content: center;
     left: 3%;
+
 }
 #etiquetaEnDatos{
     top: 2px;

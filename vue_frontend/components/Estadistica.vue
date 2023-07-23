@@ -59,6 +59,7 @@ methods:{
 <style>
 .ContenedorEstadistica{
   width: 25%;
+  height: 75px;
   background-color: white;
   min-width: 30px;
   max-width: 120px;
@@ -88,13 +89,13 @@ methods:{
 }
 .estadisticaNumerica{
   position: relative;
-  display: flex;
   width: 100%;
   height: 55%;
   color: #48ABBF;
-  justify-content: center;
-  align-items:start;
   z-index: 2;
+  top: -8px;
+
+  
 
 
   font-family: Arial, Helvetica, sans-serif;

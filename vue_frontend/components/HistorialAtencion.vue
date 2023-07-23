@@ -38,7 +38,7 @@ export default {
         
         </div>
         <div class ="ContenidoHistorial" :v-model="historialAtencion">
-            <ul>
+            <div>
                 <AsistenciaEnPaciente v-for="(assist) in historialAtencion"
                     :key="assist.id"
                     :nombre="assist.nombreProfesional"
@@ -49,7 +49,7 @@ export default {
                     :idProf = "assist.idProfesional_id"
     
                 />
-            </ul>   
+            </div>   
         </div>
 
     </div>
