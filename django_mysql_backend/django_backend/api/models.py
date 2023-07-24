@@ -108,12 +108,17 @@ class Asistencia(models.Model):
     idTurno = models.ForeignKey(Turno, on_delete=models.CASCADE)
     #idPago = models.ForeignKey(Pago, on_delete=models.CASCADE)
 
+class TipoAlerta(models.Model):
+    tipoAlerta = models.CharField(max_length=100)
+
 class Alerta(models.Model):
     #testear
-    tipo = models.CharField(max_length=100)
     fechaAlerta = models.DateField()
     descripcion = models.CharField(max_length=200)
+    profesionales = models.ManyToManyField(Profesional, related_name='lista_profesionales')
+    pacientes = models.ManyToManyField(Paciente, related_name='lista_pacientes')
     idPaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     idAsistencia = models.ForeignKey(Asistencia, on_delete=models.CASCADE)
     idProfesional = models.ForeignKey(Profesional, on_delete=models.CASCADE)
+    idTipoAlerta = models.ForeignKey(TipoAlerta, on_delete=models.CASCADE)
 

@@ -870,6 +870,55 @@ class AsistenciaView(View):
             datos = {'message': "Asistencia no encontrada"}
         return JsonResponse(datos)
 
+class TipoAlertaView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, id=0):
+        if (id > 0):
+            tipoalertas = list(TipoAlerta.objects.filter(id=id).values())
+            if len(tipoalertas) > 0:
+                tipoalerta = tipoalertas[0]
+                datos = {'message': "Success", 'tipoalerta': tipoalerta}
+            else:
+                datos = {'message': "Tipo alerta no encontrado."}
+            return JsonResponse(datos)
+        else:
+            tipoalertas = list(TipoAlerta.objects.values())
+            if len(tipoalertas) > 0:
+                datos = {'message': "Success", 'tipoalertas': tipoalertas}
+            else:
+                datos = {'message': "Sin tipo alertas."}
+            return JsonResponse(datos)
+
+    def post(self, request):
+        json_data = json.loads(request.body)
+        TipoAlerta.objects.create(tipoAlerta=json_data['tipoAlerta'])
+        datos = {'message': "Success"}
+        return JsonResponse(datos)
+
+    def put(self, request, id):
+        json_data = json.loads(request.body)
+        tipoalertas = list(TipoAlerta.objects.filter(id=id).values())
+        if len(tipoalertas) > 0:
+            tipoalerta = TipoAlerta.objects.get(id=id)
+            tipoalerta.tipoAlerta = json_data['tipoAlerta']
+            tipoalerta.save()
+            datos = {'message': "Success"}
+        else:
+            datos = {'message': "Tipo alerta no encontrado"}
+        return JsonResponse(datos)
+
+    def delete(self, request, id):
+        tipoalertas = list(TipoAlerta.objects.filter(id=id).values())
+        if len(tipoalertas) > 0:
+            TipoAlerta.objects.filter(id=id).delete()
+            datos = {'message': "Success"}
+        else:
+            datos = {'message': "Tipo alerta no encontrado"}
+        return JsonResponse(datos)
+
 class AlertaView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
@@ -894,9 +943,10 @@ class AlertaView(View):
 
     def post(self, request):
         json_data = json.loads(request.body)
-        Alerta.objects.create(tipo=json_data['tipo'], fechaAlerta=json_data['fechaAlerta'],
-                              descripcion=json_data['descripcion'], idPaciente=json_data['idPaciente'],
-                              idAsistencia=json_data['idAsistencia'],idProfesional=json_data['idProfesional'])
+        Alerta.objects.create(fechaAlerta=json_data['fechaAlerta'], descripcion=json_data['descripcion'],
+                              profesionales=json_data['profesionales'], pacientes=json_data['pacientes'],
+                              idPaciente=json_data['idPaciente'], idAsistencia=json_data['idAsistencia'],
+                              idProfesional=json_data['idProfesional'], idTipoAlerta=json_data['idTipoAlerta'])
         datos = {'message': "Success"}
         return JsonResponse(datos)
 
@@ -905,12 +955,14 @@ class AlertaView(View):
         alertas = list(Alerta.objects.filter(id=id).values())
         if len(alertas) > 0:
             alerta = Alerta.objects.get(id=id)
-            alerta.tipo = json_data['tipo']
             alerta.fechaAlerta = json_data['fechaAlerta']
             alerta.descripcion = json_data['descripcion']
+            alerta.profesionales = json_data['profesionales']
+            alerta.pacientes = json_data['pacientes']
             alerta.idPaciente = json_data['idPaciente']
             alerta.idAsistencia = json_data['idAsistencia']
             alerta.idProfesional = json_data['idProfesional']
+            alerta.idTipoAlerta = json_data['idTipoAlerta']
             alerta.save()
             datos = {'message': "Success"}
         else:
