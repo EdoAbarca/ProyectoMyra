@@ -196,8 +196,8 @@ class CoordinadorView(View):
 
     def post(self, request):
         json_data = json.loads(request.body)
-        Coordinador.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], idCargo=json_data['idCargo'],
-                                   idCentro=json_data['idCentro'])
+        Coordinador.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], profesionales=json_data['profesionales'],
+                                   pacientes=json_data['pacientes'], idCargo=json_data['idCargo'], idCentro=json_data['idCentro'])
         datos = {'message': "Success"}
         return JsonResponse(datos)
 
@@ -208,6 +208,8 @@ class CoordinadorView(View):
             coordinador = Coordinador.objects.get(id=id)
             coordinador.nombre = json_data['nombre']
             coordinador.rut = json_data['rut']
+            coordinador.profesionales = json_data['profesionales']
+            coordinador.pacientes = json_data['pacientes']
             coordinador.idCargo = json_data['idCargo']
             coordinador.idCentro = json_data['idCentro']
             coordinador.save()
@@ -302,6 +304,13 @@ class ProfesionalView(View):
                 'horasExtras': profesional.horasExtras,
                 'vacaciones': profesional.vacaciones,
                 'licencia': profesional.licencia,
+                'valorHora': profesional.valorHora,
+                'horasCont': profesional.horasCont,
+                'horasObj': profesional.horasObj,
+                'turnosTrab': profesional.turnosTrab,
+                'bonoColacion': profesional.bonoColacion,
+                'bonoMov': profesional.bonoMov,
+                'bonoResp': profesional.bonoResp,
                 'idCentro_id': profesional.idCentro.id,
                 'idArea_id': profesional.idArea.id,
                 'idCargo_id': profesional.idCargo.id,
@@ -340,8 +349,12 @@ class ProfesionalView(View):
         Profesional.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], inasistencias=json_data['inasistencias'],
                                    horasTotales=json_data['horasTotales'], horasExtras=json_data['horasExtras'],
                                    vacaciones=json_data['vacaiones'], licencia=json_data['licencia'],
+                                   valorHora=json_data['valorHora'], horasCont=json_data['horasCont'],
+                                   horasObj=json_data['horasObj'], turnosTrab=json_data['turnosTrab'],
+                                   bonoColacion=json_data['bonoColacion'], bonoMov=json_data['bonoMov'], bonoResp=json_data['bonoResp'],
                                    idCentro=json_data['idCentro'], idArea=['idArea'], idCargo=json_data['idCargo'],
-                                   idContrato=json_data['idContrato'], idCoordinador=json_data['idCoordinador'])
+                                   idContrato=json_data['idContrato']#, idCoordinador=json_data['idCoordinador']
+                                   )
         datos = {'message': "Success"}
         return JsonResponse(datos)
 
@@ -357,11 +370,18 @@ class ProfesionalView(View):
             profesional.horasExtras = json_data['horasExtras']
             profesional.vacaciones = json_data['vacaiones']
             profesional.licencia = json_data['licencia']
+            profesional.valorHora = json_data['valorHora']
+            profesional.horasCont = json_data['horasCont']
+            profesional.horasObj = json_data['horasObj']
+            profesional.turnosTrab = json_data['turnosTrab']
+            profesional.bonoColacion = json_data['bonoColacion']
+            profesional.bonoMov = json_data['bonoMov']
+            profesional.bonoResp = json_data['bonoResp']
             profesional.idCentro = json_data['idCentro']
             profesional.idArea = json_data['idArea']
             profesional.idCargo = json_data['idCargo']
             profesional.idContrato = json_data['idContrato']
-            profesional.idCoordinador = json_data['idCoordinador']
+            #profesional.idCoordinador = json_data['idCoordinador']
             profesional.save()
             datos = {'message': "Success"}
         else:

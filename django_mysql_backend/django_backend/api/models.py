@@ -12,11 +12,7 @@ class Contrato(models.Model):
 class Centro(models.Model):
     nombreCentro = models.CharField(max_length=30)
 
-class Coordinador(models.Model):
-    nombre = models.CharField(max_length=50)
-    rut = models.CharField(max_length=15)
-    idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
-    idCentro = models.ForeignKey(Centro, on_delete=models.CASCADE)
+
 
 class Area(models.Model):
     nombreArea = models.CharField(max_length=30)
@@ -32,11 +28,19 @@ class Profesional(models.Model):
     vacaciones = models.IntegerField()
     licencia = models.IntegerField()
     #
+    valorHora = models.IntegerField()
+    horasCont = models.IntegerField()
+    horasObj = models.IntegerField()
+    turnosTrab = models.IntegerField()
+    bonoColacion = models.IntegerField()
+    bonoMov = models.IntegerField()
+    bonoResp = models.IntegerField()
+    #
     idCentro = models.ForeignKey(Centro, on_delete=models.CASCADE)
     idArea = models.ForeignKey(Area, on_delete=models.CASCADE)
     idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
     idContrato = models.ForeignKey(Contrato, on_delete=models.CASCADE)
-    idCoordinador = models.ForeignKey(Coordinador, on_delete=models.CASCADE)
+    #idCoordinador = models.ForeignKey(Coordinador, on_delete=models.CASCADE)
 
 class Pago(models.Model):
     sueldoBase = models.IntegerField()
@@ -91,6 +95,15 @@ class Paciente(models.Model):
     idRegion = models.ForeignKey(Region, on_delete=models.CASCADE)
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     idTipoTurno = models.ForeignKey(TipoTurno, on_delete=models.CASCADE)
+
+class Coordinador(models.Model):
+    nombre = models.CharField(max_length=50)
+    rut = models.CharField(max_length=15)
+    #calcular horas extras, inasistencias, vacaciones y licencias a partir de la lista de profesionales
+    profesionales = models.ManyToManyField(Profesional, related_name='lista_profesionales_c')
+    pacientes = models.ManyToManyField(Paciente, related_name='lista_pacientes_c')
+    idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
+    idCentro = models.ForeignKey(Centro, on_delete=models.CASCADE)
 
 class Turno(models.Model):
     fechaInicio = models.DateField()
