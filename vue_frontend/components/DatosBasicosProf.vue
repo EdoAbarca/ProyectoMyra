@@ -104,6 +104,7 @@ methods:{
     font-family: Arial, Helvetica, sans-serif;
     transition: all 200ms linear;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.15));
+    caret-color: transparent;
 
 }
 .TextoContenido{

@@ -63,6 +63,7 @@ export default {
 
   display: flex;
   flex-direction: column;
+  caret-color: transparent;
 }
 .Navegacion {
   position: relative;

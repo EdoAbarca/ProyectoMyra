@@ -34,7 +34,7 @@ export default {
     <div class="Contenedores">
       <div class="ContenedorGris">
         <div class="fondoGris" >
-          <BuscadorProfesionales :page="'profesionales'" />
+          <BuscadorProfesionales :page="'alertas'" />
           <ContenidoLista :page="'alertas'" />
         </div>
         

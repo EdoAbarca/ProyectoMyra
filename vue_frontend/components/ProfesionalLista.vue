@@ -64,19 +64,26 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    
 }
 .ContenedorNombreProfesional{
     position: relative;
-    display: flex;
+    display: inline-block;
+
+
+
     width: 45%;
     min-width: 150px;
     height: 100%;
     margin-left: 10px;
-
-    align-items: center;
     text-align: left;
+    padding-top: 10px;
     z-index: 100;
     font-size: 14px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
     
 
     
@@ -87,11 +94,15 @@ export default {
     height: 100%;
     min-width: 50px;
     left: -3%;
-    display: flex;
+    display: inline-block;
     align-items: center;
-    text-align: left;
     font-size: 14px;
     z-index: 200;
+    padding-top: 10px;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 .ProfesionalLista:hover{
     background-color: #E7E7E7;

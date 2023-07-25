@@ -107,6 +107,7 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  caret-color: transparent;
 
 }
 .Navegacion {
@@ -156,7 +157,9 @@ export default {
   position: relative;
   width: 26%;
   height: 100%;
-  background-color: white;
+
+  background: rgb(180,242,255);
+background: linear-gradient(11deg, rgba(180,242,255,1) 0%, rgba(236,236,236,1) 100%);
   display: flex;
   margin-left: 2%;
   margin-right: 2%;

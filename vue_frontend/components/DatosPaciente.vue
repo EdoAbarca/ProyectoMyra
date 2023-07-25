@@ -2,10 +2,9 @@
 import DatosBasicosPaci from "./DatosBasicosPaci.vue";
 import Estadistica from "./Estadistica.vue";
 import BotonObtener from "./BotonObtener.vue";
-import HistorialAsistenciaProf from "./HistorialAsistenciaProf.vue";
 import GastoPaciente from './GastoPaciente.vue'
 import { mapState, mapGetters, mapMutations } from "vuex";
-import HistorialAtencion from "./HistorialAtencion.vue";
+import Historial from "./Historial.vue";
 import * as XLSX from "xlsx";
 
 export default {
@@ -13,8 +12,8 @@ export default {
     DatosBasicosPaci,
     Estadistica,
     BotonObtener,
-    HistorialAsistenciaProf,
-    HistorialAtencion,
+    Historial,
+    Historial,
     GastoPaciente
   },
   computed: {
@@ -231,8 +230,8 @@ export default {
                     </div>
           <div class="Informacion">
             <GastoPaciente id="remuneraciones"/>
-            <HistorialAtencion id="asistencias"/>
-            <HistorialAtencion id="atencion"/>
+            <Historial tipo="pacientes" id="asistencias"/>
+            <Historial tipo ="pacientes" id="atencion"/>
           </div>
         </div>
         <div class="BtnObtenerReporte">

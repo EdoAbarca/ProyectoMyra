@@ -100,8 +100,8 @@ class Coordinador(models.Model):
     nombre = models.CharField(max_length=50)
     rut = models.CharField(max_length=15)
     #calcular horas extras, inasistencias, vacaciones y licencias a partir de la lista de profesionales
-    profesionales = models.ManyToManyField(Profesional, related_name='lista_profesionales_c')
-    pacientes = models.ManyToManyField(Paciente, related_name='lista_pacientes_c')
+    #profesionales = models.ManyToManyField(Profesional, related_name='lista_profesionales_c')
+    #pacientes = models.ManyToManyField(Paciente, related_name='lista_pacientes_c')
     idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
     idCentro = models.ForeignKey(Centro, on_delete=models.CASCADE)
 

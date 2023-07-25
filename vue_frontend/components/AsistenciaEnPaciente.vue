@@ -25,7 +25,7 @@ export default {
 }
 </script>
 <template>
-    <li tabindex="0" class="AsistenciaLista" @click="direccionar(idProf),mostrar(rut)">
+    <li tabindex="0" class="AsistenciaLista" @click="direccionar(idProf),mostrar(idProf)">
         <div class="ContenedorEstado" id="estadoAsistencia">
             <EtiquetaAsistencia  :estado="estado"/>
         </div>

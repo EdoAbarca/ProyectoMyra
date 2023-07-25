@@ -18,14 +18,15 @@ export default {
         ]),
         
         direccionar(id){
-            this.fetchPaciente(id)
-            this.$router.push('/pacientes') 
+            this.fetchPaciente(id);
+            console.log('ID del paciente', id);
+            this.$router.push('/pacientes') ;
         }
     }
 }
 </script>
 <template>
-    <div tabindex="0" class="AsistenciaLista" @click="direccionar(idPac),mostrar(rut)">
+    <div tabindex="0" class="AsistenciaLista" @click="direccionar(idPac),mostrar(idPac)">
         <div class="ContenedorEstado">
             <EtiquetaAsistencia  :estado="estado"/>
         </div>
@@ -75,6 +76,8 @@ export default {
     align-items: center;
     text-align: left;
     font-size: 14px;
+
+    
 
     
 }

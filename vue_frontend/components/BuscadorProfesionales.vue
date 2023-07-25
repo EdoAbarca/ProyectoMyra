@@ -103,9 +103,26 @@ export default {
 <template>
     <div class="ContenedorBuscador">
         <div class="BarraBusqueda">
+
             <input type="search" placeholder="Buscar un individuo" id="buscador" v-model="datoBuscado" @keyup.enter="buscar()"/>
-            <div class="BotonBusqueda" @click="buscar()" ><img class="lupa" src="../static/iconolupa.svg" alt=""></div>
-        </div>
+            <v-btn
+                id="btnBuscar"
+                fab
+                width="33px"
+                height="33px"
+                color = "#D9D9D9"
+                elevation="0"
+                dark
+                @click="buscar()"
+            >
+            <v-icon
+                medium
+                color="white"
+                >
+                mdi-magnify
+            </v-icon>
+            </v-btn>
+            </div>
         <div class="BarraFiltro" v-if="page==='profesionales'">
             <DropBoxCentro :page="page" />
             <DropBoxArea :page="page" />
@@ -116,18 +133,28 @@ export default {
             <DropBoxCentro :page="page" />
             <DropBoxArea :page="page" />
         </div>
+
+        <div class="BarraFiltro" v-if="page==='alertas'">
+            <DropBoxCentro :page="page" />
+        </div>
+        <div class="BarraFiltro" v-if="page==='coordinadores'">
+            <DropBoxCentro :page="page" />
+        </div>
     </div>
 </template>
 
 <style>
+#btnBuscar{
+    left: 1%;
+}
 .ContenedorBuscador{
     position: relative;
     display: flex;
     flex-direction: column;
-
     width: 90%;
-    height: 80px;
+    height: 90px;
     font-family: Arial, Helvetica, sans-serif;
+
     
 }
 .BarraBusqueda{
@@ -150,75 +177,23 @@ export default {
     display: flex;
     width: 100%;
     height: 40%;
-}
-.BotonBusqueda{
-    position: relative;
-    display: flex;
-    width: 10%;
-    height:28px;
-
-    align-items: center;
-    justify-content: center;
-    z-index: -200;
-    cursor: pointer;
 
 
 }
-.BotonBusqueda::before{
-    align-items: center;
-    display: flex;
-    position: absolute;
-    content: '';
-    background-color: #D9D9D9;
-    width: 100px;
-    height: 28px;
-    right: 20px;
-    z-index: -20;
-    border-radius: 0px 8px 8px 8px;
-    transition: all 200ms linear;
-}
-.BotonBusqueda:hover::before{
-    background-color: #919191;
 
-}
 
-.BotonBusqueda::after{
-    align-items: center;
-    display: flex;
-    position: absolute;
-    content: '';
-    background-color: #48abbf;
-    width: 0;
-    height: 28px;
-    left: -20px;
-    z-index: -20;
-    border-radius: 0px 8px 8px 8px;
-    transition: all 200ms linear;
-}
-
-.BotonBusqueda:hover::after{
-
-    width:100%
-}
-
-.lupa{
-    width: 20px;
-    height: 20px;
-    right: 10px;
-    position: relative;
-    z-index: 200;
-}
 #buscador{
     position: relative;
     width: 90%;
-    height: 25px;
+    height: 30px;
     display: flex;
     border-radius: 8px;
     margin-left: 18px;
     padding-left: 8px;
     padding-right: 2%;
-    border: #D9D9D9 2px solid ;
+    border: #D9D9D9 1px solid ;
     transition: all 200ms linear;
+    font-size: 15px;
 
 
     background-color: white;
@@ -228,20 +203,22 @@ export default {
 }
 #buscador:focus, #buscador:hover{
     background-color: white;
-    height: 25px;
-    border: #C4C4C4 2px solid ;
+    height: 30px;
+    border: #C4C4C4 1px solid ;
     
 }
 #buscador::placeholder{
-    font-size: 12px;
-    font-weight: 600;
-    color: #D9D9D9;
+    font-size: 15px;
+    font-weight: 500;
+    
+    color: gray;
     transition: all 200ms linear;
 }
 #buscador:hover::placeholder{
-    font-size: 12px;
-    font-weight: 600;
-    color: gray;
+    font-size: 15px;
+    font-weight: 500;
+    color: #D9D9D9;
+    
 }
 
 #buscador:hover ~ .BotonBusqueda::before{

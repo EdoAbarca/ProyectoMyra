@@ -59,6 +59,17 @@ export default{
           document.getElementById('combobox1').style.zIndex = '200';
       }
 
+    },
+    estiloBorde(){
+      if(this.page == 'alertas' || this.page == 'coordinadores'){
+        return 'border-radius: 0px 0px 8px 8px'
+      }
+      else if(this.page == 'profesionales'|| this.page == 'pacientes'){
+        return 'border-radius: 0px 0px 0px 8px'
+      }
+      else{
+        return 'border-radius: 0px 0px 0px 8px'
+      }
     }
   }
 }
@@ -68,13 +79,17 @@ export default{
 <template>
      
 
-  	<form class="sec-center" id="combobox1">
+  	<form class="sec-center" id="combobox1" :style="estiloBorde()">
 
-      <input v-if="page == 'profesionales'" class="dropdown" type="checkbox" id="dropdown" name="dropdown" @click="fetchSelectoresCentro">
+      
+      <input v-if="page == 'profesionales' || page == 'coordinadores'" class="dropdown" type="checkbox" id="dropdown" name="dropdown" @click="fetchSelectoresCentro">
       <input v-if="page == 'pacientes'" class="dropdown" type="checkbox" id="dropdown" name="dropdown" @click="fetchSelectoresCliente">
-	  	<label class="for-dropdown" for="dropdown" @click="ocultar('combobox1')">
+	  	<input v-if="page == 'alertas'" class="dropdown" type="checkbox" id="dropdown" name="dropdown" @click="null">
+      <label class="for-dropdown" for="dropdown" @click="ocultar('combobox1')">
           <h1 id="textoDropBox" v-if="page ==='profesionales'">Centro - {{opcion}}</h1>
           <h1 id="textoDropBox" v-if="page ==='pacientes'">Cliente - {{opcion}}</h1>
+          <h1 id="textoDropBox" v-if="page ==='coordinadores'">Centro - {{opcion}}</h1>
+          <h1 id="textoDropBox" v-if="page ==='alertas'">Tipo - {{opcion}}</h1>
         <div class="uil"></div>
       </label>
 
@@ -120,6 +135,28 @@ export default{
                   </label>
                 </div>
               </div>
+
+              <div class="columna" v-if="page == 'alertas'">
+                <div class="contenedorEleccion"
+                  v-for="(item) in selectorCliente"
+                  :key="item.id"
+                  :id = "'itemCentro'+item.id"
+                  >
+                    <input  class="Radio-eleccion" 
+                    :id="item.tipoAlerta" 
+                    type="radio" 
+                    :value="item.tipoAlerta" 
+                    v-model ="opcion" 
+                    @click="filtro(item.id)" 
+                    />
+                    <label  class="elementoSelect" 
+                    :for="item.tipoAlerta"
+                    >
+                    {{ item.tipoAlerta }}
+                  </label>
+                </div>
+              </div>
+
         </div>
   	</form>
 
@@ -129,13 +166,13 @@ export default{
   position: relative;
   width: 35%;
   min-width: 200px;
-  max-height: 30px;
+  max-height: 36px;
   
   z-index: 200;
   box-sizing: border-box;
   border-radius: 0px 0px 0px 8px;
   background-color: #D9D9D9;
-  color:#D9D9D9 ;
+  color:gray ;
 }
 
 .contenedorEleccion{
@@ -294,7 +331,7 @@ export default{
 
     position: relative;
     display: flex;
-    height: 20px;
+    height: 26px;
     align-items: center;
     justify-content: center;
     vertical-align: middle;
@@ -302,27 +339,18 @@ export default{
     background-color: white;
 
 }
-#textoDropBox{
-  top: 3px;
-  left: 10px;
-  position: relative;
-  display: flex;
-  font-size: 12px;
-  align-items: center;  
 
-
-}
 
 .uil{
     position: relative;
     left: 80%;
-    bottom: 60%;
+    bottom: 40%;
     z-index: 2001;
     width: 0; 
     height: 0; 
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-top: 10px solid #D9D9D9;
+    border-top: 10px solid #B9B8B8;
 }
 .Radio-eleccion{
     opacity: 0;
@@ -330,12 +358,12 @@ export default{
 .dropdown:hover + .for-dropdown .uil {
     
     transition: all 200ms linear;
-    border-top: 10px solid #B9B8B8;
+    border-top: 10px solid #D9D9D9;
 }
 
 .dropdown:checked:hover + .for-dropdown:hover,
 .dropdown:not(:checked):hover + .for-dropdown:hover{
-    color: gray;
+    color: #D9D9D9;
     transition: all 200ms linear;
 }
 

@@ -320,7 +320,7 @@ class ProfesionalView(View):
                 'nombreCoordinador': profesional.idCoordinador.nombre,
                 'asistencias': [
                     {'id': asistencia.id, 'fechaAsistencia': asistencia.fechaAsistencia, 'asisteProfesional': asistencia.asisteProfesional,
-                     'estado': asistencia.estado, 'nombrePaciente': asistencia.idPaciente.nombre,
+                     'estado': asistencia.estado, 'nombrePaciente': asistencia.idPaciente.nombre,'idPaciente_id': asistencia.idPaciente.id,
                      'idTurno_id': asistencia.idTurno.id} for asistencia in asistencias],
                 'pagos': [
                     {'sueldoBase': pago.sueldoBase, 'gratificacion': pago.gratificacion, 'horaExtra': pago.horaExtra,
@@ -709,6 +709,7 @@ class PacienteView(View):
                     'idTurno_id': asistencia.idTurno.id,
                     'nombreProfesional': asistencia.idProfesional.nombre,
                     'rutProfesional': asistencia.idProfesional.rut,
+                    'idProfesional_id': asistencia.idProfesional.id,
                     'idArea_id': asistencia.idProfesional.idArea.id
                 }
                 datos_asistencias.append(datos_asistencia)

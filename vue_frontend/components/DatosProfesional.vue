@@ -2,7 +2,7 @@
 import DatosBasicosProf from "./DatosBasicosProf.vue";
 import Estadistica from "./Estadistica.vue";
 import BotonObtener from "./BotonObtener.vue";
-import HistorialAsistenciaProf from "./HistorialAsistenciaProf.vue";
+import Historial from "./Historial.vue";
 
 import Acordeon from "./Acordeon.vue";
 import { mapState, mapGetters } from "vuex";
@@ -14,7 +14,7 @@ export default {
     Estadistica,
     BotonObtener,
     Acordeon,
-    HistorialAsistenciaProf,
+    Historial,
   },
   computed: {
     ...mapState("profesional", [
@@ -279,7 +279,7 @@ export default {
           </div>
           <div class="Informacion">
             <Acordeon id="remuneraciones" />
-            <HistorialAsistenciaProf id="asistencias" />
+            <Historial tipo="profesionales" id="asistencias" />
           </div>
         </div>
         <div class="BtnObtenerReporte">
@@ -389,6 +389,7 @@ export default {
   justify-content: center;
   transition: all 200ms linear;
   z-index: -100;
+
   
 }
 .BtnObtenerReporte {

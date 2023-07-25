@@ -5,14 +5,14 @@ export default {
             tipoEstado: ''
         }
     },
-    props: ['estado', 'id'],
+    props: ['estado', 'id','fecha','desc'],
 
     methods:{
 
         elegirColor(){
-            console.log(this.estado)
+            console.log(this.id)
             let colorArea='#D9D9D9';
-            switch(this.estado){
+            switch(this.id){
                 case 1:
                     this.tipoEstado = 'Inasistencia'
                     colorArea = "#E67070";
@@ -37,15 +37,15 @@ export default {
     }
 </script>
 <template>
-    <div class="motivoAleta" >
+    <div class="motivoAleta" :style="elegirColor()" >
         <div id="contenedortitulosAlerta">
-            <div id="tituloAlerta">Paciente Complejo</div>
-            <div id="fechaMotivoAlerta"> fecha: 20-09-2022</div>
+            <div id="tituloAlerta">Motivo: {{tipoEstado}}</div>
+            <div id="fechaMotivoAlerta"> Fecha: {{ fecha }}</div>
         </div>
-        <v-divider></v-divider>
+
         
         <div id="contenidoAlerta">
-            <div id="detalleAlerta">Detalle:Aqui va el detalle de la alerta</div>
+            <div id="detalleAlerta">Detalle:{{ desc }}</div>
         </div>
     </div> 
 </template>

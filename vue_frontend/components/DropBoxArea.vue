@@ -136,13 +136,14 @@ export default{
   position: relative;
   width: 35%;
   min-width: 200px;
-  max-height: 30px;
+  max-height: 36px;
   
   z-index: 200;
   box-sizing: border-box;
   border-radius: 0px 0px 8px 0px;
   background-color: #D9D9D9;
-  color:#D9D9D9 ;
+  
+  color:gray ;
 }
 
 .contenedorEleccion2{
@@ -250,6 +251,7 @@ export default{
   display: block;
   z-index: 2;
   transition: all 200ms linear;
+
  
 
   
@@ -300,7 +302,7 @@ export default{
 
     position: relative;
     display: flex;
-    height: 20px;
+    height: 26px;
     align-items: center;
     justify-content: center;
     vertical-align: middle;
@@ -309,11 +311,12 @@ export default{
 
 }
 #textoDropBox{
-  top: 3px;
+  top: 4px;
   left: 10px;
   position: relative;
   display: flex;
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 400;
   align-items: center;  
 
 
@@ -322,13 +325,13 @@ export default{
 .uil2{
     position: relative;
     left: 80%;
-    bottom: 60%;
+    bottom: 40%;
     z-index: 2001;
     width: 0; 
     height: 0; 
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-top: 10px solid #D9D9D9;
+    border-top: 10px solid #B9B8B8;
 }
 .Radio-eleccion2{
     opacity: 0;
@@ -336,12 +339,13 @@ export default{
 .dropdown2:hover + .for-dropdown2 .uil2 {
     
     transition: all 200ms linear;
-    border-top: 10px solid #B9B8B8;
+    border-top: 10px solid #D9D9D9;
 }
 
 .dropdown2:checked:hover + .for-dropdown2:hover,
 .dropdown2:not(:checked):hover + .for-dropdown2:hover{
-    color: gray;
+    color: #D9D9D9;
+
     transition: all 200ms linear;
 }
 

@@ -2,10 +2,8 @@
 import DatosBasicosCoord from "./DatosBasicosCoord.vue";
 import Estadistica from "./Estadistica.vue";
 import BotonObtener from "./BotonObtener.vue";
-import HistorialAsistenciaProf from "./HistorialAsistenciaProf.vue";
-
+import Historial from "./Historial.vue";
 import { mapState, mapGetters, mapMutations } from "vuex";
-import HistorialAtencion from "./HistorialAtencion.vue";
 import * as XLSX from "xlsx";
 
 export default {
@@ -13,8 +11,8 @@ export default {
     DatosBasicosCoord,
     Estadistica,
     BotonObtener,
-    HistorialAsistenciaProf,
-    HistorialAtencion,
+    Historial,
+    Historial,
   },
   computed: {
     ...mapState("coordinador", ["dataCoordinador", "mostrar"]),
@@ -148,7 +146,6 @@ export default {
         </div>
         <div class="EstadisticasProfesional">
           <Estadistica tipo="Horas Extras de Profesionales" :valor="0" />
-          <Estadistica tipo="Despidos totales" :valor="0" />
           <Estadistica tipo="Inasistencias de Profesionales" :valor="3" />
           <Estadistica tipo="Profesionales con Licencia" :valor="5" />
           <Estadistica tipo="Profesionales de vacaciones" :valor="5" />
@@ -171,8 +168,9 @@ export default {
             </div>
           </div>
           <div class="Informacion">
-            <HistorialAtencion id="remuneraciones" />
-            <HistorialAtencion id="asistencias" />
+            
+            <Historial tipo="coordinadores1" id="remuneraciones" />
+            <Historial tipo="coordinadores2" id="asistencias" />
           </div>
         </div>
         <div class="BtnObtenerReporte">

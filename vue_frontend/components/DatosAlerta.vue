@@ -3,10 +3,10 @@ import DatosBasicosPaci from './DatosBasicosPaci.vue'
 import Estadistica  from './Estadistica.vue'
 import BotonObtener from './BotonObtener.vue'
 import GastoPaciente from './BotonObtener.vue'
-import HistorialAsistenciaProf from './HistorialAsistenciaProf.vue'
+import Historial from './Historial.vue'
 
 import { mapState,mapGetters, mapMutations } from 'vuex'
-import HistorialAtencion from './HistorialAtencion.vue'
+
 
 import MotivoAlerta from './MotivoAlerta.vue'
 export default {
@@ -15,8 +15,8 @@ export default {
     DatosBasicosPaci,
     Estadistica,
     BotonObtener,
-    HistorialAsistenciaProf,
-    HistorialAtencion,
+    Historial,
+
     MotivoAlerta
 },
     computed:{
@@ -95,7 +95,7 @@ export default {
                     />
                 </div>
                 <div class="EstadisticasProfesional">
-                    <MotivoAlerta/>
+                    <MotivoAlerta :id="1" :fecha="'20-05-13'" :desc="'Descripción de la alerta'"/>
                 </div>
                 <div class="DatosCambiantes">
                     <div class="BotonesCambio" >
@@ -103,7 +103,7 @@ export default {
                         <div v-else class="BtnDerecha" id="btCambioDerecha" @click="cambiar('remuneraciones')">Pacientes </div>
                     </div>
                     <div class = "Informacion">
-                        <HistorialAtencion id="involucrados"/>    
+                        <Historial id="involucrados"/>    
                     </div>
                 </div>
                 <div class="BtnObtenerReporte">
