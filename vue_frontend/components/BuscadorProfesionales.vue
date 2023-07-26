@@ -33,6 +33,10 @@ export default {
         ...mapMutations({
             setDatoPorBuscarCoord: 'coordinador/setDatoPorBuscar'
         }),
+
+        ...mapMutations({
+            setDatoPorBuscarAlerta: 'alertas/setDatoPorBuscar'
+        }),
         ...mapActions('profesional',[
             'fetchProfesionales',
             'buscarProfesional'       
@@ -46,6 +50,11 @@ export default {
         ...mapActions('coordinador',[
             'fetchCoordinadores',
             'buscarCoordinador'       
+        ]),
+
+        ...mapActions('alertas',[
+            'fetchAlertas',
+            'buscarAlerta'       
         ]),
         
         buscarProfesionales(){
@@ -81,8 +90,19 @@ export default {
             else{
                 
                 this.setDatoPorBuscarCoord(this.datoBuscado);
-                this.buscarCoordinador();
-                console.log(this.dataPacientes)     
+                this.buscarCoordinador();  
+            } 
+        },
+
+        buscarAlertas(){
+            if(this.datoBuscado ===''){
+                this.setDatoPorBuscarAlerta(null);
+                this.fetchAlertas();
+            }
+            else{
+                
+                this.setDatoPorBuscarAlerta(this.datoBuscado);
+                this.buscarAlerta();  
             } 
         },
         buscar(){
@@ -94,7 +114,10 @@ export default {
             }
             else if (this.page === 'coordinadores'){
                 this.buscarCoordinadores();
-            }  
+            }
+            else if (this.page === 'alertas'){
+                this.buscarAlertas();
+            } 
         }
 
     }
@@ -195,7 +218,7 @@ export default {
     border: #D9D9D9 1px solid ;
     transition: all 200ms linear;
     font-size: 15px;
-
+    caret-color: gray;
 
     background-color: white;
     color: #919191;

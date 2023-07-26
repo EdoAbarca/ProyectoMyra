@@ -1246,7 +1246,7 @@ class FilterTipoTurnoView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, id_turno=0):
-        pacientes = Paciente.objects.filter(idTurno_id=id_turno)
+        pacientes = Paciente.objects.filter(idTipoTurno_id=id_turno)
 
         datos_pacientes = []
 
@@ -1254,8 +1254,7 @@ class FilterTipoTurnoView(View):
             datos_paciente = {
                 'id': paciente.id,
                 'nombre': paciente.nombre,
-                'rut': paciente.rut,
-                'tipoTurno': paciente.tipoTurno,
+                'idTipoTurno_id': paciente.idTipoTurno.id,
                 'fechaInicioAtencion': paciente.fechaInicioAtencion,
                 'vigente': paciente.vigente,
                 'idZona_id': paciente.idZona.id,

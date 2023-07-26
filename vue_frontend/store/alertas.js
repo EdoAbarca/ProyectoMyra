@@ -72,45 +72,23 @@ export const mutations = {
             }
       },
     
-      async buscarCoordinador({ commit,state }) {
+      async buscarAlerta({ commit,state }) {
 
-        const nombres = state.dataAlertas.filter(dataAlertas => dataAlertas.nombreProfesional.toLowerCase().search(state.datoBuscadoCoord.toLowerCase())!=-1);
-        const ruts = state.dataCoordinadores.filter(dataAlertas => dataAlertas.rut.toLowerCase().search(state.datoBuscadoCoord.toLowerCase())!=-1);
-        
-        const datos = nombres.concat(ruts);
-        commit('setCoordinadores', datos);
+        const nombres = state.copia.filter(
+            copia => 
+            copia.nombreProfesional.toLowerCase().search(state.datoBuscado.toLowerCase())!=-1 ||
+            copia.nombrePaciente.toLowerCase().search(state.datoBuscado.toLowerCase())!=-1
+            );
+       
+
+        commit('setAlertas', nombres);
       },
 
-      async filtrarCentro({commit,state}) {
+      async filtrarTipoAlerta({commit,state}) {
         if(state.categoriaElegida != null){
-            const categoria = state.categoriaElegida.toString();
-
-            const path = this.$config.filterCenterURL+ categoria;
-            try {
-                const res = await this.$axios.get(path);
-                const datos = res.data.Coordinadores;
-                
-                commit('setCoordinadores', datos);
-                }  
-              catch (error) {
-                console.log(error);
-                }
-        }
-      },
-      async filtrarArea({commit,state}) {
-        if(state.categoriaElegida != null){
-            const area = state.categoriaElegida.toString();
-
-            const path = this.$config.filterPositionURL + area;
-            try {
-                const res = await this.$axios.get(path);
-                const datos = res.data.Coordinadores;
-                
-                commit('setCoordinadores', datos);
-                }  
-              catch (error) {
-                console.log(error);
-                }
+            const categoria = state.categoriaElegida;
+            const alertas = state.copia.filter(copia => copia.idTipoAlerta_id === categoria);
+            commit('setAlertas', alertas);
         }
       },
       async restaurarCoordinadores({commit}){

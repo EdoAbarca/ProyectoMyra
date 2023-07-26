@@ -18,14 +18,27 @@ export default{
     ...mapMutations({
         catProfesional: 'profesional/elegirCategoria',
         catPaciente: 'paciente/elegirCategoria',
-        catAlerta: 'alerta/elegirCategoria',
+        catCoord: 'coordinador/elegirCategoria',
+        catAlerta: 'alertas/elegirCategoria',
         elegirSelector: 'selectores/elegirSelector',
     }),
+
+    
     ...mapActions('profesional',[
             'fetchProfesionales',
             'filtrarCentro'       
         ]),
+
+    ...mapActions('alertas',[
+            'fetchAlertas',
+            'filtrarTipoAlerta'       
+        ]),
+    ...mapActions('coordinador',[
+            'fetchCoordinadores',
+            'filtrarCentroCoord'       
+        ]),
     ...mapActions('paciente',[
+            'fetchPacientes',
             'filtrarCliente'       
         ]),
     ...mapActions('selectores',[
@@ -39,7 +52,21 @@ export default{
 
       if(valor === 1){
         valor = null;
-        this.fetchProfesionales();
+        if(this.page === 'profesionales'){
+          this.fetchProfesionales();
+        }
+        if(this.page==='pacientes'){
+          this.fetchPacientes();
+        }
+
+        if(this.page==='alertas'){
+
+          this.fetchAlertas();
+        }
+        if(this.page === 'coordinadores'){
+
+          this.fetchCoordinadores();
+        }
       }
       else{
         if(this.page === 'profesionales'){
@@ -53,7 +80,11 @@ export default{
 
         if(this.page==='alertas'){
           this.catAlerta(valor);
-          this.filtrarCliente();
+          this.filtrarTipoAlerta();
+        }
+        if(this.page === 'coordinadores'){
+          this.catCoord(valor);
+          this.filtrarCentroCoord();
         }
 
       }
@@ -113,7 +144,7 @@ export default{
 
 	  
   		<div class="section-dropdown"> 
-            <div class="columna" v-if="page == 'profesionales'">
+          <div class="columna" v-if="page == 'profesionales' || page == 'coordinadores'">
                 <div class="contenedorEleccion"
                   v-for="(item) in selectorCentro"
                   :key="item.id"

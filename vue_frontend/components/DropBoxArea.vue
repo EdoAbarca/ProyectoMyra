@@ -26,7 +26,8 @@ export default{
             'filtrarArea'       
         ]),
     ...mapActions('paciente',[
-            'filtrarTurno'       
+            'fetchPacientes',
+            'filtrarTurnos'       
         ]),
     ...mapActions('selectores',[
             'fetchSelectoresArea',
