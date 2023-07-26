@@ -211,10 +211,11 @@ export default {
             :rut="dataPaciente.rut"
             :turno="dataPaciente.idTipoTurno_id"
             :cliente="dataPaciente.idCliente_id"
-            :coordinador="dataPaciente.coordinador"
+            :coordinador="dataPaciente.nombreCoordinador"
             :cuidado="'falta este dato'"
             :region="dataPaciente.region"
             :zona="dataPaciente.zona"
+            :idCoord="dataPaciente.idCoordinador_id"
           />
         </div>
         <div class="EstadisticasProfesional">

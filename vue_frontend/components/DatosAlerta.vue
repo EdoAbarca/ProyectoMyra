@@ -4,6 +4,7 @@ import Estadistica  from './Estadistica.vue'
 import BotonObtener from './BotonObtener.vue'
 import GastoPaciente from './BotonObtener.vue'
 import Historial from './Historial.vue'
+import DatosBasicosProf from './DatosBasicosProf.vue'
 
 import { mapState,mapGetters, mapMutations } from 'vuex'
 
@@ -13,6 +14,7 @@ export default {
     props:['tipoAlerta'],
   components: {
     DatosBasicosPaci,
+    DatosBasicosProf,
     Estadistica,
     BotonObtener,
     Historial,
@@ -23,6 +25,15 @@ export default {
         ...mapState('paciente',[
             'dataPaciente',
             'mostrarPac'       
+        ]),
+
+        ...mapState('alertas',[
+            'dataAlerta',       
+        ]),
+
+        ...mapState('profesional',[
+            'dataProfesional',
+            'mostrar'       
         ]),
         ...mapGetters('paciente',[
             'getmostrarPac'
@@ -82,30 +93,40 @@ export default {
     <div class="ContenedorDatosP">
         <transition appear name="fade" >
             <div class="contEfecto" v-if="getmostrarPac == true">
+                <div class="EstadisticasProfesional">
+                    <MotivoAlerta 
+                    :estado="dataAlerta.idTipoAlerta_id" 
+                    :fecha="dataAlerta.fechaAlerta" 
+                    :desc="dataAlerta.descripcion"/>
+                </div>
+                
+                <div class="DatosBasicos">
+                    <DatosBasicosProf
+                        :nombre="dataProfesional.nombre"
+                        :rut="dataProfesional.rut"
+                        :area="dataProfesional.idArea_id"
+                        :centro="dataProfesional.idCentro_id"
+                        :coordinador="dataProfesional.nombreCoordinador"
+                        :contrato="dataProfesional.tipoContrato"
+                        :idCoord="dataProfesional.idCoordinador_id"
+                    />
+                </div>
+                
                 <div class="DatosBasicos">
                     <DatosBasicosPaci
                     :nombre="dataPaciente.nombre"
                     :rut="dataPaciente.rut"
                     :turno="dataPaciente.idTipoTurno_id"
                     :cliente="dataPaciente.idCliente_id"
-                    :coordinador="dataPaciente.coordinador"
+                    :coordinador="dataPaciente.nombreCoordinador"
                     :cuidado="'falta este dato'"
                     :region ="dataPaciente.region"
                     :zona = "dataPaciente.zona"
+                    :idCoord="dataPaciente.idCoordinador_id"
                     />
                 </div>
-                <div class="EstadisticasProfesional">
-                    <MotivoAlerta :id="1" :fecha="'20-05-13'" :desc="'Descripción de la alerta'"/>
-                </div>
-                <div class="DatosCambiantes">
-                    <div class="BotonesCambio" >
-                        <div v-if="tipoAlerta==='pacienteComplejo'" class="BtnDerecha" id="btCambioDerecha" @click="cambiar('remuneraciones')">Profesionales </div>
-                        <div v-else class="BtnDerecha" id="btCambioDerecha" @click="cambiar('remuneraciones')">Pacientes </div>
-                    </div>
-                    <div class = "Informacion">
-                        <Historial id="involucrados"/>    
-                    </div>
-                </div>
+
+                
                 <div class="BtnObtenerReporte">
                 <BotonObtener/>
             </div>

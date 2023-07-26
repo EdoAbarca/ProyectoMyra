@@ -8,35 +8,8 @@ export const state = () => ({
   dataPacientes:[],
   dataPaciente:[],
   pagosProfesional:[],
-  costoPaciente:[
-    {
-      id: 1,
-      nombre: 'profesional 1',
-      idArea_id: 'area 1',
-      costoPorTurno : '1000000',
-      costoHora: '200000',
-      colacion: '3000',
-      movilizacion: '123450'
-    },
-    {
-      id: 2,
-      nombre: 'profesional 2',
-      idArea_id: 'area 1',
-      costoPorTurno : '4000000',
-      costoHora: '200000',
-      colacion: '3000',
-      movilizacion: '123450'
-    },
-    {
-      id: 3,
-      nombre: 'profesional 3',
-      idArea_id: 'area 1',
-      costoPorTurno : '4000000',
-      costoHora: '200000',
-      colacion: '3000',
-      movilizacion: '123450'
-    }
-  ]
+  copia:[],
+  costoPaciente:[]
     
   })
 export const getters = {
@@ -58,6 +31,9 @@ export const getters = {
     }
 }
 export const mutations = {
+    setCopia(state,lista){
+      state.copia = lista;    
+    },
     setPacientes(state,lista){
         
         state.dataPacientes = lista;
@@ -65,7 +41,8 @@ export const mutations = {
     },
     setPaciente(state,datosPaciente){
         state.dataPaciente = datosPaciente;
-        state.historialAtencion = datosPaciente.asistencias
+        state.historialAtencion = datosPaciente.asistencias;
+        state.costoPaciente = datosPaciente.costo;
         console.log( state.dataPaciente)
     },
     mostrar(state,id){
@@ -100,6 +77,7 @@ export const mutations = {
           });
         const datos = res.data.pacientes;
         commit('setPacientes', datos);
+        commit('setCopia', datos);
         }  
       catch (error) {
         console.log(error);
@@ -126,12 +104,17 @@ export const mutations = {
 
         
       },
+
+      async filtrarDatos({commit,state}){
+
+        let intersection = arrA.filter(x => arrB.includes(x));
+
+      },
     
       async buscarPaciente({ commit,state }) {
 
-        const nombres = state.dataPacientes.filter(dataPacientes => dataPacientes.nombre.toLowerCase().search(state.datoBuscadoPaciente.toLowerCase())!=-1);
+        const nombres = state.copia.filter(copia => copia.nombre.toLowerCase().search(state.datoBuscadoPaciente.toLowerCase())!=-1);
         //const ruts = state.dataPacientes.filter(dataPacientes => dataPacientes.rut.toLowerCase().search(state.datoBuscadoPaciente.toLowerCase())!=-1);
-        
         const datos = nombres
         commit('setPacientes', datos);
       },

@@ -140,15 +140,15 @@ export default {
           <DatosBasicosCoord
             :nombre="dataCoordinador.nombre"
             :rut="dataCoordinador.rut"
-            :area="dataCoordinador.idCargo_id"
+            :area="dataCoordinador.idArea_id"
             :centro="dataCoordinador.idCentro_id"
           />
         </div>
         <div class="EstadisticasProfesional">
-          <Estadistica tipo="Horas Extras de Profesionales" :valor="0" />
-          <Estadistica tipo="Inasistencias de Profesionales" :valor="3" />
-          <Estadistica tipo="Profesionales con Licencia" :valor="5" />
-          <Estadistica tipo="Profesionales de vacaciones" :valor="5" />
+          <Estadistica tipo="Horas Extras de Profesionales" :valor="dataCoordinador.horasExtras" />
+          <Estadistica tipo="Inasistencias de Profesionales" :valor="dataCoordinador.inasistencias" />
+          <Estadistica tipo="Profesionales con Licencia" :valor="dataCoordinador.licencias" />
+          <Estadistica tipo="Profesionales de vacaciones" :valor="dataCoordinador.vacaciones" />
         </div>
         <div class="DatosCambiantes">
           <div class="BotonesCambio">

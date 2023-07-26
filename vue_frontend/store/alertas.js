@@ -1,28 +1,27 @@
-//import this.$axios from 'this.$axios';
+//import axios from 'axios';
 export const state = () => ({
     categoriaElegida: null,
-    datoBuscadoCoord: null,
-    mostrar:false,
+    datoBuscado: null,
+    mostrarAlerta:false,
     idAnterior: false,
-    Coordinadores:[],
-    dataCoordinadores:[],
-    dataCoordinador:[],
-    profesionalesCoord:[],
-    pacientesCoord:[],
-    copia:[]
-  })
+    dataAlertas:[],
+    dataAlerta:[], 
+    copia:[],
+
+    })
+
 
 export const mutations = {
-  setCopia(state,lista){
-    state.copia = lista;    
-  },
-    setCoordinadores(state,lista){
-        state.dataCoordinadores = lista;
+    setAlertas(state,lista){
+        state.dataAlertas = lista;
+        
     },
-    setCoordinador(state,datoscoordinador){
-        state.dataCoordinador = datoscoordinador;
-        state.profesionalesCoord = datoscoordinador.profesionales
-        state.pacientesCoord = datoscoordinador.pacientes
+    setCopia(state,lista){
+        state.copia = lista;
+    },
+    setAlerta(state,datosAlerta){
+        state.dataAlerta = datosAlerta;
+        console.log(datosAlerta)
     },
     mostrar(state,id){
         const idAnterior = state.idAnterior
@@ -39,34 +38,34 @@ export const mutations = {
         state.categoriaElegida = categoriaSeleccionada;
     },
     setDatoPorBuscar(state,dato){
-        state.datoBuscadoCoord = dato;
+        state.datoBuscado = dato;
     },
       
   }
 
   export const actions = {
-    async fetchCoordinadores({ commit }) {
-      const path = this.$config.coordinadorURL;
+    async fetchAlertas({ commit }) {
+      const path = 'http://localhost:8000/api/alerta/';
       try {
         const res = await this.$axios.get(path);
-        const datos = res.data.coordinadores;
-        commit('setCoordinadores', datos);
+        const datos = res.data.alertas;
         commit('setCopia', datos);
+        commit('setAlertas', datos);
         }  
       catch (error) {
         console.log(error);
         }
     },
 
-    async fetchCoordinador({ commit,state },id) {
+    async fetchAlerta({ commit,state },id) {
 
-        const id_coordinador = id.toString();
-        const path = this.$config.coordinadorURL+ id_coordinador;
+        const id_Alerta = id.toString();
+        const path = 'http://localhost:8000/api/alerta/' + id_Alerta;
         try {
             const res = await this.$axios.get(path);
-            const datos = res.data.coordinador;
+            const datos = res.data.alerta;
             
-            commit('setCoordinador', datos);
+            commit('setAlerta', datos);
             }  
           catch (error) {
             console.log(error);
@@ -75,8 +74,8 @@ export const mutations = {
     
       async buscarCoordinador({ commit,state }) {
 
-        const nombres = state.copia.filter(copia => copia.nombre.toLowerCase().search(state.datoBuscadoCoord.toLowerCase())!=-1);
-        const ruts = state.copia.filter(copia => copia.rut.toLowerCase().search(state.datoBuscadoCoord.toLowerCase())!=-1);
+        const nombres = state.dataAlertas.filter(dataAlertas => dataAlertas.nombreProfesional.toLowerCase().search(state.datoBuscadoCoord.toLowerCase())!=-1);
+        const ruts = state.dataCoordinadores.filter(dataAlertas => dataAlertas.rut.toLowerCase().search(state.datoBuscadoCoord.toLowerCase())!=-1);
         
         const datos = nombres.concat(ruts);
         commit('setCoordinadores', datos);

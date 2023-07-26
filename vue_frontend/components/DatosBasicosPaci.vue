@@ -3,7 +3,7 @@ import EtiquetaPaciente from './EtiquetaPaciente.vue';
 import { mapState, mapMutations, mapGetters } from 'vuex'
 export default {
 
-props: ['nombre','turno','cliente','coordinador', 'region', 'zona', 'cuidado']
+props: ['nombre','turno','cliente','coordinador', 'region', 'zona', 'cuidado', 'idCoord']
 
 }
 </script>

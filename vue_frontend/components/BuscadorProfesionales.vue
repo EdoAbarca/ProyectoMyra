@@ -49,6 +49,7 @@ export default {
         ]),
         
         buscarProfesionales(){
+            //this.fetchProfesionales();
             if(this.datoBuscado ===''){
                 this.setDatoPorBuscar(null);
                 this.fetchProfesionales();

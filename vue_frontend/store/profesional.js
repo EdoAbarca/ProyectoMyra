@@ -9,6 +9,7 @@ export const state = () => ({
     dataProfesionales:[],
     dataProfesional:[],
     pagosProfesional:[],
+    copia:[]
     
   })
 export const getters = {
@@ -64,8 +65,10 @@ export const getters = {
 }
 export const mutations = {
     setProfesionales(state,lista){
-        console.log(lista)
-        state.dataProfesionales = lista;
+        state.dataProfesionales = lista;    
+    },
+    setCopia(state,lista){
+      state.copia = lista;    
     },
     setProfesional(state,datosProfesional){
         state.dataProfesional = datosProfesional;
@@ -102,6 +105,7 @@ export const mutations = {
             });
         const datos = res.data.profesionales;
         commit('setProfesionales', datos);
+        commit('setCopia', datos);
         }  
       catch (error) {
         //Si tira error, hay que llamar a la url que retorna un nuevo access token
@@ -128,11 +132,9 @@ export const mutations = {
             }
       },
     
-      async buscarProfesional({ commit,state }) {
-
-        const nombres = state.dataProfesionales.filter(dataProfesionales => dataProfesionales.nombre.toLowerCase().search(state.datoBuscadoProfesional.toLowerCase())!=-1);
-        const ruts = state.dataProfesionales.filter(dataProfesionales => dataProfesionales.rut.toLowerCase().search(state.datoBuscadoProfesional.toLowerCase())!=-1);
-        
+      buscarProfesional({ commit,state }) {
+        const nombres = state.copia.filter(copia => copia.nombre.toLowerCase().search(state.datoBuscadoProfesional.toLowerCase())!=-1);
+        const ruts = state.copia.filter(copia => copia.rut.toLowerCase().search(state.datoBuscadoProfesional.toLowerCase())!=-1);
         const datos = nombres.concat(ruts);
         commit('setProfesionales', datos);
       },

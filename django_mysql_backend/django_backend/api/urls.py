@@ -35,6 +35,10 @@ urlpatterns=[
     path(environ.get('TURNO_PARAM_URL'), TurnoView.as_view()),    
     path(environ.get('TIPO_TURNO_URL'), TipoTurnoView.as_view()),
     path(environ.get('TIPO_TURNO_PARAM_URL'), TipoTurnoView.as_view()),
+
+    path(environ.get('TIPO_ALERTA_URL'), TipoAlertaView.as_view()),
+    path(environ.get('TIPO_ALERTA_PARAM_URL'), TipoAlertaView.as_view()),
+
     path(environ.get('ALERTA_URL'), AlertaView.as_view()),
     path(environ.get('ALERTA_PARAM_URL'), AlertaView.as_view()),
 

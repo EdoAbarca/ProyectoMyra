@@ -113,6 +113,7 @@ INSERT INTO rotativa_myra.api_coordinador (id, nombre, rut, idArea_id, idCentro_
 INSERT INTO rotativa_myra.api_coordinador (id, nombre, rut, idArea_id, idCentro_id) VALUES (3, "Francesca Pilar Monroi", "16792115-9", 4, 2);
 
 -- Profesional
+
 INSERT INTO rotativa_myra.api_profesional (id, nombre, rut, inasistencias, horasTotales, horasExtras, vacaciones, licencia,
  idCentro_id, idArea_id, idCargo_id, idContrato_id, idCoordinador_id, valorHora, horasCont,horasObj,turnosTrab,bonoColacion, bonoMov, bonoResp) 
  VALUES (1, "Fabiola Suillan Lagos Cuevas", "13080327-K", 15, 96, 360, 0, 0, 3, 2, 5, 2, 1, 2920, 192, 192, 14, 0, 0, 0);

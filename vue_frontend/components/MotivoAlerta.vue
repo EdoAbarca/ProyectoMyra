@@ -10,23 +10,24 @@ export default {
     methods:{
 
         elegirColor(){
-            console.log(this.id)
+            console.log(this.estado)
             let colorArea='#D9D9D9';
-            switch(this.id){
-                case 1:
+            switch(this.estado){
+                case 2:
                     this.tipoEstado = 'Inasistencia'
                     colorArea = "#E67070";
                     break
-                case 2:
-                    this.tipoEstado = 'P. Complejo'
+                case 3:
+                    this.tipoEstado = 'Paciente Complejo'
                     colorArea = "#FE9F47";
                     break
-                case 3:
+                case 4:
                     this.tipoEstado = 'Exceso Horas'
-                    colorArea = "#AAE43";
+                    colorArea = "#B6D673";
                     break
                 default:
-                    colorArea = "'#EBDA40'"
+                    this.tipoEstado = 'Otro'
+                    colorArea = "#BA99BF"
             }
             return 'background-color: '+ colorArea+';'
 
@@ -45,13 +46,13 @@ export default {
 
         
         <div id="contenidoAlerta">
-            <div id="detalleAlerta">Detalle:{{ desc }}</div>
+            <div id="detalleAlerta">Detalle: {{ desc }}</div>
         </div>
     </div> 
 </template>
 <style>
 #contenedortitulosAlerta{
-    margin-top: 7px;
+    margin-top: 15px;
     position: relative;
     padding-left: 20px;
     display: flex;
@@ -89,12 +90,12 @@ export default {
     display: flex;
     flex-direction: column;
     position: relative;
-    width: 85%;
-    height: 75%;
+    width: 93%;
+    height: 85%;
     color: white;
     background-color: blue;
     border-radius: 9px;
-    font-size: 12px;
+    font-size: 15px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 600;
     line-height: 25px;

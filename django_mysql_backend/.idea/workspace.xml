@@ -5,27 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f146596a-1094-401e-a6f5-5eb6b9423ede" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../datos.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../datos.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/django_backend/api/migrations/0001_initial.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/django_backend/api/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/django_backend/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/django_backend/api/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/django_backend/api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/django_backend/api/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/django_backend/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/django_backend/api/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../vue_frontend/components/AsistenciaEnPaciente.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../vue_frontend/components/AsistenciaEnPaciente.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../vue_frontend/components/AsistenciaProf.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../vue_frontend/components/AsistenciaProf.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../vue_frontend/components/ContenidoLista.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../vue_frontend/components/ContenidoLista.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../vue_frontend/components/DatosAlerta.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../vue_frontend/components/DatosAlerta.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../vue_frontend/components/DatosBasicosCoord.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../vue_frontend/components/DatosBasicosCoord.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../vue_frontend/components/DatosBasicosPaci.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../vue_frontend/components/DatosBasicosPaci.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../vue_frontend/components/DatosBasicosProf.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../vue_frontend/components/DatosBasicosProf.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../vue_frontend/components/DatosCoordinador.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../vue_frontend/components/DatosCoordinador.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../vue_frontend/components/DatosPaciente.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../vue_frontend/components/DatosPaciente.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../vue_frontend/components/DatosProfesional.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../vue_frontend/components/DatosProfesional.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vue_frontend/components/DropBoxArea.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../vue_frontend/components/DropBoxArea.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../vue_frontend/components/DropBoxCentro.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../vue_frontend/components/DropBoxCentro.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../vue_frontend/components/HistorialAsistenciaProf.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../vue_frontend/components/HistorialAtencion.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../vue_frontend/components/MotivoAlerta.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../vue_frontend/components/MotivoAlerta.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../vue_frontend/components/ProfesionalLista.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../vue_frontend/components/ProfesionalLista.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../vue_frontend/pages/home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../vue_frontend/pages/home.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../vue_frontend/pages/profesionales.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../vue_frontend/pages/profesionales.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vue_frontend/store/paciente.js" beforeDir="false" afterPath="$PROJECT_DIR$/../vue_frontend/store/paciente.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vue_frontend/store/selectores.js" beforeDir="false" afterPath="$PROJECT_DIR$/../vue_frontend/store/selectores.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

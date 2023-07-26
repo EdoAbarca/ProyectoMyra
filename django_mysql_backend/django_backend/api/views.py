@@ -353,9 +353,15 @@ class ProfesionalView(View):
                 'idCoordinador_id': profesional.idCoordinador.id,
                 'nombreCoordinador': profesional.idCoordinador.nombre,
                 'asistencias': [
-                    {'id': asistencia.id, 'fechaAsistencia': asistencia.fechaAsistencia, 'asisteProfesional': asistencia.asisteProfesional,
-                     'estado': asistencia.estado, 'nombrePaciente': asistencia.idPaciente.nombre,'idPaciente_id': asistencia.idPaciente.id,
-                     'idTurno_id': asistencia.idTurno.id} for asistencia in asistencias],
+                    {
+                        'id': asistencia.id,
+                        'fechaAsistencia': asistencia.fechaAsistencia,
+                        'asisteProfesional': asistencia.asisteProfesional,
+                        'estado': asistencia.estado,
+                        'nombrePaciente': asistencia.idPaciente.nombre,
+                        'idPaciente_id': asistencia.idPaciente.id,
+                        #'idTurno_id': asistencia.idTurno.id
+                     } for asistencia in asistencias],
                 'pagos': [
                     {'sueldoBase': pago.sueldoBase, 'gratificacion': pago.gratificacion, 'horaExtra': pago.horaExtra,
                      'bonos': pago.bonos, 'aguinaldo': pago.aguinaldo, 'vacaciones': pago.vacaciones,
@@ -734,22 +740,21 @@ class PacienteView(View):
 
             datos_asistencias = []
             asistencias = Asistencia.objects.filter(idPaciente_id=id)
+
             asistencias_filtradas = []
+
             for asistencia in asistencias:
                 if asistencia.idProfesional.id not in asistencias_filtradas:
                     id = asistencia.idProfesional.id
                     nombre = asistencia.idProfesional.nombre
-                    obj_profesional = {
-                        'id': id,
-                        'nombre': nombre
-                    }
+                    obj_profesional =[id,nombre]
                     asistencias_filtradas.append(obj_profesional)
                 datos_asistencia = {
                     'id': asistencia.id,
                     'fechaAsistencia': asistencia.fechaAsistencia,
                     'asisteProfesional': asistencia.asisteProfesional,
                     'estado': asistencia.estado,
-                    'idTurno_id': asistencia.idTurno.id,
+                    #'idTurno_id': asistencia.idTurno.id,
                     'nombreProfesional': asistencia.idProfesional.nombre,
                     'rutProfesional': asistencia.idProfesional.rut,
                     'idProfesional_id': asistencia.idProfesional.id,
@@ -762,19 +767,22 @@ class PacienteView(View):
                 horas = 0
                 movilizacion = 0
                 colacion = 0
+                valorhora = 0
                 for asistencia in asistencias:
-                    if idprofesional.id == asistencia.idProfesional.id:
+                    if idprofesional[0] == asistencia.idProfesional.id:
                         movilizacion = movilizacion + asistencia.movilizacion
                         horas = horas + asistencia.horas
                         colacion = colacion + asistencia.colacion
-                        costototal = movilizacion + colacion + (asistencia.idProfesional.valorHora * horas)
+                        valorhora = asistencia.idProfesional.valorHora
+                        costototal = movilizacion + colacion + (valorhora * horas)
                 costo ={
+                    'valorHora': valorhora,
                     'horas': horas,
                     'movilizacion': movilizacion,
                     'colacion': colacion,
                     'costototal': costototal,
-                    'id': idprofesional.id,
-                    'nombre': idprofesional.nombre
+                    'id': idprofesional[0],
+                    'nombre': idprofesional[1]
                 }
                 lista_costos.append(costo)
 
@@ -789,6 +797,7 @@ class PacienteView(View):
                 'idCliente_id': paciente.idCliente.id,
                 'idTipoTurno_id': paciente.idTipoTurno.id,
                 'idCoordinador_id': paciente.idCoordinador.id,
+                'nombreCoordinador': paciente.idCoordinador.nombre,
                 'asistencias': datos_asistencias,
                 'zona': paciente.idZona.nombreZona,
                 'region': paciente.idRegion.nombreRegion
@@ -1023,7 +1032,9 @@ class AlertaView(View):
                 datos = {'message': 'Alerta no encontrada'}
                 return JsonResponse(datos, status=404)
 
+
             datos_alerta = {
+                'id': alerta.id,
                 'fechaAlerta': alerta.fechaAlerta,
                 'descripcion': alerta.descripcion,
                 'idPaciente_id': alerta.idPaciente.id,
@@ -1031,15 +1042,33 @@ class AlertaView(View):
                 'idProfesional_id': alerta.idProfesional.id,
                 'nombreProfesional': alerta.idProfesional.nombre,
                 'rutProfesional': alerta.idProfesional.rut,
-                'idTipoAlerta': alerta.idTipoAlerta,
+                'idTipoAlerta_id': alerta.idTipoAlerta.id,
             }
 
             datos = {'message': 'Success', 'alerta': datos_alerta}
             return JsonResponse(datos)
         else:
             alertas = list(Alerta.objects.values())
+
+            idAlertas = list(Alerta.objects.all().values_list('id', flat=True))
+            nuevasalertas =[]
+            for ida in idAlertas:
+                alerta = Alerta.objects.get(id=ida)
+                datos_alerta = {
+                    'id': ida,
+                    'fechaAlerta': alerta.fechaAlerta,
+                    'descripcion': alerta.descripcion,
+                    'idPaciente_id': alerta.idPaciente.id,
+                    'nombrePaciente': alerta.idPaciente.nombre,
+                    'idProfesional_id': alerta.idProfesional.id,
+                    'nombreProfesional': alerta.idProfesional.nombre,
+                    'rutProfesional': alerta.idProfesional.rut,
+                    'idTipoAlerta_id': alerta.idTipoAlerta.id,
+                }
+                nuevasalertas.append(datos_alerta)
+
             if len(alertas) > 0:
-                datos = {'message': "Success", 'alertas': alertas}
+                datos = {'message': "Success", 'alertas': nuevasalertas}
             else:
                 datos = {'message': "Sin alertas"}
             return JsonResponse(datos)

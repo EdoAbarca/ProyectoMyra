@@ -13,20 +13,21 @@ export default {
             console.log(this.estado)
             let colorArea='#D9D9D9';
             switch(this.estado){
-                case 1:
+                case 2:
                     this.tipoEstado = 'Inasistencia'
                     colorArea = "#E67070";
                     break
-                case 2:
+                case 3:
                     this.tipoEstado = 'P. Complejo'
                     colorArea = "#FE9F47";
                     break
-                case 3:
+                case 4:
                     this.tipoEstado = 'Exceso Horas'
-                    colorArea = "#AAE43";
+                    colorArea = "#B6D673";
                     break
                 default:
-                    colorArea = "'#EBDA40'"
+                    this.tipoEstado = 'Otro'
+                    colorArea = "#BA99BF"
             }
             return 'background-color: '+ colorArea+';'
 

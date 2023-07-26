@@ -36,12 +36,12 @@ export default{
 			<div class="accordion-item" v-for="(prof) in costoPaciente" :key="prof.id">
                 <button :id="prof.id" aria-expanded="false" @click="acordeon(prof.id)" >
                     <span class="accordion-title">{{ prof.nombre }} </span>
-					<span class="valorPago"> $ Costo total prof </span>
+					<span class="valorPago"> $ {{ prof.costototal }} </span>
                     <span class="icon" aria-hidden="true"></span>
                 </button>
                 <div class="accordion-content">
-                    <p>Costo del Turno <span class="valorPago"> ${{ prof.costoPorTurno}}</span></p>
-					<p>Costo por Hora <span class="valorPago"> ${{prof.costoHora}}</span></p>
+                    <p>Horas Realizadas <span class="valorPago">{{ prof.horas}} Hrs.</span></p>
+					<p>Costo por Hora <span class="valorPago"> ${{prof.valorHora}}</span></p>
 					<p>Costo Movilización<span class="valorPago"> ${{prof.movilizacion}}</span></p>
 					<p>Costo Colación <span class="valorPago"> ${{prof.colacion}}</span></p>
                 </div>

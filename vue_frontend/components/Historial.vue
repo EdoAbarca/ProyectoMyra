@@ -30,6 +30,11 @@ export default {
     ...mapState('paciente',[
             'historialAtencion',     
         ]),
+
+    ...mapState('coordinador',[
+            'pacientesCoord',  
+            'profesionalesCoord',    
+        ]),
     }       
 }
 
@@ -89,23 +94,25 @@ export default {
 
         <div class ="ContenidoHistorial" v-if="tipo==='coordinadores1'">
             <div>
-                <ProfesionalLista
-                :id="1"
-                :area="1"
-                :centro="2"
-                :nombre="'nombreProfesionaljjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj'"
-                :rut="'19.721.789-3'"
+                <ProfesionalLista v-for="(profCoord) in profesionalesCoord"
+                :key="profCoord.id"
+                :id="profCoord.id"
+                :area="profCoord.idArea_id"
+                :centro="profCoord.idCentro_id"
+                :nombre="profCoord.nombre"
+                :rut="profCoord.rut"
                 />
             </div>   
         </div>
 
         <div class ="ContenidoHistorial" v-else-if="tipo==='coordinadores2'">
             <div>
-                <PacienteLista
-                :id="1"
-                :cliente="1"
-                :nombre="'Paciente1'"
-                :turno="'1'"
+                <PacienteLista v-for="(pacCoord) in pacientesCoord"
+                :key="pacCoord.id"
+                :id="pacCoord.id"
+                :cliente="pacCoord.idCliente_id"
+                :nombre="pacCoord.nombre"
+                :turno="pacCoord.idTipoTurno_id"
                 />
             </div>   
         </div>

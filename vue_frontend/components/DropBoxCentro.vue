@@ -10,7 +10,7 @@ export default{
   },
 
   computed:{
-    ...mapState('selectores', ['selectorCentro','selectorCliente']),
+    ...mapState('selectores', ['selectorCentro','selectorCliente','selectorAlertas']),
 
   },
   methods:{
@@ -18,6 +18,7 @@ export default{
     ...mapMutations({
         catProfesional: 'profesional/elegirCategoria',
         catPaciente: 'paciente/elegirCategoria',
+        catAlerta: 'alerta/elegirCategoria',
         elegirSelector: 'selectores/elegirSelector',
     }),
     ...mapActions('profesional',[
@@ -27,30 +28,44 @@ export default{
     ...mapActions('paciente',[
             'filtrarCliente'       
         ]),
-        ...mapActions('selectores',[
+    ...mapActions('selectores',[
             'fetchSelectoresCentro',
-            'fetchSelectoresCliente',             
+            'fetchSelectoresCliente',
+            'fetchSelectoresAlerta',              
         ]),
     filtro(valor){
 
       document.getElementById("dropdown").checked = false;
 
-      if(valor === 0){
+      if(valor === 1){
         valor = null;
         this.fetchProfesionales();
       }
+      else{
+        if(this.page === 'profesionales'){
+          this.catProfesional(valor);
+          this.filtrarCentro();
+        }
+        if(this.page==='pacientes'){
+          this.catPaciente(valor);
+          this.filtrarCliente();
+        }
+
+        if(this.page==='alertas'){
+          this.catAlerta(valor);
+          this.filtrarCliente();
+        }
+
+      }
       
-      if(this.page === 'profesionales'){
-        this.catProfesional(valor);
-        this.filtrarCentro();
-      }
-      if(this.page==='pacientes'){
-        this.catPaciente(valor);
-        this.filtrarCliente();
-      }
+      
     },
     ocultar(id){
-      if(id ==='combobox2'){
+      if(this.page == 'alertas' || this.page =='coordinadores'){
+          document.getElementById('combobox1').style.zIndex = '150';
+      }
+      else{
+        if(id ==='combobox2'){
                 document.getElementById('combobox1').style.zIndex = '150';
                 document.getElementById('combobox2').style.zIndex = '200';
       }
@@ -58,6 +73,9 @@ export default{
           document.getElementById('combobox2').style.zIndex = '150';
           document.getElementById('combobox1').style.zIndex = '200';
       }
+
+    }
+      
 
     },
     estiloBorde(){
@@ -84,7 +102,7 @@ export default{
       
       <input v-if="page == 'profesionales' || page == 'coordinadores'" class="dropdown" type="checkbox" id="dropdown" name="dropdown" @click="fetchSelectoresCentro">
       <input v-if="page == 'pacientes'" class="dropdown" type="checkbox" id="dropdown" name="dropdown" @click="fetchSelectoresCliente">
-	  	<input v-if="page == 'alertas'" class="dropdown" type="checkbox" id="dropdown" name="dropdown" @click="null">
+	  	<input v-if="page == 'alertas'" class="dropdown" type="checkbox" id="dropdown" name="dropdown" @click="fetchSelectoresAlerta">
       <label class="for-dropdown" for="dropdown" @click="ocultar('combobox1')">
           <h1 id="textoDropBox" v-if="page ==='profesionales'">Centro - {{opcion}}</h1>
           <h1 id="textoDropBox" v-if="page ==='pacientes'">Cliente - {{opcion}}</h1>
@@ -138,7 +156,7 @@ export default{
 
               <div class="columna" v-if="page == 'alertas'">
                 <div class="contenedorEleccion"
-                  v-for="(item) in selectorCliente"
+                  v-for="(item) in selectorAlertas"
                   :key="item.id"
                   :id = "'itemCentro'+item.id"
                   >

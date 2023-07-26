@@ -10,36 +10,45 @@ export default {
     EtiquetaPaciente,
     EtiquetaAlerta
 },
-    props: ['nombre','rut','cliente','turno', 'id'],
+    props: ['nombrePac','nombreProf','fecha','tipoAlerta','idProf','idPac','motivo', 'id'],
 
 
     computed:{
     },
     methods:{
         ...mapMutations({
-            mostrar: 'paciente/mostrar',
+            mostrarPac: 'paciente/mostrar',
+            mostrarProf: 'profesional/mostrar',
         }),
         ...mapActions('paciente',[
             'fetchPaciente'       
+        ]),
+        ...mapActions('profesional',[
+            'fetchProfesional'       
+        ]), 
+        ...mapActions('alertas',[
+            'fetchAlerta'       
         ]), 
     }
 }
 </script>
 <template>
-    <div tabindex="0" class="AlertaLista" @click="fetchPaciente(id),mostrar(id)">
+    <div tabindex="0" class="AlertaLista" 
+    @click="fetchAlerta(id),fetchPaciente(idPac),mostrarPac(idPac),fetchProfesional(idProf),mostrarProf(idProf)"
+    >
         <div class="contenedorEtiquetaAlerta">
-            <EtiquetaAlerta :estado="2"/>
+            <EtiquetaAlerta :estado="tipoAlerta"/>
         </div>
-        <div class="fechaAlerta">25-33-1231</div>
+        <div class="fechaAlerta">{{ fecha }}</div>
         <div class="datosInvolucrados">
             <div id="profesionalInvolucrado">
                 <div id="involucrado">Profesional</div>
-                <div id ="nombreInvoucrado">GO DEL PROFESIONAL</div>
+                <div id ="nombreInvoucrado">{{ nombreProf }}</div>
             </div>
             <v-divider id="divisorAlerta"></v-divider>
             <div id="pacientesInvolucrado">
                 <div id="involucrado">Paciente</div>
-                <div id ="nombreInvoucrado">NOMBRE MUY dddddddddddLARGO DEL PROFESIONAL</div>
+                <div id ="nombreInvoucrado">{{ nombrePac }}</div>
             </div>
         </div>
     </div>

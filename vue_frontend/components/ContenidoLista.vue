@@ -32,12 +32,18 @@ export default {
     ...mapState('coordinador',[
             'dataCoordinadores'       
         ]),
+    ...mapState('alertas',[
+            'dataAlertas'       
+        ]),
     ...mapActions('profesional',[
             'fetchProfesionales',
             'restaurarProfesionales'       
         ]), 
     ...mapActions('paciente',[
             'fetchPacientes',      
+        ]),
+    ...mapActions('alertas',[
+            'fetchAlertas',      
         ]),
     ...mapActions('coordinador',[
             'fetchCoordinadores',      
@@ -53,6 +59,9 @@ export default {
     }
     else if(this.page === 'coordinadores'){
       this.fetchCoordinadores;
+    }
+    else if(this.page === 'alertas'){
+      this.fetchAlertas;
     }
     else{
       this.restaurarProfesionales;
@@ -146,17 +155,23 @@ export default {
                     :nombre="coord.nombre"
                     :rut="coord.rut"
                     :centro="coord.idCentro_id"
-                    :area="coord.idCargo_id"
+                    :area="coord.idArea_id"
                     :id="coord.id"
                 />
             </div>
 
             <div v-if="this.page === 'alertas'">
-                <AlertaLista/>
-                <AlertaLista/>
-                <AlertaLista/>
-                <AlertaLista/>
-                <AlertaLista/>
+                <AlertaLista v-for="(alerta) in dataAlertas" 
+                :key="alerta.id"
+                :id ="alerta.id"
+                :nombrePac ="alerta.nombrePaciente"
+                :nombreProf="alerta.nombreProfesional"
+                :idProf = "alerta.idProfesional_id"
+                :idPac = "alerta.idPaciente_id"
+                :motivo="alerta.descrupcion"
+                :fecha ="alerta.fechaAlerta"
+                :tipoAlerta="alerta.idTipoAlerta_id"
+                />
             </div>
 
         </div>

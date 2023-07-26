@@ -36,19 +36,23 @@ export default{
 
       document.getElementById("dropdown2").checked = false;
 
-      if(valor === 0){
+      if(valor === 1){
         valor = null;
         this.fetchProfesionales();
       }
+      else{
+          if(this.page==='profesionales'){
+          this.catProfesional(valor);
+          this.filtrarArea();
+          }
+          if(this.page==='pacientes'){
+          this.catPaciente(valor);
+          this.filtrarTurnos();
+        }
+
+      }
       
-      if(this.page==='profesionales'){
-        this.catProfesional(valor);
-        this.filtrarArea();
-      }
-      if(this.page==='pacientes'){
-        this.catPaciente(valor);
-        this.filtrarTurnos();
-      }
+
       
     },
     ocultar(id){
