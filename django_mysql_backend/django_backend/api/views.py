@@ -1270,11 +1270,11 @@ class FilterTipoTurnoView(View):
 
 
 class CargaExcelView(View):
-    #parser_classes = [MultiPartParser]
+    # parser_classes = [MultiPartParser]
     @method_decorator(csrf_exempt)
     def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         return super().dispatch(request, *args, **kwargs)
-    
+
     def post(self, request):
         try:
             title = request.POST.get('title')
@@ -1283,13 +1283,239 @@ class CargaExcelView(View):
             print(date)
             file = request.FILES['excel']
             print(file.name)
-            df = pd.read_excel(file, sheet_name=2)
-            # df = pd.read_excel(file)
-            print(df)
-            for row in df.iloc[4:].head(100).itertuples(index=True, name=None):
-                print(row)
-                #print(row[0])
-                #print(row[1])
+
+            # ROTATIVA MENSUAL Y EVENTOS
+
+            archivos = request.FILES.getlist('archivo')  # Obtener la lista de archivos desde el formulario
+
+            horas_extra_acum = 0
+            diasTurno = 0
+            inasistencias = 0
+            horasPaciente = []
+            pacientesRegistrados = []
+            profesionalesRegistrados = []
+            cargos = []
+            centros = []
+            contratos = []
+            coordinadores = []
+            clientes = []
+            cargos_set = set(cargos)
+            centros_set = set(centros)
+            contratos_set = set(contratos)
+            coordinadores_set = set(coordinadores)
+            clientes_set = set(clientes)
+
+            profesionalAnterior = ''
+            pacienteAnterior = ''
+            contratoAnterior = ''
+
+            inasistencias = 0
+
+            for archivo in archivos:
+                df = pd.read_excel(archivo)  # Leer el archivo
+                columnas1 = ['Profesional', 'RUT', 'vacaciones', 'lic.', 'Fecha Ingreso', 'Fecha Salida',
+                             'valor hora', 'Horas contables', 'Horas objetivo', 'Horas trabajadas',
+                             'turnos trabajados', 'horas extra', 'Bono Colación', 'Bono movilizacion',
+                             'Bono Responsabilidad', 'Total']
+
+                # MYRASALUD 65
+                if 'bono' in df.columns:
+                    for index, row in df.iterrows():
+                        fecha = row['Fecha']
+                        cliente = row['cliente']
+                        region = row['Region']
+                        paciente = row['paciente']
+                        profesional = row['profesional']
+                        rut_profesional = row['rut']
+                        cargo_profesional = row['cargo']
+                        codigo_sis = row['Código SIS']
+                        contrato = row['contrato']
+                        centro = row['centro']
+                        coordinador = row['Coordinadora']
+                        horas = row['horas']
+                        suma = row['suma']
+                        extra_rotativa = row['Extra Rotativa']
+                        turnos_extra = row['Turnos Extra']
+                        bono = row['bono']
+                        bono_festivo = row['Bono Festivo Irrenunciable']
+                        colacion = row['Colación']
+                        movilizacion = row['Movilización']
+                        total = row['total']
+                        # Realizar acciones con los datos obtenidos
+
+                        if profesionalAnterior != profesional.replace('V2- ', '').replace('Nc- ', ''):
+                            if contratoAnterior == 'contrato':
+                                profesionalAyuda = Profesional.objects.get(nombre=profesionalAnterior)
+                                # asignar horas extra calculadas
+                                profesionalAyuda.horasExtras = horas_extra_acum
+                                profesionalAyuda.inasistencias = inasistencias
+                                profesionalAyuda.save()
+                                inasistencias = 0
+
+                            horas_extra_acum = 0
+
+                        try:
+                            idRegion = Region.objects.get(nombreRegion=region)
+                        except:
+                            idRegion = Region(nombreRegion=region)
+                            idRegion.save()
+                        try:
+                            idCargo = Cargo.objects.get(cargo=cargo_profesional)
+                            # cargoList = [profesional, idCargo.id]
+                            # cargos_set.add(cargoList)
+                        except:
+                            idCargo = Cargo(cargo=cargo_profesional)
+                            idCargo.save()
+                            # cargoList=[profesional,idCargo.id]
+                            # cargos_set.add(cargoList)
+                        try:
+                            idCliente = Cliente.objects.get(cargo=cliente)
+                            # clienteList = [profesional, idCliente.id]
+                            # clientes_set.add(clienteList)
+                        except:
+                            idCliente = Cliente(nombreCliente=cargo_profesional)
+                            idCliente.save()
+                            # clienteList=[profesional, idCliente.id]
+                            # clientes_set.add(clienteList)
+                        try:
+                            idContrato = Contrato.objects.get(tipoContrato=contrato)
+                            contratoList = [profesional, idContrato.id]
+                            # contratos_set.add(contratoList)
+                        except:
+                            idContrato = Contrato(tipoContrato=contrato)
+                            idContrato.save()
+                            # contratoList=[profesional, idContrato.id]
+                            # contratos_set.add(contratoList)
+                        try:
+                            idCentro = Centro.objects.get(nombreCentro=centro)
+                            # centroList = [profesional, idCentro.id]
+                            # centros_set.add(centroList)
+                        except:
+                            idCentro = Centro(nombreCentro=centro)
+                            idCentro.save()
+                            # centroList=[profesional, idCentro.id]
+                            # centros_set.add(centroList)
+                        coordinadores_set.add([coordinador, profesional])
+                        try:
+                            coordinadorId = Coordinador.objects.get(nombre=coordinador)
+                            idCoordinador = coordinadorId.id
+                        except:
+                            try:
+                                profesionalCoordinador = Profesional.objects.get(nombre=coordinador)
+                                coordinadorId = Coordinador(nombre=coordinador, rut=profesionalCoordinador.rut,
+                                                            idCargo=profesionalCoordinador.idCargo.id,
+                                                            idCentro=profesionalCoordinador.idCentro.id)
+                                coordinadorId.save()
+                                idCoordinador = coordinadorId.id
+                            except:
+                                coordinadores_set.add(
+                                    [coordinador, profesional.replace('V2- ', '').replace('Nc- ', '')])
+                                idCoordinador = 1000
+
+                        if not rut_profesional in profesionalesRegistrados:
+                            profesionalAct = Profesional(nombre=profesional.replace('V2- ', '').replace('Nc- ', ''),
+                                                         rut=rut_profesional, idCentro=idCentro.id, idCargo=idCargo.id,
+                                                         idContrato=idContrato.id, idCoordinador=idCoordinador)
+                            profesionalAct.save()
+                            profesionalesRegistrados.append(rut_profesional)
+
+                        else:
+                            if profesionalAnterior == profesional.replace('V2- ', '').replace('Nc- ', ''):
+                                if contrato == 'contrato' and turnos_extra > 0:
+                                    horas_extra_acum = horas_extra_acum + horas
+                            else:
+                                profesionalAct = Profesional.objects.get(
+                                    nombre=profesional.replace('V2- ', '').replace('Nc- ', ''))
+                                inasistencias = 0
+
+                        if not paciente in pacientesRegistrados:
+                            pacienteAct = Paciente(nombre=paciente, idRegion=idRegion.id, idCliente=idCliente.id)
+                            pacienteAct.save()
+                            pacientesRegistrados.append(paciente)
+                        else:
+                            if pacienteAnterior == paciente:
+                                if horas > 0:
+                                    horasPaciente.append(horas)
+                                # calular gastos
+                            else:
+                                horasTurno = max(set(horasPaciente), key=horasPaciente.count)
+                                horasPaciente = []
+
+                        '''
+                        turno = Turno(diasTurno, horasTurno, pacienteAct.id)
+                        turno.save()
+                        if horas>0:
+                            asisteProfesional=1
+                            estado=asistencia
+                        elif horas<0 and horas+turno.split('x')[0]>0:
+                            asisteProfesional=1
+                            estado=asistencia
+                        elif horas==0:
+                            asisteProfesional=0
+                            estado='vacaciones'
+                        elif horas > -100:
+                            asisteProfesional=0
+                            estado='inasistencia'
+                            inasistencias=inasistencias+1
+                        asistencia=Asistencia(fechaAsistencia=fecha,asisteProfesional=asisteProfesional,estado=estado,horas=horas,suma=suma,extra_rotativa=extra_rotativa,turnos_extra=turnos_extra,bono=bono,bono_festivo=bono_festivo,colacion=colacion,movilizacion=movilizacion,total=total,idPaciente=pacienteAct.id,idProfesional=profesionalAct.id,idTurno=turno.id)
+                        asistencia.save()
+                        '''
+
+                        profesionalAnterior = profesional.replace('V2- ', '').replace('Nc- ', '')
+                        contratoAnterior = contrato
+                        pacienteAnterior = paciente
+
+                    for coordinador in coordinadores_set:
+                        coordinadorNombre = coordinador[0]
+                        profesionalNombre = coordinador[1]
+                        try:
+                            coordinadorAyuda = Coordinador.objects.get(nombre=coordinadorNombre)
+                            profesionalAyuda = Profesional.objects.get(nombre=profesionalNombre)
+                            profesionalAyuda.idCoordinador = coordinadorAyuda.id
+                            profesionalAyuda.save()
+                        except:
+                            # LANZAR ERROR DE COORDINADOR NO REGISTRADO Y ARCHIVO INCOMPLETO
+                            error = 'lanzar error'
+
+                # MYRASALUD 66
+                elif all(col in df.columns for col in columnas1):
+                    for index, row in df.iterrows():
+                        nombre_profesional = row['Profesional']
+                        rut = row['RUT']
+                        vacaciones = row['vac.']
+                        licencias = row['lic']
+                        fecha_ingreso = row['Fecha Ingreso']
+                        fecha_salida = row['Fecha Salida']
+                        valor_hora = row['valor hora']
+                        horas_contrato = row['Horas cont.']
+                        horas_objetivo = row['Horas obj.']
+                        horas_trabajadas = row['Horas trab']
+                        turnos_trabajados = row['turnos trab']
+                        horas_extra = row['horas extra']
+                        bono_colacion = row['Bono Colación']
+                        bono_movilizacion = row['Bono mov.']
+                        bono_responsabilidad = row['Bono Respons.']
+                        total = row['Total']
+
+                        # Realizar acciones con los datos obtenidos
+                        profesional = Profesional.objects.get(rut=rut)
+                        profesional.horasTotales = horas_trabajadas
+                        if profesional.idContrato.nombre != 'contrato':
+                            profesional.horasExtras = horas_extra
+                        profesional.vacaciones = vacaciones
+                        profesional.licencia = licencias
+                        ''''
+                        profesional = Profesional(
+                            nombre=nombre_profesional,
+                            rut=rut,
+                            licencias=licencias,
+                            horasExtra=horas_extra,
+                            horasTotales=horas_objetivo,
+                            vacaciones=vacaciones
+                        )
+                        '''
+                        profesional.save()
+
             datos = {'message': 'success'}
             return JsonResponse(datos, status=status.HTTP_201_CREATED)
         except:
