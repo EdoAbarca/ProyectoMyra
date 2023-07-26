@@ -7,6 +7,7 @@ export default {
     loginURL: process.env.LOGIN_URL,
     loginField: process.env.LOGIN_FIELD,
     logoutURL: process.env.LOGOUT_URL,
+    tokenRefreshURL: process.env.TOKEN_REFRESH_URL,
 
     registerURL: process.env.REGISTER_URL,
     profesionalURL: process.env.PROFESIONAL_URL,

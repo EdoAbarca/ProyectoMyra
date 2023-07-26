@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from dotenv import load_dotenv
-from os import environ
+from os import environ, path
 from datetime import timedelta
 
 load_dotenv()
@@ -45,8 +45,8 @@ INSTALLED_APPS = [
 ]
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
-    'REFRESH_TOKEN_LIFETIME': timedelta(hours=12),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(hours=16),
     
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
@@ -86,7 +86,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
-
 AUTHENTICATION_BACKENDS = [
     'api.email_auth.EmailBackend'
 ]
@@ -123,14 +122,14 @@ WSGI_APPLICATION = 'django_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': environ.get('ENGINE'),
-        'HOST': environ.get('HOST'), #Cambiar cuando se despliegue en el servidor
-        'PORT': environ.get('PORT'),
-        'USER': environ.get('USER'),
-        'PASSWORD': environ.get('PASSWORD'),
-        'NAME': environ.get('NAME'),
+        'ENGINE': environ.get('DB_ENGINE'),
+        'HOST': environ.get('DB_HOST'), #Cambiar cuando se despliegue en el servidor
+        'PORT': environ.get('DB_PORT'),
+        'USER': environ.get('DB_USER'),
+        'PASSWORD': environ.get('DB_PASSWORD'),
+        'NAME': environ.get('DB_NAME'),
         'OPTIONS': {
-            'init_command': environ.get('INIT_COMMAND'),
+            'init_command': environ.get('DB_INIT_COMMAND'),
         }
     }
 }
@@ -170,6 +169,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -177,7 +177,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = [environ.get('ALLOWED_HOST')]
+ALLOWED_HOSTS = [environ.get('ALLOWED_HOST'), environ.get('ALLOWED_HOST_IP')]
 
 CORS_ALLOWED_ORIGINS = [
     environ.get('FRONTEND_URL'),
