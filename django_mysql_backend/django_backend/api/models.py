@@ -12,12 +12,17 @@ class Contrato(models.Model):
 class Centro(models.Model):
     nombreCentro = models.CharField(max_length=30)
 
-
-
 class Area(models.Model):
     nombreArea = models.CharField(max_length=30)
 
-#llas estadisticas podrian ponerse en otra entidad para cada profesional
+class Coordinador(models.Model):
+    nombre = models.CharField(max_length=50)
+    rut = models.CharField(max_length=15)
+    #profesionales = models.ManyToManyField(Profesional, related_name='lista_profesionales_c')
+    #pacientes = models.ManyToManyField(Paciente, related_name='lista_pacientes_c')
+    idArea = models.ForeignKey(Area, on_delete=models.CASCADE)
+    idCentro = models.ForeignKey(Centro, on_delete=models.CASCADE)
+
 class Profesional(models.Model):
     nombre = models.CharField(max_length=50)
     rut = models.CharField(max_length=15)
@@ -40,7 +45,7 @@ class Profesional(models.Model):
     idArea = models.ForeignKey(Area, on_delete=models.CASCADE)
     idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
     idContrato = models.ForeignKey(Contrato, on_delete=models.CASCADE)
-    #idCoordinador = models.ForeignKey(Coordinador, on_delete=models.CASCADE)
+    idCoordinador = models.ForeignKey(Coordinador, on_delete=models.CASCADE)
 
 class Pago(models.Model):
     sueldoBase = models.IntegerField()
@@ -95,30 +100,24 @@ class Paciente(models.Model):
     idRegion = models.ForeignKey(Region, on_delete=models.CASCADE)
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     idTipoTurno = models.ForeignKey(TipoTurno, on_delete=models.CASCADE)
-
-class Coordinador(models.Model):
-    nombre = models.CharField(max_length=50)
-    rut = models.CharField(max_length=15)
-    #calcular horas extras, inasistencias, vacaciones y licencias a partir de la lista de profesionales
-    #profesionales = models.ManyToManyField(Profesional, related_name='lista_profesionales_c')
-    #pacientes = models.ManyToManyField(Paciente, related_name='lista_pacientes_c')
-    idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
-    idCentro = models.ForeignKey(Centro, on_delete=models.CASCADE)
+    idCoordinador = models.ForeignKey(Coordinador, on_delete=models.CASCADE)
 
 class Turno(models.Model):
     fechaInicio = models.DateField()
     fechaTermino = models.DateField()
-    horas = models.IntegerField()
-    idPaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
-    idProfesional = models.ForeignKey(Profesional, on_delete=models.CASCADE)
+    #idPaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
+    #idProfesional = models.ForeignKey(Profesional, on_delete=models.CASCADE)
 
 class Asistencia(models.Model):
     fechaAsistencia = models.DateField()
     asisteProfesional = models.BooleanField()
     estado = models.IntegerField()
+    horas = models.IntegerField()
+    movilizacion = models.IntegerField()
+    colacion = models.IntegerField()
     idProfesional = models.ForeignKey(Profesional, on_delete=models.CASCADE)
     idPaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
-    idTurno = models.ForeignKey(Turno, on_delete=models.CASCADE)
+    #idTurno = models.ForeignKey(Turno, on_delete=models.CASCADE)
     #idPago = models.ForeignKey(Pago, on_delete=models.CASCADE)
 
 class TipoAlerta(models.Model):
@@ -128,10 +127,9 @@ class Alerta(models.Model):
     #testear
     fechaAlerta = models.DateField()
     descripcion = models.CharField(max_length=200)
-    profesionales = models.ManyToManyField(Profesional, related_name='lista_profesionales')
-    pacientes = models.ManyToManyField(Paciente, related_name='lista_pacientes')
+    #profesionales = models.ManyToManyField(Profesional, related_name='lista_profesionales')
+    #pacientes = models.ManyToManyField(Paciente, related_name='lista_pacientes')
     idPaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     idAsistencia = models.ForeignKey(Asistencia, on_delete=models.CASCADE)
     idProfesional = models.ForeignKey(Profesional, on_delete=models.CASCADE)
     idTipoAlerta = models.ForeignKey(TipoAlerta, on_delete=models.CASCADE)
-

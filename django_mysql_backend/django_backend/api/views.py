@@ -179,12 +179,48 @@ class CoordinadorView(View):
 
     def get(self, request, id=0):
         if (id > 0):
-            coordinadores = list(Coordinador.objects.filter(id=id).values())
-            if len(coordinadores) > 0:
-                coordinador = coordinadores[0]
-                datos = {'message': "Success", 'coordinador': coordinador}
-            else:
-                datos = {'message': "Coordinador no encontrado."}
+            try:
+                coordinador = Coordinador.objects.get(id=id)
+            except Coordinador.DoesNotExist:
+                datos = {'message': 'Coordinador no encontrado'}
+                return JsonResponse(datos, status=404)
+
+            profesionales = Profesional.objects.filter(idCoordinador_id=id)
+            pacientes = Paciente.objects.filter(idCoordinador_id=id)
+
+            #horas extras
+            #obtener todos los profesionales por id del coordinador. por cada profesional sumar las horas extra
+            horasExtra = 0
+            inasistencias = 0
+            licencias = 0
+            vacaciones = 0
+            for p in profesionales:
+                horasExtra = p.horasExtras + horasExtra
+                inasistencias = p.inasistencias + inasistencias
+                licencias = p.licencia + licencias
+                vacaciones = p.vacaciones + vacaciones
+
+            datos_coordinador = {
+                'nombre': coordinador.nombre,
+                'rut': coordinador.rut,
+                'inasistencias': inasistencias,
+                'horasExtras': horasExtra,
+                'vacaciones': vacaciones,
+                'licencia': licencias,
+                'idCentro_id': coordinador.idCentro.id,
+                'idArea_id': coordinador.idArea.id,
+                'profesionales': [
+                    {'id': prof.id, 'nombre': prof.nombre,
+                     'rut': prof.rut,
+                     'idCentro_id': prof.idCentro.id,
+                     'idArea_id': prof.idArea.id} for prof in profesionales],
+                'pacientes': [
+                    {'id': pac.id, 'nombre': pac.nombre,
+                     'idCliente_id': pac.idCliente.id,
+                     'idTipoTurno_id': pac.idTipoTurno.id} for pac in pacientes],
+            }
+
+            datos = {'message': 'Success', 'coordinador': datos_coordinador}
             return JsonResponse(datos)
         else:
             coordinadores = list(Coordinador.objects.values())
@@ -196,8 +232,8 @@ class CoordinadorView(View):
 
     def post(self, request):
         json_data = json.loads(request.body)
-        Coordinador.objects.create(nombre=json_data['nombre'], rut=json_data['rut'], profesionales=json_data['profesionales'],
-                                   pacientes=json_data['pacientes'], idCargo=json_data['idCargo'], idCentro=json_data['idCentro'])
+        Coordinador.objects.create(nombre=json_data['nombre'], rut=json_data['rut'],
+                                   idCargo=json_data['idArea'], idCentro=json_data['idCentro'])
         datos = {'message': "Success"}
         return JsonResponse(datos)
 
@@ -208,9 +244,7 @@ class CoordinadorView(View):
             coordinador = Coordinador.objects.get(id=id)
             coordinador.nombre = json_data['nombre']
             coordinador.rut = json_data['rut']
-            coordinador.profesionales = json_data['profesionales']
-            coordinador.pacientes = json_data['pacientes']
-            coordinador.idCargo = json_data['idCargo']
+            coordinador.idCargo = json_data['idArea']
             coordinador.idCentro = json_data['idCentro']
             coordinador.save()
             datos = {'message': "Success"}
@@ -353,7 +387,7 @@ class ProfesionalView(View):
                                    horasObj=json_data['horasObj'], turnosTrab=json_data['turnosTrab'],
                                    bonoColacion=json_data['bonoColacion'], bonoMov=json_data['bonoMov'], bonoResp=json_data['bonoResp'],
                                    idCentro=json_data['idCentro'], idArea=['idArea'], idCargo=json_data['idCargo'],
-                                   idContrato=json_data['idContrato']#, idCoordinador=json_data['idCoordinador']
+                                   idContrato=json_data['idContrato'], idCoordinador=json_data['idCoordinador']
                                    )
         datos = {'message': "Success"}
         return JsonResponse(datos)
@@ -381,7 +415,7 @@ class ProfesionalView(View):
             profesional.idArea = json_data['idArea']
             profesional.idCargo = json_data['idCargo']
             profesional.idContrato = json_data['idContrato']
-            #profesional.idCoordinador = json_data['idCoordinador']
+            profesional.idCoordinador = json_data['idCoordinador']
             profesional.save()
             datos = {'message': "Success"}
         else:
@@ -700,7 +734,16 @@ class PacienteView(View):
 
             datos_asistencias = []
             asistencias = Asistencia.objects.filter(idPaciente_id=id)
+            asistencias_filtradas = []
             for asistencia in asistencias:
+                if asistencia.idProfesional.id not in asistencias_filtradas:
+                    id = asistencia.idProfesional.id
+                    nombre = asistencia.idProfesional.nombre
+                    obj_profesional = {
+                        'id': id,
+                        'nombre': nombre
+                    }
+                    asistencias_filtradas.append(obj_profesional)
                 datos_asistencia = {
                     'id': asistencia.id,
                     'fechaAsistencia': asistencia.fechaAsistencia,
@@ -713,17 +756,39 @@ class PacienteView(View):
                     'idArea_id': asistencia.idProfesional.idArea.id
                 }
                 datos_asistencias.append(datos_asistencia)
+            lista_costos = []
+            for idprofesional in asistencias_filtradas:
+                costototal = 0
+                horas = 0
+                movilizacion = 0
+                colacion = 0
+                for asistencia in asistencias:
+                    if idprofesional.id == asistencia.idProfesional.id:
+                        movilizacion = movilizacion + asistencia.movilizacion
+                        horas = horas + asistencia.horas
+                        colacion = colacion + asistencia.colacion
+                        costototal = movilizacion + colacion + (asistencia.idProfesional.valorHora * horas)
+                costo ={
+                    'horas': horas,
+                    'movilizacion': movilizacion,
+                    'colacion': colacion,
+                    'costototal': costototal,
+                    'id': idprofesional.id,
+                    'nombre': idprofesional.nombre
+                }
+                lista_costos.append(costo)
 
             datos_paciente = {
                 'nombre': paciente.nombre,
                 'tipoTurno': paciente.idTipoTurno.tipoTurno,
                 'fechaInicioAtencion': paciente.fechaInicioAtencion,
                 'vigente': paciente.vigente,
-                'gasto': paciente.gasto,
+                'costo': lista_costos,
                 'idZona_id': paciente.idZona.id,
                 'idRegion_id': paciente.idRegion.id,
                 'idCliente_id': paciente.idCliente.id,
                 'idTipoTurno_id': paciente.idTipoTurno.id,
+                'idCoordinador_id': paciente.idCoordinador.id,
                 'asistencias': datos_asistencias,
                 'zona': paciente.idZona.nombreZona,
                 'region': paciente.idRegion.nombreRegion
@@ -745,7 +810,8 @@ class PacienteView(View):
                                 fechaInicioAtencion=json_data['fechaInicioAtencion'],
                                 vigente=json_data['vigente'], gasto=json_data['gasto'],
                                 idZona=json_data['idZona'], idRegion=json_data['idRegion'],
-                                idCliente=json_data['idCliente'], idTipoTurno=json_data['idTipoTurno'])
+                                idCliente=json_data['idCliente'], idTipoTurno=json_data['idTipoTurno'],
+                                idCoordinador=json_data['idCoordinador'])
         datos = {'message': "Success"}
         return JsonResponse(datos)
 
@@ -762,6 +828,7 @@ class PacienteView(View):
             paciente.idRegion = json_data['idRegion']
             paciente.idCliente = json_data['idCliente']
             paciente.idTipoTurno = json_data['idTipoTurno']
+            paciente.idCoordinador = json_data['idCoordinador']
             paciente.save()
             datos = {'message': "Success"}
         else:
@@ -860,8 +927,9 @@ class AsistenciaView(View):
         json_data = json.loads(request.body)
         Asistencia.objects.create(fechaAsistencia=json_data['fechaAsistencia'],
                                   asisteProfesional=json_data['asisteProfesional'], estado=json_data['estado'],
-                                  idProfesional=json_data['idProfesional'], idPaciente=json_data['idPaciente'],
-                                  idTurno=json_data['idTurno'])
+                                  horas=json_data['horas'], movilizacion=json_data['movilizacion'],
+                                  colacion=json_data['colacion'],
+                                  idProfesional=json_data['idProfesional'], idPaciente=json_data['idPaciente'],)
         datos = {'message': "Success"}
         return JsonResponse(datos)
 
@@ -873,9 +941,11 @@ class AsistenciaView(View):
             asistencias.fechaAsistencia = json_data['fechaAsistencia']
             asistencias.asisteProfesional = json_data['asisteProfesional']
             asistencias.estado = json_data['estado']
+            asistencias.horas = json_data['horas']
+            asistencias.movilizacion = json_data['movilizacion']
+            asistencias.colacion = json_data['colacion'],
             asistencias.idProfesional = json_data['idProfesional']
             asistencias.idPaciente = json_data['idPaciente']
-            asistencias.idTurno = json_data['idTurno']
             asistencias.save()
             datos = {'message': "Success"}
         else:
@@ -947,12 +1017,24 @@ class AlertaView(View):
 
     def get(self, request, id=0):
         if (id > 0):
-            alertas = list(Alerta.objects.filter(id=id).values())
-            if len(alertas) > 0:
-                alerta = alertas[0]
-                datos = {'message': "Success", 'alerta': alerta}
-            else:
-                datos = {'message': "Alerta no encontrada"}
+            try:
+                alerta = Alerta.objects.get(id=id)
+            except Alerta.DoesNotExist:
+                datos = {'message': 'Alerta no encontrada'}
+                return JsonResponse(datos, status=404)
+
+            datos_alerta = {
+                'fechaAlerta': alerta.fechaAlerta,
+                'descripcion': alerta.descripcion,
+                'idPaciente_id': alerta.idPaciente.id,
+                'nombrePaciente': alerta.idPaciente.nombre,
+                'idProfesional_id': alerta.idProfesional.id,
+                'nombreProfesional': alerta.idProfesional.nombre,
+                'rutProfesional': alerta.idProfesional.rut,
+                'idTipoAlerta': alerta.idTipoAlerta,
+            }
+
+            datos = {'message': 'Success', 'alerta': datos_alerta}
             return JsonResponse(datos)
         else:
             alertas = list(Alerta.objects.values())
@@ -965,7 +1047,7 @@ class AlertaView(View):
     def post(self, request):
         json_data = json.loads(request.body)
         Alerta.objects.create(fechaAlerta=json_data['fechaAlerta'], descripcion=json_data['descripcion'],
-                              profesionales=json_data['profesionales'], pacientes=json_data['pacientes'],
+                              #profesionales=json_data['profesionales'], pacientes=json_data['pacientes'],
                               idPaciente=json_data['idPaciente'], idAsistencia=json_data['idAsistencia'],
                               idProfesional=json_data['idProfesional'], idTipoAlerta=json_data['idTipoAlerta'])
         datos = {'message': "Success"}
@@ -978,8 +1060,8 @@ class AlertaView(View):
             alerta = Alerta.objects.get(id=id)
             alerta.fechaAlerta = json_data['fechaAlerta']
             alerta.descripcion = json_data['descripcion']
-            alerta.profesionales = json_data['profesionales']
-            alerta.pacientes = json_data['pacientes']
+            #alerta.profesionales = json_data['profesionales']
+            #alerta.pacientes = json_data['pacientes']
             alerta.idPaciente = json_data['idPaciente']
             alerta.idAsistencia = json_data['idAsistencia']
             alerta.idProfesional = json_data['idProfesional']

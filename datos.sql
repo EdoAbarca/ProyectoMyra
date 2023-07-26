@@ -108,22 +108,26 @@ INSERT INTO rotativa_myra.api_cargo (id, cargo) VALUES (5, "CUIDADORA");
 INSERT INTO rotativa_myra.api_cargo (id, cargo) VALUES (6, "COORDINADOR");
 
 -- Coordinador
-INSERT INTO rotativa_myra.api_coordinador (id, nombre, rut, idCargo_id, idCentro_id) VALUES (1, "Gonzalo Esteban Palacios", "17476393-3", 6, 1);
-INSERT INTO rotativa_myra.api_coordinador (id, nombre, rut, idCargo_id, idCentro_id) VALUES (2, "Veronica Ines Henriquez", "8712193-3", 6, 1);
-INSERT INTO rotativa_myra.api_coordinador (id, nombre, rut, idCargo_id, idCentro_id) VALUES (3, "Francesca Pilar Monroi", "16792115-9", 6, 2);
-/*
+INSERT INTO rotativa_myra.api_coordinador (id, nombre, rut, idArea_id, idCentro_id) VALUES (1, "Gonzalo Esteban Palacios", "17476393-3", 4, 1);
+INSERT INTO rotativa_myra.api_coordinador (id, nombre, rut, idArea_id, idCentro_id) VALUES (2, "Veronica Ines Henriquez", "8712193-3", 4, 1);
+INSERT INTO rotativa_myra.api_coordinador (id, nombre, rut, idArea_id, idCentro_id) VALUES (3, "Francesca Pilar Monroi", "16792115-9", 4, 2);
+
 -- Profesional
 INSERT INTO rotativa_myra.api_profesional (id, nombre, rut, inasistencias, horasTotales, horasExtras, vacaciones, licencia,
  idCentro_id, idArea_id, idCargo_id, idContrato_id, idCoordinador_id, valorHora, horasCont,horasObj,turnosTrab,bonoColacion, bonoMov, bonoResp) 
- VALUES (1, "Fabiola Suillan Lagos Cuevas", "13080327-K", 15, 96, 360, 0, 0, 3, 2, 5, 2, 1);
+ VALUES (1, "Fabiola Suillan Lagos Cuevas", "13080327-K", 15, 96, 360, 0, 0, 3, 2, 5, 2, 1, 2920, 192, 192, 14, 0, 0, 0);
 INSERT INTO rotativa_myra.api_profesional (id, nombre, rut, inasistencias, horasTotales, horasExtras, vacaciones, licencia,
- idCentro_id, idArea_id, idCargo_id, idContrato_id, idCoordinador_id) VALUES (2, "Mariela Leonardo Tantarico", "20345687-7", 19, 96, 0, 0, 0, 1, 2, 2, 1, 2);
+ idCentro_id, idArea_id, idCargo_id, idContrato_id, idCoordinador_id, valorHora, horasCont,horasObj,turnosTrab,bonoColacion, bonoMov, bonoResp)
+ VALUES (2, "Mariela Leonardo Tantarico", "20345687-7", 19, 96, 0, 0, 0, 1, 2, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO rotativa_myra.api_profesional (id, nombre, rut, inasistencias, horasTotales, horasExtras, vacaciones, licencia,
- idCentro_id, idArea_id, idCargo_id, idContrato_id, idCoordinador_id) VALUES (3, "Damari Ester Saldaño Valderrama", "14364143-0", 11, 192, 264, 0, 0, 3, 2, 5, 3, 1);
+ idCentro_id, idArea_id, idCargo_id, idContrato_id, idCoordinador_id, valorHora, horasCont,horasObj,turnosTrab,bonoColacion, bonoMov, bonoResp)
+ VALUES (3, "Damari Ester Saldaño Valderrama", "14364143-0", 11, 192, 264, 0, 0, 3, 2, 5, 3, 1, 2750, 192, 147, 14, 9625, 9625, 38500);
 INSERT INTO rotativa_myra.api_profesional (id, nombre, rut, inasistencias, horasTotales, horasExtras, vacaciones, licencia,
- idCentro_id, idArea_id, idCargo_id, idContrato_id, idCoordinador_id) VALUES (4, "Angelina Elizabeth Cespedes Cortes", "14987436-7", 0, 288, 0, 0, 0, 2, 3, 4, 1, 3);
+ idCentro_id, idArea_id, idCargo_id, idContrato_id, idCoordinador_id, valorHora, horasCont,horasObj,turnosTrab,bonoColacion, bonoMov, bonoResp)
+ VALUES (4, "Angelina Elizabeth Cespedes Cortes", "14987436-7", 0, 288, 20, 0, 0, 2, 3, 4, 1, 3, 2750, 192, 192, 18, 27500, 27500, 0);
 INSERT INTO rotativa_myra.api_profesional (id, nombre, rut, inasistencias, horasTotales, horasExtras, vacaciones, licencia,
- idCentro_id, idArea_id, idCargo_id, idContrato_id, idCoordinador_id) VALUES (5, "Maria Ines Torres Flores", "9901664-7", 2, 288, 0, 0, 0, 3, 2, 5, 1, 1);
+ idCentro_id, idArea_id, idCargo_id, idContrato_id, idCoordinador_id, valorHora, horasCont,horasObj,turnosTrab,bonoColacion, bonoMov, bonoResp)
+ VALUES (5, "Maria Ines Torres Flores", "9901664-7", 2, 288, 0, 0, 0, 3, 2, 5, 1, 1, 0, 0, 0, 0, 0, 0, 0);
 
 -- Pago
 INSERT INTO rotativa_myra.api_pago (id, sueldoBase, gratificacion, horaExtra, bonos, aguinaldo, vacaciones, viatico,
@@ -148,46 +152,38 @@ imptoUnico, ctaAfp, anticipos, descuento, ley3, totalDescuento, liquido, fechaPa
 102500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 512500, 512500, 58630, 0, 35875, 3075, 0, 0, 0, 0, 0, 97580, 414920, "2023-04-30",5);
 
 
-
-
-
 -- Paciente
-INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, gasto, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)
-VALUES (1, "Guillermo Quiñones Guzman", "2023-03-03", True, 20000, 1, 1, 1, 1);
-INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, gasto, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)
-VALUES (2, "Rodrigo Belmar Pando", "2023-03-01", True, 30000, 2, 3, 1, 1);
-INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, gasto, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)
-VALUES (3, "Juan Munita Alfaro", "2023-03-01", True, 35000, 3, 4, 1, 1);
-INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, gasto, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)
-VALUES (4, "Oscar Orlando Lopez Roldan", "2023-03-01", True,40000,4, 5, 6, 1);
-INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, gasto, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)
-VALUES (5, "Carlos Antonio Fernandez Hernandez", "2023-03-01", True,25000,5, 6, 6, 1);
-INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, gasto, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id)
-VALUES (6, "Residencia Myrasalud", "2023-03-01", True,10000, 6, 7, 1, 6);
+INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, gasto, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id, idCoordinador_id)
+VALUES (1, "Guillermo Quiñones Guzman", "2023-03-03", True, 20000, 1, 1, 1, 1, 1);
+INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, gasto, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id, idCoordinador_id)
+VALUES (2, "Rodrigo Belmar Pando", "2023-03-01", True, 30000, 2, 3, 1, 1, 1);
+INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, gasto, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id, idCoordinador_id)
+VALUES (3, "Juan Munita Alfaro", "2023-03-01", True, 35000, 3, 4, 1, 1, 1);
+INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, gasto, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id, idCoordinador_id)
+VALUES (4, "Oscar Orlando Lopez Roldan", "2023-03-01", True,40000,4, 5, 6, 1, 3);
+INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, gasto, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id, idCoordinador_id)
+VALUES (5, "Carlos Antonio Fernandez Hernandez", "2023-03-01", True,25000,5, 6, 6, 1, 1);
+INSERT INTO rotativa_myra.api_paciente (id, nombre, fechaInicioAtencion, vigente, gasto, idTipoTurno_id, idZona_id, idRegion_id, idCliente_id, idCoordinador_id)
+VALUES (6, "Residencia Myrasalud", "2023-03-01", True,10000, 6, 7, 1, 6, 1);
 
--- Turno (añadir mas)
-INSERT INTO rotativa_myra.api_turno (id, fechaInicio, fechaTermino, horas, idPaciente_id, idProfesional_id)
-VALUES (1, "2023-03-03", "2023-03-04", 24, 1, 5);
-INSERT INTO rotativa_myra.api_turno (id, fechaInicio, fechaTermino, horas, idPaciente_id, idProfesional_id)
-VALUES (2, "2023-03-01", "2023-03-02", 24, 2, 1);
-INSERT INTO rotativa_myra.api_turno (id, fechaInicio, fechaTermino, horas, idPaciente_id, idProfesional_id)
-VALUES (3, "2023-03-01", "2023-03-02", 24, 3, 3);
-INSERT INTO rotativa_myra.api_turno (id, fechaInicio, fechaTermino, horas, idPaciente_id, idProfesional_id)
-VALUES (4, "2023-03-16", "2023-03-17", 24, 4, 4);
-INSERT INTO rotativa_myra.api_turno (id, fechaInicio, fechaTermino, horas, idPaciente_id, idProfesional_id)
-VALUES (5, "2023-03-01", "2023-03-02", 24, 5, 4);
-INSERT INTO rotativa_myra.api_turno (id, fechaInicio, fechaTermino, horas, idPaciente_id, idProfesional_id)
-VALUES (6, "2023-03-01", "2023-03-02", 24, 6, 2);
 
 -- Asistencia (añadir mas)
-INSERT INTO rotativa_myra.api_asistencia (id, fechaAsistencia, asisteProfesional, estado, idProfesional_id, idPaciente_id, idTurno_id)
-VALUES (1, "2023-03-01", True, 1, 1, 2, 2);
-INSERT INTO rotativa_myra.api_asistencia (id, fechaAsistencia, asisteProfesional, estado, idProfesional_id, idPaciente_id, idTurno_id)
-VALUES (2, "2023-03-01", True, 1, 3, 3, 3);
-INSERT INTO rotativa_myra.api_asistencia (id, fechaAsistencia, asisteProfesional, estado, idProfesional_id, idPaciente_id, idTurno_id)
-VALUES (3, "2023-03-16", True, 1, 4, 4, 4);
-INSERT INTO rotativa_myra.api_asistencia (id, fechaAsistencia, asisteProfesional, estado, idProfesional_id, idPaciente_id, idTurno_id)
-VALUES (4, "2023-03-03", True, 1, 5, 1, 1);
+INSERT INTO rotativa_myra.api_asistencia (id, fechaAsistencia, asisteProfesional, estado, horas, movilizacion, colacion, idProfesional_id, idPaciente_id)
+VALUES (1, "2023-05-01", True, 1, 24, 0, 0, 1, 2);
+INSERT INTO rotativa_myra.api_asistencia (id, fechaAsistencia, asisteProfesional, estado, horas, movilizacion, colacion, idProfesional_id, idPaciente_id)
+VALUES (2, "2023-05-31", True, 1, 24, 62216, 0, 3, 3);
+INSERT INTO rotativa_myra.api_asistencia (id, fechaAsistencia, asisteProfesional, estado, horas, movilizacion, colacion, idProfesional_id, idPaciente_id)
+VALUES (3, "2023-05-03", True, 1, 24, 6666, 0, 4, 4);
+INSERT INTO rotativa_myra.api_asistencia (id, fechaAsistencia, asisteProfesional, estado, horas, movilizacion, colacion, idProfesional_id, idPaciente_id)
+VALUES (4, "2023-05-01", True, 1, 24, 0, 0, 5, 1);
 
-*/
+-- Alerta
+INSERT INTO rotativa_myra.api_alerta (id, fechaAlerta, descripcion, idPaciente_id, idAsistencia_id, idProfesional_id, idTipoAlerta_id)
+VALUES (1, "2023-05-18", "horas extras en turnos consecutivos", 1, 4, 5, 4);
+INSERT INTO rotativa_myra.api_alerta (id, fechaAlerta, descripcion, idPaciente_id, idAsistencia_id, idProfesional_id, idTipoAlerta_id)
+VALUES (2, "2023-05-31", "valor muy elevado de movilizacion", 3, 2, 3, 5);
+INSERT INTO rotativa_myra.api_alerta (id, fechaAlerta, descripcion, idPaciente_id, idAsistencia_id, idProfesional_id, idTipoAlerta_id)
+VALUES (3, "2023-05-03", "movilizacion extra en turnos consecutivos", 4, 3, 4, 5);
+
+
 COMMIT;
