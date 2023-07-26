@@ -188,8 +188,6 @@ class CoordinadorView(View):
             profesionales = Profesional.objects.filter(idCoordinador_id=id)
             pacientes = Paciente.objects.filter(idCoordinador_id=id)
 
-            #horas extras
-            #obtener todos los profesionales por id del coordinador. por cada profesional sumar las horas extra
             horasExtra = 0
             inasistencias = 0
             licencias = 0
@@ -326,7 +324,6 @@ class ProfesionalView(View):
                 datos = {'message': 'Profesional no encontrado'}
                 return JsonResponse(datos, status=404)
 
-            
             pagos = Pago.objects.filter(idProfesional_id=id)
             asistencias = Asistencia.objects.filter(idProfesional_id=id)
 
@@ -740,14 +737,14 @@ class PacienteView(View):
 
             datos_asistencias = []
             asistencias = Asistencia.objects.filter(idPaciente_id=id)
-
+            inasistencias_totales = 0
             asistencias_filtradas = []
 
             for asistencia in asistencias:
                 if asistencia.idProfesional.id not in asistencias_filtradas:
                     id = asistencia.idProfesional.id
                     nombre = asistencia.idProfesional.nombre
-                    obj_profesional =[id,nombre]
+                    obj_profesional = [id, nombre]
                     asistencias_filtradas.append(obj_profesional)
                 datos_asistencia = {
                     'id': asistencia.id,
@@ -761,6 +758,9 @@ class PacienteView(View):
                     'idArea_id': asistencia.idProfesional.idArea.id
                 }
                 datos_asistencias.append(datos_asistencia)
+                if asistencia.asisteProfesional == False:
+                    inasistencias_totales = inasistencias_totales + 1
+
             lista_costos = []
             for idprofesional in asistencias_filtradas:
                 costototal = 0
@@ -775,7 +775,7 @@ class PacienteView(View):
                         colacion = colacion + asistencia.colacion
                         valorhora = asistencia.idProfesional.valorHora
                         costototal = movilizacion + colacion + (valorhora * horas)
-                costo ={
+                costo = {
                     'valorHora': valorhora,
                     'horas': horas,
                     'movilizacion': movilizacion,
@@ -792,6 +792,8 @@ class PacienteView(View):
                 'fechaInicioAtencion': paciente.fechaInicioAtencion,
                 'vigente': paciente.vigente,
                 'costo': lista_costos,
+                'inasistencias_totales': inasistencias_totales,
+                'total_profesionales': len(asistencias_filtradas),
                 'idZona_id': paciente.idZona.id,
                 'idRegion_id': paciente.idRegion.id,
                 'idCliente_id': paciente.idCliente.id,
@@ -1031,7 +1033,6 @@ class AlertaView(View):
             except Alerta.DoesNotExist:
                 datos = {'message': 'Alerta no encontrada'}
                 return JsonResponse(datos, status=404)
-
 
             datos_alerta = {
                 'id': alerta.id,
