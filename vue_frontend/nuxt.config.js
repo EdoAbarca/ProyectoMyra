@@ -22,7 +22,7 @@ export default {
   },
   privateRuntimeConfig: {
     backendRoute: process.env.BACKEND_ROUTE,
-    cookieName: process.env.COOKIE_NAME,
+    //cookieName: process.env.COOKIE_NAME,
   },
 
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -31,11 +31,11 @@ export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
-  // Puerto para nuxt app
-  /* 
+  // Configuracion servidor
+  
   server: {
-    port:8080,
-  },*/
+    host: "0.0.0.0"
+  },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {

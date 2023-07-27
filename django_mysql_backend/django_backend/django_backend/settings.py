@@ -126,7 +126,7 @@ DATABASES = {
         'USER': getenv('DB_USER'),
         'PASSWORD': getenv('DB_PASSWORD'),
         'NAME': getenv('DB_NAME'),
-        #'OPTIONS': {'init_command': getenv('DB_INIT_COMMAND'),}
+        'OPTIONS': {'init_command': getenv('DB_INIT_COMMAND'),}
     }
 }
 
