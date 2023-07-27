@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = getenv('DEBUG')
 
 # Application definition
 INSTALLED_APPS = [
@@ -127,6 +127,7 @@ DATABASES = {
         'PASSWORD': getenv('DB_PASSWORD'),
         'NAME': getenv('DB_NAME'),
         'OPTIONS': {
+            'sslmode': 'REQUIRED',
             'init_command': getenv('DB_INIT_COMMAND'),
         }
     }
