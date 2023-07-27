@@ -121,15 +121,12 @@ WSGI_APPLICATION = 'django_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': getenv('DB_ENGINE'),
-        'HOST': getenv('DB_HOST'), #Cambiar cuando se despliegue en el servidor
+        'HOST': getenv('DB_HOST'),
         'PORT': getenv('DB_PORT'),
         'USER': getenv('DB_USER'),
         'PASSWORD': getenv('DB_PASSWORD'),
         'NAME': getenv('DB_NAME'),
-        'OPTIONS': {
-            'sslmode': 'REQUIRED',
-            'init_command': getenv('DB_INIT_COMMAND'),
-        }
+        #'OPTIONS': {'init_command': getenv('DB_INIT_COMMAND'),}
     }
 }
 
