@@ -4,7 +4,7 @@ from django.db import models
 ##########################################################################
 
 class Cargo(models.Model):
-    cargo = models.CharField(max_length=15)
+    cargo = models.CharField(max_length=50)
 
 class Contrato(models.Model):
     tipoContrato = models.CharField(max_length=15)
@@ -17,11 +17,11 @@ class Area(models.Model):
 
 class Coordinador(models.Model):
     nombre = models.CharField(max_length=50)
-    rut = models.CharField(max_length=15)
+    #rut = models.CharField(max_length=15)
     #profesionales = models.ManyToManyField(Profesional, related_name='lista_profesionales_c')
     #pacientes = models.ManyToManyField(Paciente, related_name='lista_pacientes_c')
     idArea = models.ForeignKey(Area, on_delete=models.CASCADE)
-    idCentro = models.ForeignKey(Centro, on_delete=models.CASCADE)
+    #idCentro = models.ForeignKey(Centro, on_delete=models.CASCADE)
 
 class Profesional(models.Model):
     nombre = models.CharField(max_length=50)
@@ -41,11 +41,11 @@ class Profesional(models.Model):
     bonoMov = models.IntegerField()
     bonoResp = models.IntegerField()
     #
-    idCentro = models.ForeignKey(Centro, on_delete=models.CASCADE)
-    idArea = models.ForeignKey(Area, on_delete=models.CASCADE)
-    idCargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
-    idContrato = models.ForeignKey(Contrato, on_delete=models.CASCADE)
-    idCoordinador = models.ForeignKey(Coordinador, on_delete=models.CASCADE)
+    idCentro = models.ForeignKey(Centro, null=True, blank=True, on_delete=models.CASCADE)
+    idArea = models.ForeignKey(Area, null=True, blank=True, on_delete=models.CASCADE)
+    idCargo = models.ForeignKey(Cargo, null=True, blank=True, on_delete=models.CASCADE)
+    idContrato = models.ForeignKey(Contrato, null=True, blank=True, on_delete=models.CASCADE)
+    idCoordinador = models.ForeignKey(Coordinador, null=True, blank=True, on_delete=models.CASCADE)
 
 class Pago(models.Model):
     sueldoBase = models.IntegerField()
@@ -93,10 +93,10 @@ class Paciente(models.Model):
     #crear un metodo para el calculo del gasto
     #actualizar tests
     nombre = models.CharField(max_length=70)
-    fechaInicioAtencion = models.DateField()
-    vigente = models.BooleanField()
+    fechaInicioAtencion = models.DateField(null=True,blank=True)
+    vigente = models.BooleanField(null=True)
     gasto = models.IntegerField()
-    idZona = models.ForeignKey(Zona, on_delete=models.CASCADE)
+    idZona = models.ForeignKey(Zona, null=True, blank=True, on_delete=models.CASCADE)
     idRegion = models.ForeignKey(Region, on_delete=models.CASCADE)
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     idTipoTurno = models.ForeignKey(TipoTurno, on_delete=models.CASCADE)
